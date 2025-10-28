@@ -1,0 +1,10 @@
+#hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-color);
+}
+
+#hero h1{
+    font-size: 350%;
+}

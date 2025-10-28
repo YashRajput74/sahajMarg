@@ -1,5 +1,10 @@
-export default function App(){
+import "./App.css"
+import HomePage from "./pages/HomePage";
+
+export default function App() {
     return (
-        <div>Hello World!</div>
+        <>
+            <HomePage />
+        </>
     )
 }

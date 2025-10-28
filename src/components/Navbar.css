@@ -1,0 +1,24 @@
+header{
+    display: flex;
+    justify-content: space-between;
+    padding: 1% 5%;
+}
+
+nav{
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+}
+
+nav div{
+    margin: 0% 15%;
+}
+
+nav+div button{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: none;
+    padding: 20% 35%;
+    border-radius: 1rem;
+    outline: none;
+}
