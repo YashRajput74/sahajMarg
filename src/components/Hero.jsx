@@ -7,12 +7,12 @@ export default function Hero(){
                 The Future of Learning
                 <br /> with Latest Technology
             </h1>
-            <h4>
+            <p>
                 Expert Tech to enhance productivity and learning. Let's take your studying further
-            </h4>
+            </p>
             <div>
-                <button>Get Started</button>
-                <button>Try Demo</button>
+                <button className='heroButton'>Get Started</button>
+                <button className='heroButton demoButton'>Try Demo</button>
             </div>
             <div>
                 <div></div>

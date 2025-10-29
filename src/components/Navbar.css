@@ -4,10 +4,15 @@ header{
     padding: 1% 5%;
 }
 
+header div{
+    display: flex;
+    align-items: center;
+}
 nav{
     width: fit-content;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 nav div{

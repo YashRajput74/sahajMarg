@@ -1,45 +1,89 @@
-import FeatureCard from "./FeatureCard";
+import { useNavigate } from "react-router-dom";
+import "./Features.css";
+import { servicesData } from "../data/servicesData";
 
 export default function Features() {
-    return (
-        <section id="featuresShowcase">
-            <h1>
-                Efficient and Integrated Tools
-            </h1>
-            <h4>
-                Simplify learning with our efficient, quality-focused services.
-            </h4>
-            <div>
-                <FeatureCard />
-            </div>
-            <div>
-                <div>
+    const navigate = useNavigate();
 
+    return (
+        <>
+            <section className="services">
+                <h1>Efficient and Integrated Learning Services</h1>
+                <p>Simplify learning with our efficient, quality-focused services.</p>
+
+                <div className="service-grid">
+                    {servicesData.map((service, index) => (
+                        <div
+                            key={index}
+                            className="service-card"
+                            onClick={() => navigate(service.route)}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <h3>{service.title}</h3>
+                            <p>{service.description}</p>
+                        </div>
+                    ))}
                 </div>
-                <div>
-                    <h1>Key Benefits of Our System for Your Learning Efficiency</h1>
-                    <p>Our system boost productivity, cut costs and drive learning growth.</p>
-                    <div>
-                        <span></span>
-                        <h2>Boosting Quality with Tech</h2>
-                        <p>With advanced technology we help you achieve top learning quality. Discover how we can enhance your standards</p>
+            </section>
+
+            {/* You can keep your other sections as they are */}
+            <section className="benefits">
+                <div className="benefits-content">
+                    <h2>Key Benefits of Our System for Your Business Efficiency</h2>
+                    <ul>
+                        <li><strong>Boosting Learning with Tech:</strong> Enhance study quality with advanced tools.</li>
+                        <li><strong>Optimization Learning Process:</strong> Maximize your output efficiently.</li>
+                        <li><strong>AI-Driven Learning:</strong> Leverage AI to transform learning processes.</li>
+                    </ul>
+                </div>
+                <div className="benefits-image">
+                    <img src="https://via.placeholder.com/300x250" alt="chart" />
+                </div>
+            </section>
+
+            <section class="pricing">
+                <h2>Tailored Plans for Your Manufacturing Scale</h2>
+                <p>Flexible pricing for any business size.</p>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter</h3>
+                        <p class="price">$39 <span>/month</span></p>
+                        <ul>
+                            <li>Production up to 1,000 units</li>
+                            <li>24/7 Tech Support</li>
+                            <li>Access to Dashboard</li>
+                        </ul>
+                        <a href="#" class="btn primary">Get Started</a>
                     </div>
-                    <div>
-                        <span></span>
-                        <h2>Optimization Studying Process</h2>
-                        <p>Boost learning efficiency and productivity with our innovative solutions.
-                            See how the latest technology can maximize your output</p>
+                    <div class="pricing-card">
+                        <h3>Enterprise</h3>
+                        <p class="price">$99 <span>/month</span></p>
+                        <ul>
+                            <li>Unlimited Production Units</li>
+                            <li>Dedicated Account Manager</li>
+                            <li>Private Production Integration</li>
+                        </ul>
+                        <a href="#" class="btn primary">Get Started</a>
                     </div>
-                    <div>
-                        <span></span>
-                        <h2>Al-Driven Production</h2>
-                        <p>Leverage the power of Al to transform your learning processes. Achieving faster and more effective results.</p>
+                    <div class="pricing-card highlight">
+                        <h3>Professional</h3>
+                        <p class="price">Custom</p>
+                        <ul>
+                            <li>Custom Tailored Solutions</li>
+                            <li>Advanced Features</li>
+                            <li>Dedicated Support</li>
+                        </ul>
+                        <a href="#" class="btn secondary">Get Started</a>
                     </div>
                 </div>
-            </div>
-            <div>
-                
-            </div>
-        </section>
+            </section>
+
+            <section class="integration">
+                <h2>Empowering Top Companies with Seamless Integrations</h2>
+                <p>Effortlessly integrate with your existing systems and boost productivity.</p>
+                <img src="https://via.placeholder.com/400x200" alt="Integration illustration" />
+                <a href="#" class="btn primary">Work With Us</a>
+            </section>
+        </>
     )
 }
