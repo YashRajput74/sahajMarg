@@ -1,4 +1,3 @@
-// src/pages/PdfToDoc.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FeatureHeader from "../components/FeatureHeader";
@@ -50,7 +49,6 @@ export default function PdfToDoc() {
                     name: fileData.FileName,
                 });
 
-                // Optional: store in localStorage for later access
                 localStorage.setItem("lastConvertedFile", JSON.stringify(fileData));
             } else {
                 alert("Conversion failed. Please try again.");
@@ -67,7 +65,6 @@ export default function PdfToDoc() {
         if (!convertedFile) return;
 
         if (convertedFile.url) {
-            // Use hosted URL
             const link = document.createElement("a");
             link.href = convertedFile.url;
             link.download = convertedFile.name || "converted.docx";
@@ -75,7 +72,6 @@ export default function PdfToDoc() {
             link.click();
             document.body.removeChild(link);
         } else if (convertedFile.FileData) {
-            // Use Base64 data
             downloadBase64File(convertedFile.FileData, convertedFile.name);
         }
     };

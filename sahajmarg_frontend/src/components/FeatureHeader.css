@@ -58,3 +58,11 @@
 .header-cta .signup-btn:hover {
     background-color: #c9f2b0;
 }
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: inherit;
+}

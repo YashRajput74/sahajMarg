@@ -41,48 +41,48 @@ export default function Features() {
                 </div>
             </section>
 
-            <section class="pricing">
+            <section className="pricing">
                 <h2>Tailored Plans for Your Manufacturing Scale</h2>
                 <p>Flexible pricing for any business size.</p>
-                <div class="pricing-grid">
-                    <div class="pricing-card">
+                <div className="pricing-grid">
+                    <div className="pricing-card">
                         <h3>Starter</h3>
-                        <p class="price">$39 <span>/month</span></p>
+                        <p className="price">$39 <span>/month</span></p>
                         <ul>
                             <li>Production up to 1,000 units</li>
                             <li>24/7 Tech Support</li>
                             <li>Access to Dashboard</li>
                         </ul>
-                        <a href="#" class="btn primary">Get Started</a>
+                        <a href="#" className="btn primary">Get Started</a>
                     </div>
-                    <div class="pricing-card">
+                    <div className="pricing-card">
                         <h3>Enterprise</h3>
-                        <p class="price">$99 <span>/month</span></p>
+                        <p className="price">$99 <span>/month</span></p>
                         <ul>
                             <li>Unlimited Production Units</li>
                             <li>Dedicated Account Manager</li>
                             <li>Private Production Integration</li>
                         </ul>
-                        <a href="#" class="btn primary">Get Started</a>
+                        <a href="#" className="btn primary">Get Started</a>
                     </div>
-                    <div class="pricing-card highlight">
+                    <div className="pricing-card highlight">
                         <h3>Professional</h3>
-                        <p class="price">Custom</p>
+                        <p className="price">Custom</p>
                         <ul>
                             <li>Custom Tailored Solutions</li>
                             <li>Advanced Features</li>
                             <li>Dedicated Support</li>
                         </ul>
-                        <a href="#" class="btn secondary">Get Started</a>
+                        <a href="#" className="btn secondary">Get Started</a>
                     </div>
                 </div>
             </section>
 
-            <section class="integration">
+            <section className="integration">
                 <h2>Empowering Top Companies with Seamless Integrations</h2>
                 <p>Effortlessly integrate with your existing systems and boost productivity.</p>
                 <img src="https://via.placeholder.com/400x200" alt="Integration illustration" />
-                <a href="#" class="btn primary">Work With Us</a>
+                <a href="#" className="btn primary">Work With Us</a>
             </section>
         </>
     )

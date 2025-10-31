@@ -6,8 +6,10 @@ export default function FeatureHeader() {
     return (
         <header className="feature-header">
             <div className="logo">
-                <img src="#" alt="logo" />
-                <span>Sahajmarg</span>
+                <Link to="/" className="logo-link">
+                    <img src="#" alt="logo" />
+                    <span>Sahajmarg</span>
+                </Link>
             </div>
 
             <nav className="feature-nav">
