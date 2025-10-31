@@ -5,7 +5,9 @@ import Footer from "../components/Footer";
 import "./PdfSummarizer.css";
 
 export default function PdfSummarizer() {
+    const [mode, setMode] = useState("pdf"); // "pdf" or "text"
     const [file, setFile] = useState(null);
+    const [text, setText] = useState("");
     const [summary, setSummary] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -17,36 +19,48 @@ export default function PdfSummarizer() {
 
     const handleSummarize = async () => {
         setLoading(true);
+        setSummary("");
 
         try {
-            let docxFile = file;
+            let response;
 
-            // ✅ Try to use the last converted DOCX from localStorage
-            const lastConverted = localStorage.getItem("lastConvertedFile");
-            if (!docxFile && lastConverted) {
-                const parsed = JSON.parse(lastConverted);
-                if (parsed.FileData) {
-                    // Convert base64 to a Blob (so it behaves like a File)
-                    const byteCharacters = atob(parsed.FileData);
-                    const byteNumbers = new Array(byteCharacters.length)
-                        .fill()
-                        .map((_, i) => byteCharacters.charCodeAt(i));
-                    const byteArray = new Uint8Array(byteNumbers);
-                    docxFile = new File([byteArray], parsed.FileName || "converted.docx", {
-                        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    });
+            if (mode === "pdf") {
+                let docxFile = file;
+
+                // ✅ Try to use the last converted DOCX from localStorage
+                const lastConverted = localStorage.getItem("lastConvertedFile");
+                if (!docxFile && lastConverted) {
+                    const parsed = JSON.parse(lastConverted);
+                    if (parsed.FileData) {
+                        const byteCharacters = atob(parsed.FileData);
+                        const byteNumbers = new Array(byteCharacters.length)
+                            .fill()
+                            .map((_, i) => byteCharacters.charCodeAt(i));
+                        const byteArray = new Uint8Array(byteNumbers);
+                        docxFile = new File([byteArray], parsed.FileName || "converted.docx", {
+                            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        });
+                    }
                 }
+
+                if (!docxFile) return alert("No DOCX found. Please upload or convert a PDF first.");
+
+                const formData = new FormData();
+                formData.append("file", docxFile);
+
+                response = await fetch("http://localhost:5000/summarize", {
+                    method: "POST",
+                    body: formData,
+                });
+            } else {
+                if (!text.trim()) return alert("Please enter or paste some text.");
+
+                response = await fetch("http://localhost:5000/summarize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text }),
+                });
             }
-
-            if (!docxFile) return alert("No DOCX found. Please upload or convert a PDF first.");
-
-            const formData = new FormData();
-            formData.append("file", docxFile);
-
-            const response = await fetch("http://localhost:5000/summarize", {
-                method: "POST",
-                body: formData,
-            });
 
             const data = await response.json();
             if (data.summary) {
@@ -57,7 +71,7 @@ export default function PdfSummarizer() {
             }
         } catch (err) {
             console.error(err);
-            alert("Something went wrong.");
+            alert("Something went wrong while summarizing.");
         } finally {
             setLoading(false);
         }
@@ -69,8 +83,12 @@ export default function PdfSummarizer() {
 
             <main className="pdf-summarizer-page">
                 <div className="left-section">
-                    <h1>Summarize Your PDF Instantly</h1>
-                    <p>Upload any PDF and get a concise summary generated for you.</p>
+                    <h1>{mode === "pdf" ? "Summarize Your PDF Instantly" : "Summarize Any Text Instantly"}</h1>
+                    <p>
+                        {mode === "pdf"
+                            ? "Upload any PDF and get a concise summary generated for you."
+                            : "Paste or type text below and get a summarized version instantly."}
+                    </p>
 
                     <div className="utility-buttons">
                         <button className="switch-btn" onClick={() => navigate("/generate-flashcard")}>
@@ -85,15 +103,44 @@ export default function PdfSummarizer() {
 
                 <div className="right-section">
                     <div className="upload-box">
-                        <label className="file-label">
-                            <input
-                                type="file"
-                                accept=".pdf"
-                                onChange={handleFileChange}
-                                className="file-input"
-                            />
-                            {file ? file.name : "Click to Upload PDF"}
-                        </label>
+                        <div className="mode-toggle">
+                            <button
+                                className={`toggle-btn ${mode === "pdf" ? "active" : ""}`}
+                                onClick={() => setMode("pdf")}
+                            >
+                                📄 PDF Mode
+                            </button>
+                            <button
+                                className={`toggle-btn ${mode === "text" ? "active" : ""}`}
+                                onClick={() => setMode("text")}
+                            >
+                                📝 Text Mode
+                            </button>
+                        </div>
+
+                        {mode === "pdf" ? (
+                            <>
+                                <label className="file-label">
+                                    <input
+                                        type="file"
+                                        accept=".pdf"
+                                        onChange={handleFileChange}
+                                        className="file-input"
+                                    />
+                                    {file ? file.name : "Click to Upload PDF"}
+                                </label>
+                            </>
+                        ) : (
+                            <>
+                                <textarea
+                                    className="text-input"
+                                    rows={8}
+                                    placeholder="Paste or type your text here..."
+                                    value={text}
+                                    onChange={(e) => setText(e.target.value)}
+                                />
+                            </>
+                        )}
 
                         <button
                             className="convert-btn"
