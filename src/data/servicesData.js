@@ -13,13 +13,13 @@ export const servicesData = [
     },
     {
         title: "Flash Card Generator",
-        description: "Make flaashcards from text",
+        description: "Make flashcards from text",
         route: "/generate-flashcard"
     },
     {
-        title: "AI Summarizer",
-        description: "Generate concise summaries of long documents or articles.",
-        route: "/ai-summarizer"
+        title: "Quiz Generator",
+        description: "Make quiz",
+        route: "/generate-quiz"
     },
     {
         title: "File Compressor",

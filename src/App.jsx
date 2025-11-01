@@ -7,6 +7,7 @@ import PdfSummarizer from "./pages/PdfSummarizer";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import FlashCardGenerator from "./pages/FlashCardGenerator";
+import QuizGenerator from "./pages/QuizGenerator";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/pdf-to-doc" element={<PdfToDoc />} />
                 <Route path="/pdf-summarizer" element={<PdfSummarizer />} />
                 <Route path="/generate-flashcard" element={<FlashCardGenerator />} />
+                <Route path="/generate-quiz" element={<QuizGenerator />} />
             </Routes>
         </Router>
     );
