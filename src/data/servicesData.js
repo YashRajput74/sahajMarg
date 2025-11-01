@@ -12,9 +12,9 @@ export const servicesData = [
         route: "/pdf-summarizer"
     },
     {
-        title: "Image to Text (OCR)",
-        description: "Extract text from images using our powerful OCR technology.",
-        route: "/image-to-text"
+        title: "Flash Card Generator",
+        description: "Make flaashcards from text",
+        route: "/generate-flashcard"
     },
     {
         title: "AI Summarizer",
