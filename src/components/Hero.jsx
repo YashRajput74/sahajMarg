@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import './Hero.css'
 
 export default function Hero(){
+    const navigate = useNavigate();
     return (
         <section id="hero">
             <h1>
@@ -11,8 +13,8 @@ export default function Hero(){
                 Expert Tech to enhance productivity and learning. Let's take your studying further
             </p>
             <div>
-                <button className='heroButton'>Get Started</button>
-                <button className='heroButton demoButton'>Try Demo</button>
+                <button className='heroButton' onClick={() => navigate("/features")}>Get Started</button>
+                <button className='heroButton demoButton' onClick={() => navigate("/features")}>Try Demo</button>
             </div>
             <div>
                 <div></div>
