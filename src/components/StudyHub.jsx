@@ -80,19 +80,8 @@ const StudyHub = () => {
         }
     };
 
-    const flipFlashcard = () => setFlashcardFlipped(!flashcardFlipped);
-
-    const handleQuizAnswer = (optionIndex) => {
-        setQuizAnswers((prev) => ({ ...prev, [currentQuiz]: optionIndex }));
-    };
-
-    const nextFlashcard = () => {
-        setCurrentFlashcard((prev) => (prev + 1) % flashcards.length);
-        setFlashcardFlipped(false);
-    };
-
-    const nextQuiz = () => {
-        setCurrentQuiz((prev) => (prev + 1 < quizzes.length ? prev + 1 : prev));
+    const handleQuizAnswer = (qIndex, optionIndex) => {
+        setQuizAnswers((prev) => ({ ...prev, [qIndex]: optionIndex }));
     };
 
     return (
@@ -187,15 +176,16 @@ const StudyHub = () => {
                                             <li
                                                 key={idx}
                                                 className={`quiz-option ${chosen !== undefined
-                                                        ? isCorrect
-                                                            ? "correct"
-                                                            : idx === chosen
-                                                                ? "wrong"
-                                                                : ""
-                                                        : ""
+                                                    ? isCorrect
+                                                        ? "correct"
+                                                        : idx === chosen
+                                                            ? "wrong"
+                                                            : ""
+                                                    : ""
                                                     }`}
                                                 onClick={() => {
-                                                    if (quizAnswers[qIndex] === undefined) handleQuizAnswer(idx);
+                                                    if (quizAnswers[qIndex] === undefined)
+                                                        handleQuizAnswer(qIndex, idx); // ✅ fix
                                                 }}
                                             >
                                                 {opt}
