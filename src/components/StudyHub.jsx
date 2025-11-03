@@ -97,7 +97,7 @@ const StudyHub = () => {
 
     return (
         <div className="studyhub-container">
-            <h1 className="title">📚 Study Hub</h1>
+            <h1 className="title"> Study Hub</h1>
 
             <div className="input-section">
                 <input
@@ -108,13 +108,17 @@ const StudyHub = () => {
                     className="topic-input"
                 />
                 <div className="upload-area">
-                    <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
-                    <span>or</span>
                     <textarea
                         placeholder="Paste your text here..."
                         value={text}
                         onChange={handleTextChange}
                     />
+
+                    <label className="upload-box">
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
+                        <p> Click to upload or drag a file here</p>
+                        {file && <span>{file.name}</span>}
+                    </label>
                 </div>
 
                 <div className="button-group">
@@ -133,7 +137,7 @@ const StudyHub = () => {
             {/* Summary */}
             {summary && (
                 <div className="output-section">
-                    <h2>📝 Summary</h2>
+                    <h2> Summary</h2>
                     <div className="summary-box">{summary}</div>
                 </div>
             )}
@@ -141,7 +145,7 @@ const StudyHub = () => {
             {/* Flashcards */}
             {flashcards.length > 0 && (
                 <div className="output-section">
-                    <h2>💡 Flashcards</h2>
+                    <h2> Flashcards</h2>
                     <div className="flashcard-grid">
                         {flashcards.map((card, index) => (
                             <div
@@ -164,7 +168,7 @@ const StudyHub = () => {
             {/* Quizzes */}
             {quizzes.length > 0 && (
                 <div className="output-section">
-                    <h2>🧩 Quiz</h2>
+                    <h2> Quiz</h2>
                     <div className="quiz-grid">
                         {quizzes.map((quiz, qIndex) => (
                             <div key={qIndex} className="quiz-card">
@@ -173,11 +177,17 @@ const StudyHub = () => {
                                     {quiz.options.map((opt, idx) => {
                                         const chosen = quizAnswers[qIndex];
                                         const correct = quiz.answer;
+
+                                        const isCorrect =
+                                            typeof correct === "number"
+                                                ? idx === correct
+                                                : opt === correct;
+
                                         return (
                                             <li
                                                 key={idx}
                                                 className={`quiz-option ${chosen !== undefined
-                                                        ? opt === correct
+                                                        ? isCorrect
                                                             ? "correct"
                                                             : idx === chosen
                                                                 ? "wrong"
@@ -185,8 +195,7 @@ const StudyHub = () => {
                                                         : ""
                                                     }`}
                                                 onClick={() => {
-                                                    if (quizAnswers[qIndex] === undefined)
-                                                        handleQuizAnswer(idx);
+                                                    if (quizAnswers[qIndex] === undefined) handleQuizAnswer(idx);
                                                 }}
                                             >
                                                 {opt}
@@ -202,7 +211,7 @@ const StudyHub = () => {
 
             {/* Past Topics */}
             <div className="history-section">
-                <h2>📂 Past Topics</h2>
+                <h2> Past Topics</h2>
                 {history.length === 0 ? (
                     <p>No past topics yet.</p>
                 ) : (
