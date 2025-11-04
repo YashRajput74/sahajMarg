@@ -11,11 +11,7 @@ const StudyHub = () => {
     const [loading, setLoading] = useState(false);
     const [history, setHistory] = useState([]);
 
-    const [currentFlashcard, setCurrentFlashcard] = useState(0);
-    const [flashcardFlipped, setFlashcardFlipped] = useState(false);
-
-    const [currentQuiz, setCurrentQuiz] = useState(0);
-    const [quizAnswers, setQuizAnswers] = useState({}); // {questionIndex: chosenOptionIndex}
+    const [currentTab, setCurrentTab] = useState("summary");  // Track active tab
 
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem("studyTopics")) || [];
@@ -33,40 +29,62 @@ const StudyHub = () => {
     };
 
     const generateFeature = async (feature) => {
-        if (!file && !text.trim()) {
-            alert("Please upload a PDF or enter text first!");
+        const hasContent = text.trim() || file;
+        const hasTopic = topic.trim();
+
+        if (!hasContent && !hasTopic) {
+            alert("Please enter a topic name or upload content!");
             return;
         }
+
         setLoading(true);
 
-        const formData = new FormData();
-        if (file) formData.append("file", file);
-        else formData.append("text", text);
-
-        const topicName =
-            topic.trim() || `topic-${(JSON.parse(localStorage.getItem("studyTopics")) || []).length + 1}`;
+        let url = "";
+        let options = {};
 
         try {
-            let res, data;
-            if (feature === "summary") {
-                res = await fetch("http://localhost:5000/summarize", { method: "POST", body: formData });
-                data = await res.json();
-                setSummary(data.summary);
-            } else if (feature === "flashcards") {
-                res = await fetch("http://localhost:5000/generate-flashcards", { method: "POST", body: formData });
-                data = await res.json();
-                console.log(data.flashcards);
-                setFlashcards(data.flashcards);
-                setCurrentFlashcard(0);
-                setFlashcardFlipped(false);
-            } else if (feature === "quiz") {
-                res = await fetch("http://localhost:5000/generate-quiz", { method: "POST", body: formData });
-                data = await res.json();
-                setQuizzes(data.quizzes);
-                setCurrentQuiz(0);
-                setQuizAnswers({});
+            const topicName =
+                hasTopic ||
+                `topic-${(JSON.parse(localStorage.getItem("studyTopics")) || []).length + 1}`;
+
+            // If text or file exists → use content-based endpoints
+            if (hasContent) {
+                const formData = new FormData();
+                if (file) formData.append("file", file);
+                else formData.append("text", text);
+
+                if (feature === "summary") url = "http://localhost:5000/summarize";
+                else if (feature === "flashcards") url = "http://localhost:5000/generate-flashcards";
+                else if (feature === "quiz") url = "http://localhost:5000/generate-quiz";
+
+                options = { method: "POST", body: formData };
+            }
+            // Otherwise → topic-only endpoints
+            else {
+                const body = JSON.stringify({ topic: topicName });
+
+                if (feature === "summary") url = "http://localhost:5000/summarize-topic";
+                else if (feature === "flashcards") url = "http://localhost:5000/generate-flashcards-topic";
+                else if (feature === "quiz") url = "http://localhost:5000/generate-quiz-topic";
+
+                options = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body,
+                };
             }
 
+            const res = await fetch(url, options);
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.error || "Failed to generate.");
+
+            // Save data to state
+            if (feature === "summary") setSummary(data.summary);
+            else if (feature === "flashcards") setFlashcards(data.flashcards);
+            else if (feature === "quiz") setQuizzes(data.quizzes);
+
+            // Save in history
             saveTopic(topicName, {
                 summary: feature === "summary" ? data.summary : summary,
                 flashcards: feature === "flashcards" ? data.flashcards : flashcards,
@@ -80,8 +98,29 @@ const StudyHub = () => {
         }
     };
 
-    const handleQuizAnswer = (qIndex, optionIndex) => {
-        setQuizAnswers((prev) => ({ ...prev, [qIndex]: optionIndex }));
+    const handleSubmit = async () => {
+        if (!file && !text.trim()) {
+            alert("Please upload a PDF or enter text first!");
+            return;
+        }
+
+        setLoading(true);
+
+        // Order of features — put the current tab first
+        const features = ["summary", "flashcards", "quiz"];
+        const ordered = [currentTab, ...features.filter(f => f !== currentTab)];
+
+        try {
+            for (const feature of ordered) {
+                await generateFeature(feature);
+            }
+            alert("All content generated successfully!");
+        } catch (err) {
+            console.error(err);
+            alert("Error generating study materials.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -91,7 +130,7 @@ const StudyHub = () => {
             <div className="input-section">
                 <input
                     type="text"
-                    placeholder="Topic Name (optional)"
+                    placeholder="Topic Name"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     className="topic-input"
@@ -105,103 +144,93 @@ const StudyHub = () => {
 
                     <label className="upload-box">
                         <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
-                        <p> Click to upload or drag a file here</p>
+                        <p>Click to upload or drag a file here</p>
                         {file && <span>{file.name}</span>}
                     </label>
                 </div>
 
                 <div className="button-group">
-                    <button onClick={() => generateFeature("summary")} disabled={loading}>
-                        {loading ? "Loading..." : "Generate Summary"}
+                    <button
+                        onClick={handleSubmit}
+                        disabled={loading || (!text.trim() && !file && !topic.trim())}
+                    >
+                        {loading ? "Generating..." : "Submit"}
                     </button>
-                    <button onClick={() => generateFeature("flashcards")} disabled={loading}>
-                        {loading ? "Loading..." : "Generate Flashcards"}
+                </div>
+
+
+            </div>
+            {/* Tab Navigation */}
+            {/* ===== MATERIAL STYLE TAB BAR ===== */}
+            <div className="tab-header">
+                <h1 className="tab-title">Study Hub</h1>
+                <div className="tab-items">
+                    <button
+                        className={`tab-item ${currentTab === "summary" ? "active" : ""}`}
+                        onClick={() => setCurrentTab("summary")}
+                    >
+                        Summary
                     </button>
-                    <button onClick={() => generateFeature("quiz")} disabled={loading}>
-                        {loading ? "Loading..." : "Generate Quiz"}
+                    <button
+                        className={`tab-item ${currentTab === "flashcards" ? "active" : ""}`}
+                        onClick={() => setCurrentTab("flashcards")}
+                    >
+                        Flashcards
+                    </button>
+                    <button
+                        className={`tab-item ${currentTab === "quiz" ? "active" : ""}`}
+                        onClick={() => setCurrentTab("quiz")}
+                    >
+                        Quiz
                     </button>
                 </div>
             </div>
-
-            {/* Summary */}
-            {summary && (
-                <div className="output-section">
-                    <h2> Summary</h2>
-                    <div className="summary-box">{summary}</div>
-                </div>
-            )}
-
-            {/* Flashcards */}
-            {flashcards.length > 0 && (
-                <div className="output-section">
-                    <h2> Flashcards</h2>
-                    <div className="flashcard-grid">
-                        {flashcards.map((card, index) => (
-                            <div
-                                key={index}
-                                className={`flashcard ${currentFlashcard === index && flashcardFlipped ? "flipped" : ""
-                                    }`}
-                                onClick={() => {
-                                    setCurrentFlashcard(index);
-                                    setFlashcardFlipped((prev) => !prev);
-                                }}
-                            >
-                                <div className="front">{card.question}</div>
-                                <div className="back">{card.answer}</div>
-                            </div>
-                        ))}
+            {/* Tab Content */}
+            <div className="tab-content-wrapper">
+                {currentTab === "summary" && summary && (
+                    <div className="output-section">
+                        <h2>Summary</h2>
+                        <div className="summary-box">{summary}</div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {/* Quizzes */}
-            {quizzes.length > 0 && (
-                <div className="output-section">
-                    <h2> Quiz</h2>
-                    <div className="quiz-grid">
-                        {quizzes.map((quiz, qIndex) => (
-                            <div key={qIndex} className="quiz-card">
-                                <p className="quiz-question">{quiz.question}</p>
-                                <ul>
-                                    {quiz.options.map((opt, idx) => {
-                                        const chosen = quizAnswers[qIndex];
-                                        const correct = quiz.answer;
+                {currentTab === "flashcards" && flashcards.length > 0 && (
+                    <div className="output-section">
+                        <h2>Flashcards</h2>
+                        <div className="flashcard-grid">
+                            {flashcards.map((card, index) => (
+                                <div key={index} className="flashcard">
+                                    <div className="front">{card.question}</div>
+                                    <div className="back">{card.answer}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
-                                        const isCorrect =
-                                            typeof correct === "number"
-                                                ? idx === correct
-                                                : opt === correct;
-
-                                        return (
-                                            <li
-                                                key={idx}
-                                                className={`quiz-option ${chosen !== undefined
-                                                    ? isCorrect
-                                                        ? "correct"
-                                                        : idx === chosen
-                                                            ? "wrong"
-                                                            : ""
-                                                    : ""
-                                                    }`}
-                                                onClick={() => {
-                                                    if (quizAnswers[qIndex] === undefined)
-                                                        handleQuizAnswer(qIndex, idx); // ✅ fix
-                                                }}
-                                            >
+                {currentTab === "quiz" && quizzes.length > 0 && (
+                    <div className="output-section">
+                        <h2>Quiz</h2>
+                        <div className="quiz-grid">
+                            {quizzes.map((quiz, qIndex) => (
+                                <div key={qIndex} className="quiz-card">
+                                    <p className="quiz-question">{quiz.question}</p>
+                                    <ul>
+                                        {quiz.options.map((opt, idx) => (
+                                            <li key={idx} className="quiz-option">
                                                 {opt}
                                             </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
-                        ))}
+                                        ))}
+                                    </ul>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            )}
-
+                )}
+            </div>
             {/* Past Topics */}
             <div className="history-section">
-                <h2> Past Topics</h2>
+                <h2>Past Topics</h2>
                 {history.length === 0 ? (
                     <p>No past topics yet.</p>
                 ) : (

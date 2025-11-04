@@ -1,8 +1,8 @@
 :root {
     --bg-color: #f8f9fc;
     --text-color: #1e1e2f;
-    --primary: #6a5acd;
-    --primary-dark: #5142a8;
+    --primary: #142F32;
+    --primary-dark: #232930;
     --secondary: #ff8a5c;
     --card-bg: #ffffff;
     --border-color: #e3e6f0;
@@ -125,10 +125,18 @@
 }
 
 /* ===== BUTTONS ===== */
+
 .button-group {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    justify-content: center;
+}
+
+.button-group button {
+    flex: 0;
+    width: auto;
+    padding: 0.8rem 5rem;
+    align-self: center;
+
 }
 
 button {
@@ -304,6 +312,125 @@ button:disabled {
     line-height: 1.5;
 }
 
+/* ===== TABS ===== */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.tab-nav button {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--primary-dark);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    font-weight: bold;
+}
+
+.tab-nav button:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.tab-nav button.tab-active {
+    background-color: var(--primary);
+    color: white;
+}
+
+.tab-nav button:focus {
+    outline: none;
+}
+
+/* ===== TABS ===== */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-nav button {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.8rem 2rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border-radius: 0;
+}
+
+.tab-nav button:hover {
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+    background: none;
+}
+
+.tab-nav button.tab-active {
+    color: var(--primary);
+    border-bottom: 3px solid var(--primary);
+    background: none;
+}
+
+.tab-nav button:focus {
+    outline: none;
+}
+
+.output-section {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.output-section {
+    border: 2px solid #ccc;
+    /* subtle border */
+    border-radius: 10px;
+    /* smooth rounded corners */
+    padding: 1.5rem;
+    /* space inside the box */
+    margin-top: 1.5rem;
+    /* spacing between sections */
+    background-color: #fff;
+    /* or #1e1e1e if in dark mode */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    /* light shadow for depth */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.output-section:hover {
+    border-color: #888;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.output-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .upload-area {
@@ -318,4 +445,69 @@ button:disabled {
     .button-group {
         flex-direction: column;
     }
+}
+
+/* ===== MATERIAL LEFT-ALIGNED TAB BAR ===== */
+.tab-header {
+    background-color: var(--primary);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* left align */
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0; /* attach to content below */
+}
+
+.tab-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: #fff;
+}
+
+/* container for tab buttons */
+.tab-items {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+}
+
+/* each tab button */
+.tab-item {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-item:hover {
+    border-bottom: 3px solid rgba(255, 255, 255, 0.7);
+}
+
+.tab-item.active {
+    border-bottom: 3px solid var(--primary);
+    font-weight: 600;
+}
+
+/* attach content visually to header */
+.tab-content-wrapper {
+    background: var(--primary);
+    border: 1px solid var(--border-color);
+    border-top: none; /* connects with tab header */
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
 }
