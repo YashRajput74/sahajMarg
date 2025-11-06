@@ -3,7 +3,7 @@ import "../pages/StudyHub.css";
 const SummaryGenerator = ({ file, setFile, text, setText, onGenerate, loading, message }) => {
     return (
         <div className="summary-generator">
-            <h2>Generate a New Summary</h2>
+            <h1>Generate a New Summary</h1>
             <p className="subtext">Upload a PDF or paste your notes to get started.</p>
 
             <div className="input-card">
@@ -29,6 +29,7 @@ const SummaryGenerator = ({ file, setFile, text, setText, onGenerate, loading, m
                 </label>
 
                 <button onClick={onGenerate} disabled={loading}>
+                    <span className="material-symbols-outlined">auto_awesome</span>
                     {loading ? "Generating..." : "Generate Summary"}
                 </button>
                 {message && <p className="status">{message}</p>}

@@ -4,7 +4,7 @@
     min-height: 100vh;
     background-color: #f5f6f8;
     color: #1f2937;
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 /* --- SIDEBAR --- */
@@ -89,46 +89,66 @@
 
 /* --- SUMMARY GENERATOR --- */
 .summary-generator {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    background-color: transparent;
 }
 
 .summary-generator h2 {
-    font-size: 28px;
-    font-weight: 900;
-    margin-bottom: 6px;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
     letter-spacing: -0.02em;
+    color: #111827;
 }
 
 .summary-generator .subtext {
     color: #6b7280;
-    margin-bottom: 24px;
-    font-size: 15px;
+    margin-bottom: 28px;
+    font-size: 16px;
 }
 
 /* Input container */
 .input-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Radio buttons */
+/* Tab-style radio buttons */
 .input-options {
     display: flex;
-    gap: 16px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    overflow: hidden;
+    align-self: flex-start;
+    white-space: pre;
+    padding: 2px;
 }
 
 .option {
-    font-size: 14px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    flex: 1;
+    padding: 10px 50px;
+    text-align: center;
     cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    color: #4b5563;
+    transition: all 0.2s ease;
+}
+
+.option input {
+    display: none;
+}
+
+.option.active,
+.option:hover {
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 8px;
 }
 
 /* Text area */
@@ -140,37 +160,44 @@
 
 .text-input p {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
+    color: #374151;
 }
 
 .text-input textarea {
     min-height: 180px;
-    padding: 12px 14px;
+    padding: 14px;
     font-size: 15px;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     resize: vertical;
     transition: all 0.2s ease;
+    color: #1f2937;
+    background: #f9fafb;
 }
 
 .text-input textarea:focus {
     border-color: #256af4;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(37, 106, 244, 0.15);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 106, 244, 0.15);
 }
 
 /* Generate button */
 button {
     align-self: flex-start;
     background-color: #256af4;
-    color: white;
+    color: #ffffff;
     border: none;
-    padding: 12px 20px;
+    padding: 14px 22px;
     font-size: 15px;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 button:hover {
@@ -184,18 +211,18 @@ button:disabled {
 
 /* Status message */
 .status {
-    margin-top: 4px;
     font-size: 14px;
     color: #6b7280;
 }
 
 /* --- SUMMARY OUTPUT --- */
 .summary-output {
+    margin-top: 28px;
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    padding: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .output-header {
@@ -206,8 +233,9 @@ button:disabled {
 }
 
 .output-header h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
+    color: #111827;
 }
 
 .output-actions {
@@ -236,4 +264,49 @@ button:disabled {
     font-size: 15px;
     color: #374151;
     line-height: 1.6;
+}
+
+/* --- ICONS & OPTION TOGGLE --- */
+.material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    /* -webkit-font-feature-settings: "liga"; */
+    -webkit-font-smoothing: antialiased;
+    vertical-align: middle;
+}
+
+.option input {
+    display: none;
+}
+
+.option span.material-symbols-outlined {
+    font-size: 20px;
+    color: #6b7280;
+}
+
+.option.active-option .material-symbols-outlined {
+    color: #256af4;
+}
+
+.file-upload input[type="file"] {
+    font-size: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.file-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #6b7280;
 }
