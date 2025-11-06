@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import FlashCardGenerator from "./pages/FlashCardGenerator";
 import QuizGenerator from "./pages/QuizGenerator";
-import FeaturesPage from "./pages/FeaturesPage";
+import StudyHub from "./pages/StudyHub";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -34,7 +34,7 @@ function App() {
                 <Route path="/pdf-summarizer" element={<PdfSummarizer />} />
                 <Route path="/generate-flashcard" element={<FlashCardGenerator />} />
                 <Route path="/generate-quiz" element={<QuizGenerator />} />
-                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/features" element={<StudyHub />} />
             </Routes>
         </Router>
     );

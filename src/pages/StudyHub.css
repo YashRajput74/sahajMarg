@@ -1,0 +1,239 @@
+/* --- RESET & BASE --- */
+.studyhub-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f6f8;
+    color: #1f2937;
+    font-family: "Inter", sans-serif;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: 260px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brand Section */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.brand-icon {
+    background-color: #256af4;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 22px;
+}
+
+.brand-text h1 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.brand-text p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #374151;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+    background-color: #f3f4f6;
+}
+
+.nav-item.active {
+    background-color: rgba(37, 106, 244, 0.1);
+    color: #256af4;
+}
+
+/* --- MAIN CONTENT --- */
+.studyhub-content {
+    flex: 1;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* --- SUMMARY GENERATOR --- */
+.summary-generator {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.summary-generator h2 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+}
+
+.summary-generator .subtext {
+    color: #6b7280;
+    margin-bottom: 24px;
+    font-size: 15px;
+}
+
+/* Input container */
+.input-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Radio buttons */
+.input-options {
+    display: flex;
+    gap: 16px;
+}
+
+.option {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* Text area */
+.text-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.text-input p {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.text-input textarea {
+    min-height: 180px;
+    padding: 12px 14px;
+    font-size: 15px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.text-input textarea:focus {
+    border-color: #256af4;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(37, 106, 244, 0.15);
+}
+
+/* Generate button */
+button {
+    align-self: flex-start;
+    background-color: #256af4;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #1e5ae0;
+}
+
+button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+/* Status message */
+.status {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* --- SUMMARY OUTPUT --- */
+.summary-output {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.output-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.output-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.output-actions button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.2s ease;
+}
+
+.output-actions button:hover {
+    color: #256af4;
+}
+
+.output-box {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 16px;
+    min-height: 120px;
+    font-size: 15px;
+    color: #374151;
+    line-height: 1.6;
+}
