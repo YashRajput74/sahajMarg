@@ -4,275 +4,341 @@ import "./StudyHub.css";
 const StudyHub = () => {
     const [file, setFile] = useState(null);
     const [text, setText] = useState("");
-    const [topic, setTopic] = useState("");
     const [summary, setSummary] = useState("");
     const [flashcards, setFlashcards] = useState([]);
     const [quizzes, setQuizzes] = useState([]);
+    const [currentTab, setCurrentTab] = useState("summary");
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
     const [history, setHistory] = useState([]);
-
-    const [currentTab, setCurrentTab] = useState("summary");  // Track active tab
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [currentQuizIndex, setCurrentQuizIndex] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem("studyTopics")) || [];
+        const saved = JSON.parse(localStorage.getItem("studyHistory")) || [];
         setHistory(saved);
     }, []);
 
     const handleFileChange = (e) => setFile(e.target.files[0]);
-    const handleTextChange = (e) => setText(e.target.value);
 
-    const saveTopic = (topicName, data) => {
-        const saved = JSON.parse(localStorage.getItem("studyTopics")) || [];
-        const updated = [...saved, { topic: topicName, ...data }];
-        localStorage.setItem("studyTopics", JSON.stringify(updated));
-        setHistory(updated);
+    const handleTextChange = (e) => {
+        if (e.target.value.length <= 5000) setText(e.target.value);
     };
 
-    const generateFeature = async (feature) => {
-        const hasContent = text.trim() || file;
-        const hasTopic = topic.trim();
+    const saveToHistory = (data) => {
+        const updated = [...history, data];
+        setHistory(updated);
+        localStorage.setItem("studyHistory", JSON.stringify(updated));
+    };
 
-        if (!hasContent && !hasTopic) {
-            alert("Please enter a topic name or upload content!");
+    const generateContent = async (type) => {
+        const hasText = text.trim().length > 0;
+        const hasFile = !!file;
+
+        if (!hasText && !hasFile) {
+            setMessage("Please enter text or upload a PDF first!");
             return;
         }
 
         setLoading(true);
+        setMessage(`Generating ${type}...`);
 
         let url = "";
-        let options = {};
-
         try {
-            const topicName =
-                hasTopic ||
-                `topic-${(JSON.parse(localStorage.getItem("studyTopics")) || []).length + 1}`;
+            const formData = new FormData();
+            if (file) formData.append("file", file);
+            else formData.append("text", text);
 
-            // If text or file exists → use content-based endpoints
-            if (hasContent) {
-                const formData = new FormData();
-                if (file) formData.append("file", file);
-                else formData.append("text", text);
+            // API route setup
+            if (type === "Summary") url = "http://localhost:5000/summarize";
+            else if (type === "Flashcards") url = "http://localhost:5000/generate-flashcards";
+            else if (type === "Quiz") url = "http://localhost:5000/generate-quiz";
 
-                if (feature === "summary") url = "http://localhost:5000/summarize";
-                else if (feature === "flashcards") url = "http://localhost:5000/generate-flashcards";
-                else if (feature === "quiz") url = "http://localhost:5000/generate-quiz";
-
-                options = { method: "POST", body: formData };
-            }
-            // Otherwise → topic-only endpoints
-            else {
-                const body = JSON.stringify({ topic: topicName });
-
-                if (feature === "summary") url = "http://localhost:5000/summarize-topic";
-                else if (feature === "flashcards") url = "http://localhost:5000/generate-flashcards-topic";
-                else if (feature === "quiz") url = "http://localhost:5000/generate-quiz-topic";
-
-                options = {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body,
-                };
-            }
-
-            const res = await fetch(url, options);
+            const res = await fetch(url, { method: "POST", body: formData });
             const data = await res.json();
 
-            if (!res.ok) throw new Error(data.error || "Failed to generate.");
+            if (!res.ok) throw new Error(data.error || "Failed to generate content.");
 
-            // Save data to state
-            if (feature === "summary") setSummary(data.summary);
-            else if (feature === "flashcards") setFlashcards(data.flashcards);
-            else if (feature === "quiz") setQuizzes(data.quizzes);
+            if (type === "Summary") {
+                setSummary(data.summary);
+                saveToHistory({ type: "Summary", content: data.summary });
+            } else if (type === "Flashcards") {
+                setFlashcards(data.flashcards);
+                setCurrentCardIndex(0);
+                setIsFlipped(false);
+                saveToHistory({ type: "Flashcards", content: data.flashcards });
+            } else if (type === "Quiz") {
+                setQuizzes(data.quizzes);
+                saveToHistory({ type: "Quiz", content: data.quizzes });
+            }
 
-            // Save in history
-            saveTopic(topicName, {
-                summary: feature === "summary" ? data.summary : summary,
-                flashcards: feature === "flashcards" ? data.flashcards : flashcards,
-                quizzes: feature === "quiz" ? data.quizzes : quizzes,
-            });
+            setMessage(`${type} generated successfully!`);
         } catch (err) {
             console.error(err);
-            alert("Error generating content.");
+            setMessage("Error generating content. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-    const handleSubmit = async () => {
-        if (!file && !text.trim()) {
-            alert("Please upload a PDF or enter text first!");
+    const handleOptionClick = (idx) => {
+        if (selectedOption !== null) return; // prevent re-click
+        setSelectedOption(idx);
+
+        setTimeout(() => {
+            setSelectedOption(null);
+            setCurrentQuizIndex((prev) =>
+                prev < quizzes.length - 1 ? prev + 1 : 0
+            );
+        }, 1000); // auto move to next after 1s
+    };
+
+    const handleSave = () => {
+        if (!summary && flashcards.length === 0 && quizzes.length === 0) {
+            setMessage("Nothing to save!");
             return;
         }
-
-        setLoading(true);
-
-        // Order of features — put the current tab first
-        const features = ["summary", "flashcards", "quiz"];
-        const ordered = [currentTab, ...features.filter(f => f !== currentTab)];
-
-        try {
-            for (const feature of ordered) {
-                await generateFeature(feature);
-            }
-            alert("All content generated successfully!");
-        } catch (err) {
-            console.error(err);
-            alert("Error generating study materials.");
-        } finally {
-            setLoading(false);
-        }
+        setMessage("Study material saved locally!");
     };
 
     return (
         <div className="studyhub-container">
-            <h1 className="title"> Study Hub</h1>
+            <h1 className="page-title">Study Material Management</h1>
 
-            <div className="input-section">
-                <input
-                    type="text"
-                    placeholder="Topic Name"
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    className="topic-input"
-                />
-                <div className="upload-area">
-                    <textarea
-                        placeholder="Paste your text here..."
-                        value={text}
-                        onChange={handleTextChange}
-                    />
-
-                    <label className="upload-box">
-                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
-                        <p>Click to upload or drag a file here</p>
-                        {file && <span>{file.name}</span>}
-                    </label>
-                </div>
-
-                <div className="button-group">
-                    <button
-                        onClick={handleSubmit}
-                        disabled={loading || (!text.trim() && !file && !topic.trim())}
-                    >
-                        {loading ? "Generating..." : "Submit"}
-                    </button>
-                </div>
-
-
+            {/* ===== INPUT AREA ===== */}
+            <div className="input-area">
+                <textarea
+                    placeholder="Enter text or upload PDF"
+                    value={text}
+                    onChange={handleTextChange}
+                ></textarea>
+                <p className="char-limit">Character limit: 5000</p>
             </div>
-            {/* Tab Navigation */}
-            {/* ===== MATERIAL STYLE TAB BAR ===== */}
-            <div className="tab-header">
-                <h1 className="tab-title">Study Hub</h1>
-                <div className="tab-items">
+
+            {/* ===== FILE UPLOAD ===== */}
+            <div className="upload-section">
+                <label htmlFor="pdf-upload" className="upload-btn">
+                    Upload PDF
+                </label>
+                <input
+                    id="pdf-upload"
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                />
+                {file && <span className="file-name">{file.name}</span>}
+            </div>
+
+            {/* ===== BUTTONS ===== */}
+            <div className="generate-buttons">
+                <button
+                    className="gen-btn"
+                    onClick={() => generateContent("Summary")}
+                    disabled={loading}
+                >
+                    Generate Summary
+                </button>
+                <button
+                    className="gen-btn"
+                    onClick={() => generateContent("Flashcards")}
+                    disabled={loading}
+                >
+                    Generate Flashcards
+                </button>
+                <button
+                    className="gen-btn"
+                    onClick={() => generateContent("Quiz")}
+                    disabled={loading}
+                >
+                    Generate Quiz
+                </button>
+            </div>
+
+            {/* ===== STATUS MESSAGE ===== */}
+            {message && <div className="status-message">{message}</div>}
+
+            {/* ===== TAB COMPONENT ===== */}
+            <div className="tab-container">
+                <div className="tabs">
                     <button
-                        className={`tab-item ${currentTab === "summary" ? "active" : ""}`}
+                        className={`tab ${currentTab === "summary" ? "active" : ""}`}
                         onClick={() => setCurrentTab("summary")}
                     >
                         Summary
                     </button>
                     <button
-                        className={`tab-item ${currentTab === "flashcards" ? "active" : ""}`}
+                        className={`tab ${currentTab === "flashcards" ? "active" : ""}`}
                         onClick={() => setCurrentTab("flashcards")}
                     >
                         Flashcards
                     </button>
                     <button
-                        className={`tab-item ${currentTab === "quiz" ? "active" : ""}`}
+                        className={`tab ${currentTab === "quiz" ? "active" : ""}`}
                         onClick={() => setCurrentTab("quiz")}
                     >
                         Quiz
                     </button>
                 </div>
-            </div>
-            {/* Tab Content */}
-            <div className="tab-content-wrapper">
-                {currentTab === "summary" && summary && (
-                    <div className="output-section">
-                        <h2>Summary</h2>
-                        <div className="summary-box">{summary}</div>
-                    </div>
-                )}
 
-                {currentTab === "flashcards" && flashcards.length > 0 && (
-                    <div className="output-section">
-                        <h2>Flashcards</h2>
-                        <div className="flashcard-grid">
-                            {flashcards.map((card, index) => (
-                                <div key={index} className="flashcard">
-                                    <div className="front">{card.question}</div>
-                                    <div className="back">{card.answer}</div>
-                                </div>
-                            ))}
+                <div className="tab-panel">
+                    {currentTab === "summary" && (
+                        <div>
+                            {summary ? (
+                                <div className="summary-box">{summary}</div>
+                            ) : (
+                                <p>No summary yet. Generate one above!</p>
+                            )}
                         </div>
-                    </div>
-                )}
+                    )}
 
-                {currentTab === "quiz" && quizzes.length > 0 && (
-                    <div className="output-section">
-                        <h2>Quiz</h2>
-                        <div className="quiz-grid">
-                            {quizzes.map((quiz, qIndex) => (
-                                <div key={qIndex} className="quiz-card">
-                                    <p className="quiz-question">{quiz.question}</p>
-                                    <ul>
-                                        {quiz.options.map((opt, idx) => (
-                                            <li key={idx} className="quiz-option">
-                                                {opt}
-                                            </li>
-                                        ))}
-                                    </ul>
+                    {currentTab === "flashcards" && (
+                        <div className="flashcard-view">
+                            {flashcards.length > 0 ? (
+                                <div className="flashcard-wrapper">
+                                    <div
+                                        className={`flashcard ${isFlipped ? "flipped" : ""}`}
+                                        onClick={() => setIsFlipped(!isFlipped)}
+                                    >
+                                        <div className="flashcard-front">
+                                            <p>{flashcards[currentCardIndex].question}</p>
+                                        </div>
+                                        <div className="flashcard-back">
+                                            <p>{flashcards[currentCardIndex].answer}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flashcard-controls">
+                                        <button
+                                            onClick={() =>
+                                                setCurrentCardIndex((prev) =>
+                                                    prev > 0 ? prev - 1 : flashcards.length - 1
+                                                )
+                                            }
+                                        >
+                                            ⏪ Previous
+                                        </button>
+                                        <span>
+                                            {currentCardIndex + 1} / {flashcards.length}
+                                        </span>
+                                        <button
+                                            onClick={() =>
+                                                setCurrentCardIndex((prev) =>
+                                                    prev < flashcards.length - 1 ? prev + 1 : 0
+                                                )
+                                            }
+                                        >
+                                            Next ⏩
+                                        </button>
+                                    </div>
+                                    <p className="flip-hint">(Click the card to flip)</p>
                                 </div>
-                            ))}
+                            ) : (
+                                <p>No flashcards yet. Generate some above!</p>
+                            )}
                         </div>
-                    </div>
-                )}
+                    )}
+
+                    {currentTab === "quiz" && (
+                        <div className="quiz-container">
+                            {quizzes.length > 0 ? (
+                                <div className="quiz-layout">
+                                    {/* MAIN QUIZ AREA */}
+                                    <div className="quiz-main">
+                                        <div className="quiz-card active">
+                                            <h3 className="quiz-question">
+                                                Q{currentQuizIndex + 1}. {quizzes[currentQuizIndex].question}
+                                            </h3>
+                                            <ul className="quiz-options">
+                                                {quizzes[currentQuizIndex].options.map((opt, idx) => (
+                                                    <li
+                                                        key={idx}
+                                                        className={`quiz-option ${selectedOption === idx
+                                                            ? idx === quizzes[currentQuizIndex].correctIndex
+                                                                ? "correct"
+                                                                : "wrong"
+                                                            : ""
+                                                            }`}
+                                                        onClick={() => handleOptionClick(idx)}
+                                                    >
+                                                        {opt}
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            <div className="quiz-controls">
+                                                <button
+                                                    onClick={() =>
+                                                        setCurrentQuizIndex((prev) =>
+                                                            prev > 0 ? prev - 1 : quizzes.length - 1
+                                                        )
+                                                    }
+                                                >
+                                                    ⏪ Previous
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        setCurrentQuizIndex((prev) =>
+                                                            prev < quizzes.length - 1 ? prev + 1 : 0
+                                                        )
+                                                    }
+                                                >
+                                                    Next ⏩
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* SIDEBAR */}
+                                    <div className="quiz-sidebar">
+                                        <h4>Questions</h4>
+                                        <div className="question-list">
+                                            {quizzes.map((_, i) => (
+                                                <button
+                                                    key={i}
+                                                    className={`question-btn ${i === currentQuizIndex ? "active" : ""
+                                                        }`}
+                                                    onClick={() => setCurrentQuizIndex(i)}
+                                                >
+                                                    {i + 1}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <p>No quiz yet. Generate one above!</p>
+                            )}
+                        </div>
+                    )}
+                </div>
             </div>
-            {/* Past Topics */}
-            <div className="history-section">
-                <h2>Past Topics</h2>
-                {history.length === 0 ? (
-                    <p>No past topics yet.</p>
-                ) : (
-                    <div className="history-list">
-                        {history.map((item, i) => (
-                            <details key={i} className="history-item">
-                                <summary>{item.topic}</summary>
-                                {item.summary && (
-                                    <>
-                                        <h4>Summary:</h4>
-                                        <p>{item.summary}</p>
-                                    </>
-                                )}
-                                {item.flashcards && item.flashcards.length > 0 && (
-                                    <>
-                                        <h4>Flashcards:</h4>
-                                        <ul>
-                                            {item.flashcards.map((f, idx) => (
-                                                <li key={idx}>
-                                                    Q: {f.question} <br /> A: {f.answer}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </>
-                                )}
-                                {item.quizzes && item.quizzes.length > 0 && (
-                                    <>
-                                        <h4>Quizzes:</h4>
-                                        <ul>
-                                            {item.quizzes.map((q, idx) => (
-                                                <li key={idx}>
-                                                    Q: {q.question} <br /> ✅ {q.answer}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </>
-                                )}
-                            </details>
+
+            {/* ===== SAVE SECTION ===== */}
+            <div className="save-section">
+                <button className="save-btn" onClick={handleSave}>
+                    Save
+                </button>
+            </div>
+
+            {/* ===== HISTORY ===== */}
+            {/* {history.length > 0 && (
+                <div className="history-section">
+                    <h2>Past Generated Items</h2>
+                    <ul>
+                        {history.map((item, idx) => (
+                            <li key={idx}>
+                                <strong>{item.type}:</strong>{" "}
+                                {typeof item.content === "string"
+                                    ? item.content.slice(0, 100) + "..."
+                                    : `${item.content.length} items`}
+                            </li>
                         ))}
-                    </div>
-                )}
-            </div>
+                    </ul>
+                </div>
+            )} */}
         </div>
     );
 };
