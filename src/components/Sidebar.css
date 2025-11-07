@@ -1,0 +1,106 @@
+.sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid #e7ebf4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* ---- Header Section ---- */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+.app-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.app-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0d121c;
+}
+
+.app-subtitle {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* ---- Navigation ---- */
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav-item:hover {
+    background-color: #f3f4f6;
+}
+
+.nav-item.active,
+.nav-item.active:hover {
+    background-color: rgba(37, 106, 244, 0.1);
+    color: #256af4;
+    font-weight: 600;
+}
+
+.nav-item .material-symbols-outlined {
+    font-size: 1.4rem;
+}
+
+/* ---- Add Topic Button ---- */
+.sidebar-bottom {
+    margin-top: 2rem;
+}
+
+.add-btn {
+    width: 100%;
+    background-color: #256af4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-btn:hover {
+    background-color: #1d56cc;
+}
+
+/* ---- Icon Font ---- */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

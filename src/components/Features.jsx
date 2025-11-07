@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./Features.css";
+// import "./Features.css";
 import { servicesData } from "../data/servicesData";
 
 export default function Features() {

@@ -1,16 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import "./StudyLayout.css";
+import "./FeaturesPage.css";
 
-const FeaturesPage = () => {
+export default function FeaturesPage() {
     return (
-        <div className="studyhub-container">
+        <div className="features-layout">
             <Sidebar />
-            <main className="studyhub-content">
+            <main className="main-content">
                 <Outlet />
             </main>
         </div>
     );
-};
-
-export default FeaturesPage;
+}
