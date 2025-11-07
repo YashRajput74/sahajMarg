@@ -1,10 +1,10 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
+import StudyLayout from "./StudyLayout";
 import SummaryGenerator from "../components/SummaryGenerator";
 import SummaryOutput from "../components/SummaryOutput";
-import "./StudyHub.css";
 
-function StudyHub() {
+
+function SummaryPage() {
     const [file, setFile] = useState(null);
     const [text, setText] = useState("");
     const [summary, setSummary] = useState("");
@@ -32,14 +32,12 @@ function StudyHub() {
         setLoading(true);
         setMessage(`Generating ${type}...`);
 
-        let url = "";
         try {
             const formData = new FormData();
             if (file) formData.append("file", file);
             else formData.append("text", text);
 
-            if (type === "Summary") url = "http://localhost:5000/summarize";
-
+            const url = "http://localhost:5000/summarize";
             const res = await fetch(url, { method: "POST", body: formData });
             const data = await res.json();
 
@@ -57,22 +55,19 @@ function StudyHub() {
     };
 
     return (
-        <div className="studyhub-container">
-            <Sidebar />
-            <main className="studyhub-content">
-                <SummaryGenerator
-                    file={file}
-                    setFile={setFile}
-                    text={text}
-                    setText={setText}
-                    onGenerate={() => generateContent("Summary")}
-                    loading={loading}
-                    message={message}
-                />
-                <SummaryOutput summary={summary} />
-            </main>
-        </div>
+        <StudyLayout active="summary">
+            <SummaryGenerator
+                file={file}
+                setFile={setFile}
+                text={text}
+                setText={setText}
+                onGenerate={() => generateContent("Summary")}
+                loading={loading}
+                message={message}
+            />
+            <SummaryOutput summary={summary} />
+        </StudyLayout>
     );
 }
 
-export default StudyHub;
+export default SummaryPage;

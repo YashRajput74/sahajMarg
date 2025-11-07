@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
+import StudyLayout from "./StudyLayout";
 import "./Flashcards.css";
 import Flashcard from "../components/Flashcard";
 
@@ -10,7 +10,8 @@ const FlashcardsPage = () => {
     const flashcardData = {
         title: "Chapter 5: Cell Biology",
         question: "What is Mitochondria?",
-        answer: "The powerhouse of the cell, responsible for generating most of the cell's supply of ATP."
+        answer:
+            "The powerhouse of the cell, responsible for generating most of the cell's supply of ATP.",
     };
 
     const handlePrev = () => {
@@ -29,37 +30,41 @@ const FlashcardsPage = () => {
     const progress = (currentCard / totalCards) * 100;
 
     return (
-        <div className="studyhub-container">
-            <Sidebar active="flashcards" />
+        <StudyLayout active="flashcards">
+            <div className="content-wrapper">
+                <h1 className="chapter-title">{flashcardData.title}</h1>
 
-            <main className="flashcards-main">
-                <div className="content-wrapper">
-                    <h1 className="chapter-title">{flashcardData.title}</h1>
-
-                    <div className="progress-section">
-                        <p>Progress</p>
-                        <div className="progress-bar">
-                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-                        </div>
-                        <p className="progress-info">Card {currentCard} of {totalCards}</p>
+                <div className="progress-section">
+                    <p>Progress</p>
+                    <div className="progress-bar">
+                        <div
+                            className="progress-fill"
+                            style={{ width: `${progress}%` }}
+                        ></div>
                     </div>
-
-                    <Flashcard question={flashcardData.question} answer={flashcardData.answer} />
-
-                    <div className="controls">
-                        <button onClick={handlePrev} title="Previous">
-                            <span className="material-symbols-outlined">arrow_back</span>
-                        </button>
-                        <button onClick={handleShuffle} title="Shuffle">
-                            <span className="material-symbols-outlined">shuffle</span>
-                        </button>
-                        <button onClick={handleNext} title="Next">
-                            <span className="material-symbols-outlined">arrow_forward</span>
-                        </button>
-                    </div>
+                    <p className="progress-info">
+                        Card {currentCard} of {totalCards}
+                    </p>
                 </div>
-            </main>
-        </div>
+
+                <Flashcard
+                    question={flashcardData.question}
+                    answer={flashcardData.answer}
+                />
+
+                <div className="controls">
+                    <button onClick={handlePrev} title="Previous">
+                        <span className="material-symbols-outlined">arrow_back</span>
+                    </button>
+                    <button onClick={handleShuffle} title="Shuffle">
+                        <span className="material-symbols-outlined">shuffle</span>
+                    </button>
+                    <button onClick={handleNext} title="Next">
+                        <span className="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </StudyLayout>
     );
 };
 

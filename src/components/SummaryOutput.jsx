@@ -1,4 +1,4 @@
-import "../pages/StudyHub.css";
+// import "../pages/StudyHub.css";
 
 const SummaryOutput = ({ summary }) => {
     const handleCopy = () => {

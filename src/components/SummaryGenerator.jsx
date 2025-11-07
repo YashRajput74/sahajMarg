@@ -1,4 +1,4 @@
-import "../pages/StudyHub.css";
+// import "../pages/StudyHub.css";
 
 const SummaryGenerator = ({ file, setFile, text, setText, onGenerate, loading, message }) => {
     return (

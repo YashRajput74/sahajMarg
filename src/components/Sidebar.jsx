@@ -1,4 +1,4 @@
-import "../pages/StudyHub.css";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
     return (
@@ -14,22 +14,37 @@ const Sidebar = () => {
             </div>
 
             <nav className="nav">
-                <a href="#" className="nav-item active">
+                <NavLink
+                    to="/features/summary"
+                    className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+                >
                     <span className="material-symbols-outlined">edit_document</span>
                     Summary Generator
-                </a>
-                <a href="#" className="nav-item">
+                </NavLink>
+
+                <NavLink
+                    to="/features/flashcards"
+                    className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+                >
                     <span className="material-symbols-outlined">style</span>
                     Flashcards
-                </a>
-                <a href="#" className="nav-item">
+                </NavLink>
+
+                <NavLink
+                    to="/features/quiz"
+                    className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+                >
                     <span className="material-symbols-outlined">quiz</span>
                     Quiz
-                </a>
-                <a href="#" className="nav-item">
+                </NavLink>
+
+                <NavLink
+                    to="/features/settings"
+                    className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
+                >
                     <span className="material-symbols-outlined">settings</span>
                     Settings
-                </a>
+                </NavLink>
             </nav>
         </aside>
     );
