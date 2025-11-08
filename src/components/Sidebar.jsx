@@ -27,9 +27,9 @@ export default function Sidebar() {
                         <span className="material-symbols-outlined">home</span>
                         <span>Dashboard</span>
                     </NavLink>
-                    <NavLink to="topics" className="nav-item">
+                    <NavLink to="summary" className="nav-item">
                         <span className="material-symbols-outlined">topic</span>
-                        <span>My Topics</span>
+                        <span>Generate Summary</span>
                     </NavLink>
                     <NavLink to="quiz" className="nav-item">
                         <span className="material-symbols-outlined">quiz</span>
@@ -43,9 +43,9 @@ export default function Sidebar() {
             </div>
 
             {/* Add Topic Button */}
-            <div className="sidebar-bottom">
+            {/* <div className="sidebar-bottom">
                 <button className="add-btn">+ Add New Topic</button>
-            </div>
+            </div> */}
         </aside>
     );
 }

@@ -1,3 +1,4 @@
+import TopicsPage from "../components/TopicsPage";
 import "./DashboardPage.css";
 
 export default function DashboardPage() {
@@ -41,58 +42,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Two Main Panels */}
-            <div className="main-panels">
-                {/* Upload PDF Panel */}
-                <div className="panel">
-                    <div className="panel-header">
-                        <span className="material-symbols-outlined primary">upload_file</span>
-                        <h2>Upload New PDF</h2>
-                    </div>
-                    <p className="panel-desc">
-                        Generate flashcards and summaries from your PDF files.
-                    </p>
-
-                    <div className="upload-box">
-                        <div className="upload-content">
-                            <span className="material-symbols-outlined upload-icon">picture_as_pdf</span>
-                            <div className="upload-text">
-                                <label htmlFor="file-upload" className="upload-label">
-                                    Upload a file
-                                    <input id="file-upload" type="file" className="hidden-input" />
-                                </label>
-                                <p>or drag and drop</p>
-                            </div>
-                            <p className="upload-hint">PDF up to 10MB</p>
-                        </div>
-                    </div>
-
-                    <button className="primary-btn">
-                        <span className="material-symbols-outlined">play_arrow</span>
-                        Generate Study Material
-                    </button>
-                </div>
-
-                {/* Text Summary Panel */}
-                <div className="panel">
-                    <div className="panel-header">
-                        <span className="material-symbols-outlined primary">edit_note</span>
-                        <h2>Enter Text Summary</h2>
-                    </div>
-                    <p className="panel-desc">
-                        Create study materials by pasting your own text.
-                    </p>
-                    <textarea
-                        rows="7"
-                        placeholder="Paste your text here..."
-                        className="text-input"
-                    ></textarea>
-
-                    <button className="primary-btn">
-                        <span className="material-symbols-outlined">play_arrow</span>
-                        Generate Study Material
-                    </button>
-                </div>
-            </div>
+            <TopicsPage />
         </div>
     );
 }

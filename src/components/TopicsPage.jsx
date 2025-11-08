@@ -29,7 +29,7 @@ export default function TopicsPage() {
     ];
 
     return (
-        <div className="topics-page">
+        <div>
             <header className="topics-header">
                 <div>
                     <h1>My Topics</h1>

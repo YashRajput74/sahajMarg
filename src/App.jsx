@@ -25,13 +25,13 @@ function App() {
             <Routes>
                 <Route path="/" element={<HomePage />} />
 
-                <Route path="/summary" element={<StudywisePage />} />
                 <Route path="/features" element={<FeaturesPage />}>
                     <Route index element={<Navigate to="dashboard" replace />} />
 
                     <Route path="dashboard" element={<DashboardPage />} />
                     <Route path="topics" element={<TopicsPage />} />
                     <Route path="quiz" element={<QuizGenerator />} />
+                    <Route path="summary" element={<StudywisePage />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>
             </Routes>
