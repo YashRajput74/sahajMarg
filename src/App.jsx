@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import SettingsPage from "./pages/SettingsPage";
 import DashboardPage from "./pages/DashboardPage";
+import TopicsPage from "./components/TopicsPage";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -27,7 +28,7 @@ function App() {
                     <Route index element={<Navigate to="dashboard" replace />} />
 
                     <Route path="dashboard" element={<DashboardPage />} />
-                    {/* <Route path="topics" element={<TopicsPage />} /> */}
+                    <Route path="topics" element={<TopicsPage />} />
                     <Route path="quiz" element={<QuizGenerator />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>
