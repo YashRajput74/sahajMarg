@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import SettingsPage from "./pages/SettingsPage";
 import DashboardPage from "./pages/DashboardPage";
 import TopicsPage from "./components/TopicsPage";
+import StudywisePage from "./pages/StudywisePage";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -23,7 +24,8 @@ function App() {
             <ScrollToTop />
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                
+
+                <Route path="/summary" element={<StudywisePage />} />
                 <Route path="/features" element={<FeaturesPage />}>
                     <Route index element={<Navigate to="dashboard" replace />} />
 
