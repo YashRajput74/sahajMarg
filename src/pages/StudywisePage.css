@@ -10,7 +10,6 @@
 /* Page main */
 .studywise-page {
     flex: 1;
-    padding: 2rem;
     overflow-y: auto;
 }
 
@@ -61,7 +60,7 @@
     background-color: #e2e8f0;
     padding: 0.4rem;
     border-radius: 0.75rem;
-    max-width: 350px;
+    max-width: 300px;
     margin-bottom: 2rem;
 }
 

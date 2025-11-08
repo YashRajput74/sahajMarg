@@ -1,0 +1,107 @@
+.flashcard-page {
+    display: flex;
+    background: #f9fafb;
+    min-height: 100vh;
+}
+
+/* Main content */
+.flashcard-content {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header */
+.flashcard-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.flashcard-header h2 {
+    color: #0d121c;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.flashcard-header p {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-top: 0.3rem;
+}
+
+/* Flashcard */
+.flashcard-container {
+    perspective: 1000px;
+    margin-bottom: 2rem;
+}
+
+.flashcard {
+    width: 360px;
+    height: 220px;
+    cursor: pointer;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flashcard:hover .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.flashcard-front h3 {
+    color: #1e3a8a;
+    font-size: 1.2rem;
+}
+
+.flashcard-back {
+    transform: rotateY(180deg);
+    background: #256af4;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Buttons */
+.flashcard-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    background: #256af4;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.6rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s;
+}
+
+.btn:hover {
+    background: #1e56d9;
+}

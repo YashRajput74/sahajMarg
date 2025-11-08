@@ -1,9 +1,14 @@
 import { useState } from "react";
 import MasteryProgress from "./MasteryProgress";
 import "./StudywisePage.css";
+import './StudyLayout.css'
+import SummaryOutput from "../components/SummaryOutput";
+import { useNavigate } from "react-router-dom";
 
 const StudywisePage = () => {
     const [mode, setMode] = useState("Text"); // default checked
+    const navigate = useNavigate();
+
 
     return (
 
@@ -14,7 +19,7 @@ const StudywisePage = () => {
                     <h1>Cellular Biology</h1>
                     <p>Last studied: Yesterday</p>
                 </div>
-                <button className="primary-btn">
+                <button className="primary-btn" onClick={() => navigate("/topic1/quiz")}>
                     <span className="material-symbols-outlined">play_arrow</span>
                     Start Study Session
                 </button>
@@ -40,7 +45,7 @@ const StudywisePage = () => {
                         checked={mode === "Flashcards"}
                         onChange={() => setMode("Flashcards")}
                     />
-                    <span>Review Flashcards</span>
+                    <span>Review Topic</span>
                 </label>
             </section>
 
@@ -77,7 +82,7 @@ const StudywisePage = () => {
                                         <p className="subtext">78 Cards</p>
                                     </div>
                                 </div>
-                                <button className="outline-btn">View All</button>
+                                <button className="outline-btn" onClick={() => navigate("/topic1/flashcard")}>View All</button>
                             </div>
 
                             {/* Quiz Results */}
@@ -114,60 +119,63 @@ const StudywisePage = () => {
                     </section>
                 </>
             ) : (
-                <div className="main-panels">
-                    {/* Upload PDF Panel */}
-                    <div className="panel">
-                        <div className="panel-header">
-                            <span className="material-symbols-outlined primary">upload_file</span>
-                            <h2>Upload New PDF</h2>
-                        </div>
-                        <p className="panel-desc">
-                            Generate flashcards and summaries from your PDF files.
-                        </p>
-
-                        <div className="upload-box">
-                            <div className="upload-content">
-                                <span className="material-symbols-outlined upload-icon">
-                                    picture_as_pdf
-                                </span>
-                                <div className="upload-text">
-                                    <label htmlFor="file-upload" className="upload-label">
-                                        Upload a file
-                                        <input id="file-upload" type="file" className="hidden-input" />
-                                    </label>
-                                    <p>or drag and drop</p>
-                                </div>
-                                <p className="upload-hint">PDF up to 10MB</p>
+                <>
+                    <div className="main-panels">
+                        {/* Upload PDF Panel */}
+                        <div className="panel">
+                            <div className="panel-header">
+                                <span className="material-symbols-outlined primary">upload_file</span>
+                                <h2>Upload New PDF</h2>
                             </div>
+                            <p className="panel-desc">
+                                Generate flashcards and summaries from your PDF files.
+                            </p>
+
+                            <div className="upload-box">
+                                <div className="upload-content">
+                                    <span className="material-symbols-outlined upload-icon">
+                                        picture_as_pdf
+                                    </span>
+                                    <div className="upload-text">
+                                        <label htmlFor="file-upload" className="upload-label">
+                                            Upload a file
+                                            <input id="file-upload" type="file" className="hidden-input" />
+                                        </label>
+                                        <p>or drag and drop</p>
+                                    </div>
+                                    <p className="upload-hint">PDF up to 10MB</p>
+                                </div>
+                            </div>
+
+                            <button className="primary-btn">
+                                <span className="material-symbols-outlined">play_arrow</span>
+                                Generate Study Material
+                            </button>
                         </div>
 
-                        <button className="primary-btn">
-                            <span className="material-symbols-outlined">play_arrow</span>
-                            Generate Study Material
-                        </button>
-                    </div>
+                        {/* Text Summary Panel */}
+                        <div className="panel">
+                            <div className="panel-header">
+                                <span className="material-symbols-outlined primary">edit_note</span>
+                                <h2>Enter Text Summary</h2>
+                            </div>
+                            <p className="panel-desc">
+                                Create study materials by pasting your own text.
+                            </p>
+                            <textarea
+                                rows="7"
+                                placeholder="Paste your text here..."
+                                className="text-input"
+                            ></textarea>
 
-                    {/* Text Summary Panel */}
-                    <div className="panel">
-                        <div className="panel-header">
-                            <span className="material-symbols-outlined primary">edit_note</span>
-                            <h2>Enter Text Summary</h2>
+                            <button className="primary-btn">
+                                <span className="material-symbols-outlined">play_arrow</span>
+                                Generate Study Material
+                            </button>
                         </div>
-                        <p className="panel-desc">
-                            Create study materials by pasting your own text.
-                        </p>
-                        <textarea
-                            rows="7"
-                            placeholder="Paste your text here..."
-                            className="text-input"
-                        ></textarea>
-
-                        <button className="primary-btn">
-                            <span className="material-symbols-outlined">play_arrow</span>
-                            Generate Study Material
-                        </button>
                     </div>
-                </div>
+                        <SummaryOutput />
+                </>
             )}
         </main>
     );

@@ -9,6 +9,8 @@ import SettingsPage from "./pages/SettingsPage";
 import DashboardPage from "./pages/DashboardPage";
 import TopicsPage from "./components/TopicsPage";
 import StudywisePage from "./pages/StudywisePage";
+import FlashcardPage from "./pages/FlashCardsPage";
+import QuizPage from "./pages/QuizPage";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -24,13 +26,13 @@ function App() {
             <ScrollToTop />
             <Routes>
                 <Route path="/" element={<HomePage />} />
-
+                <Route path="/topic1/flashcard" element={<FlashcardPage />} />
+                <Route path="/topic1/quiz" element={<QuizPage />} />
                 <Route path="/features" element={<FeaturesPage />}>
                     <Route index element={<Navigate to="dashboard" replace />} />
 
                     <Route path="dashboard" element={<DashboardPage />} />
                     <Route path="topics" element={<TopicsPage />} />
-                    <Route path="quiz" element={<QuizGenerator />} />
                     <Route path="summary" element={<StudywisePage />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>

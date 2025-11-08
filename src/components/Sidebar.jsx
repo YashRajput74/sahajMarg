@@ -31,10 +31,10 @@ export default function Sidebar() {
                         <span className="material-symbols-outlined">topic</span>
                         <span>Generate Summary</span>
                     </NavLink>
-                    <NavLink to="quiz" className="nav-item">
+                    {/* <NavLink to="quiz" className="nav-item">
                         <span className="material-symbols-outlined">quiz</span>
                         <span>Practice Quizzes</span>
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink to="settings" className="nav-item">
                         <span className="material-symbols-outlined">settings</span>
                         <span>Settings</span>

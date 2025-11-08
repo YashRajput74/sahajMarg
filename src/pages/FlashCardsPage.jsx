@@ -1,71 +1,37 @@
-import { useState } from "react";
-import StudyLayout from "./StudyLayout";
-import "./Flashcards.css";
-import Flashcard from "../components/Flashcard";
+import "./FlashcardPage.css";
+import StudywiseSidebar from "../components/StudywiseSidebar";
 
-const FlashcardsPage = () => {
-    const [currentCard, setCurrentCard] = useState(4);
-    const totalCards = 20;
-
-    const flashcardData = {
-        title: "Chapter 5: Cell Biology",
-        question: "What is Mitochondria?",
-        answer:
-            "The powerhouse of the cell, responsible for generating most of the cell's supply of ATP.",
-    };
-
-    const handlePrev = () => {
-        setCurrentCard((prev) => (prev > 1 ? prev - 1 : totalCards));
-    };
-
-    const handleNext = () => {
-        setCurrentCard((prev) => (prev < totalCards ? prev + 1 : 1));
-    };
-
-    const handleShuffle = () => {
-        const randomCard = Math.floor(Math.random() * totalCards) + 1;
-        setCurrentCard(randomCard);
-    };
-
-    const progress = (currentCard / totalCards) * 100;
-
+const FlashcardPage = () => {
     return (
-        <StudyLayout active="flashcards">
-            <div className="content-wrapper">
-                <h1 className="chapter-title">{flashcardData.title}</h1>
+        <div className="flashcard-page">
+            <StudywiseSidebar />
 
-                <div className="progress-section">
-                    <p>Progress</p>
-                    <div className="progress-bar">
-                        <div
-                            className="progress-fill"
-                            style={{ width: `${progress}%` }}
-                        ></div>
+            <main className="flashcard-content">
+                <div className="flashcard-header">
+                    <h2>Cellular Biology</h2>
+                    <p>Review key cellular biology concepts using interactive flashcards.</p>
+                </div>
+
+                <div className="flashcard-container">
+                    <div className="flashcard">
+                        <div className="flashcard-inner">
+                            <div className="flashcard-front">
+                                <h3>What is the powerhouse of the cell?</h3>
+                            </div>
+                            <div className="flashcard-back">
+                                <p>The mitochondrion is known as the powerhouse of the cell.</p>
+                            </div>
+                        </div>
                     </div>
-                    <p className="progress-info">
-                        Card {currentCard} of {totalCards}
-                    </p>
                 </div>
 
-                <Flashcard
-                    question={flashcardData.question}
-                    answer={flashcardData.answer}
-                />
-
-                <div className="controls">
-                    <button onClick={handlePrev} title="Previous">
-                        <span className="material-symbols-outlined">arrow_back</span>
-                    </button>
-                    <button onClick={handleShuffle} title="Shuffle">
-                        <span className="material-symbols-outlined">shuffle</span>
-                    </button>
-                    <button onClick={handleNext} title="Next">
-                        <span className="material-symbols-outlined">arrow_forward</span>
-                    </button>
+                <div className="flashcard-controls">
+                    <button className="btn">Previous</button>
+                    <button className="btn">Next</button>
                 </div>
-            </div>
-        </StudyLayout>
+            </main>
+        </div>
     );
 };
 
-export default FlashcardsPage;
+export default FlashcardPage;
