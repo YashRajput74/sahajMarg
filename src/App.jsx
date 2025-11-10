@@ -11,7 +11,7 @@ import TopicsPage from "./components/TopicsPage";
 import StudywisePage from "./pages/StudywisePage";
 import FlashcardPage from "./pages/FlashCardsPage";
 import QuizPage from "./pages/QuizPage";
-import NewChat from "./pages/NewChat";
+import NewChat from "./Newchat/newChat";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
