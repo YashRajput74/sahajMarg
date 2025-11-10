@@ -174,7 +174,7 @@ const StudywisePage = () => {
                             </button>
                         </div>
                     </div>
-                        <SummaryOutput />
+                    <SummaryOutput />
                 </>
             )}
         </main>
