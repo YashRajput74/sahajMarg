@@ -30,7 +30,7 @@ const SummaryOutput = ({ summary }) => {
     return (
         <div className="summary-output">
             <div className="output-header">
-                <h2>Your Summary</h2>
+                <h2>Your Uploaded Text/PDF</h2>
                 <div className="output-actions">
                     <button title="Copy" onClick={handleCopy}>
                         <span className="material-symbols-outlined">content_copy</span>
@@ -48,7 +48,7 @@ const SummaryOutput = ({ summary }) => {
                 {summary ? (
                     <p>{summary}</p>
                 ) : (
-                    <p>Your AI-generated summary will appear here once generated.</p>
+                    <p>Your uploaded text will appear here.</p>
                 )}
             </div>
         </div>
