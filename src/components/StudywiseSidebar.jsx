@@ -21,7 +21,7 @@ const StudywiseSidebar = () => {
                 <nav className="nav-links">
                     <a href="#" className="nav-item active">
                         <span className="material-symbols-outlined">science</span>
-                        Cellular Biology
+                        New Chat
                     </a>
                     <a href="#" className="nav-item">
                         <span className="material-symbols-outlined">history_edu</span>
