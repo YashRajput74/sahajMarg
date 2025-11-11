@@ -34,7 +34,7 @@ const Sidebar = () => {
                 </nav>
             </div>
 
-            <button className="sw-add-topic-btn">Add New Topic</button>
+            <button className="sw-add-topic-btn" disabled>Add New Topic</button>
         </aside>
     );
 };

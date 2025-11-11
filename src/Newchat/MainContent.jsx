@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MainContent = () => {
     const [showStudySection, setShowStudySection] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleGenerateClick = () => {
         // When the user clicks the Generate button:
@@ -111,14 +114,14 @@ const MainContent = () => {
                                         <h3>Flashcards</h3>
                                         <p>78 Cards</p>
                                     </div>
-                                    <button className="sw-outline-btn" style={{ display: "block" }}>
+                                    <button className="sw-outline-btn" style={{ display: "block" }} onClick={() => navigate("/topic1/flashcard")}>
                                         View All
                                     </button>
                                 </div>
                             </div>
 
                             {/* Quiz */}
-                            <div className="sw-card sw-card-small">
+                            <div className="sw-card sw-card-small" style={{ justifyContent: "flex-start" }}>
                                 <div className="sw-icon-box">
                                     <span className="material-symbols-outlined">quiz</span>
                                 </div>
@@ -127,7 +130,7 @@ const MainContent = () => {
                                         <h3>Quiz Results</h3>
                                         <p>Latest Score: Attempt quiz to see latest score</p>
                                     </div>
-                                    <button className="sw-outline-btn" style={{ display: "block" }}>
+                                    <button className="sw-outline-btn" style={{ display: "block" }} onClick={() => navigate("/topic1/quiz")}>
                                         Attempt Quiz
                                     </button>
                                 </div>

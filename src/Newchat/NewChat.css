@@ -159,7 +159,7 @@ body {
 
 .sw-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
@@ -193,13 +193,6 @@ body {
 
 .sw-outline-btn:hover {
     background: #dbeafe;
-}
-
-/* Topic Overview Grid */
-.sw-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 1.5rem;
 }
 
 /* Each small card */
@@ -347,7 +340,7 @@ body {
 /* Textarea styling */
 .sw-textarea {
     width: 100%;
-    min-height: 140px;
+    min-height: 182px;
     border-radius: 8px;
     border: 1px solid #e5e7eb;
     padding: 1rem;
