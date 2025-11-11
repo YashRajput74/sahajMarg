@@ -1,17 +1,8 @@
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import QuizGenerator from "./pages/QuizGenerator";
-import FeaturesPage from "./pages/FeaturesPage";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import SettingsPage from "./pages/SettingsPage";
-import DashboardPage from "./pages/DashboardPage";
-import TopicsPage from "./components/TopicsPage";
-import StudywisePage from "./pages/StudywisePage";
-import FlashcardPage from "./pages/FlashCardsPage";
-import QuizPage from "./pages/QuizPage";
-import NewChat from "./pages/NewChat";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -27,17 +18,6 @@ function App() {
             <ScrollToTop />
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/topic1/flashcard" element={<FlashcardPage />} />
-                <Route path="/topic1/quiz" element={<QuizPage />} />
-                <Route path="/newchat" element={<NewChat />} />
-                <Route path="/features" element={<FeaturesPage />}>
-                    <Route index element={<Navigate to="dashboard" replace />} />
-
-                    <Route path="dashboard" element={<DashboardPage />} />
-                    <Route path="topics" element={<TopicsPage />} />
-                    <Route path="summary" element={<StudywisePage />} />
-                    <Route path="settings" element={<SettingsPage />} />
-                </Route>
             </Routes>
         </Router>
     );

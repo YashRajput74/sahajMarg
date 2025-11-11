@@ -1,15 +1,18 @@
-import Features from "../components/Features";
-import Footer from "../components/Footer";
-import Hero from "../components/Hero";
-import Navbar from "../components/Navbar";
+import "../styles/HomePage.css";
+import Sidebar from "../components/Sidebar";
+import ChatWindow from "../components/ChatWindow";
+import InputBar from "../components/InputBar";
 
-export default function HomePage(){
+const HomePage = () => {
     return (
-        <>
-            <Navbar />
-            <Hero />
-            <Features />
-            <Footer />
-        </>
-    )
-}
+        <div className="home-container">
+            <Sidebar />
+            <main className="main-content">
+                <ChatWindow />
+                <InputBar />
+            </main>
+        </div>
+    );
+};
+
+export default HomePage;

@@ -1,51 +1,61 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import "./Sidebar.css";
+import "../styles/HomePage.css";
 
-export default function Sidebar() {
+const Sidebar = () => {
     return (
         <aside className="sidebar">
-            {/* Header / Logo Section */}
             <div className="sidebar-top">
-                <div className="sidebar-header">
+                <div className="logo-section">
                     <div
-                        className="logo-img"
+                        className="logo"
                         style={{
                             backgroundImage:
-                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDw350C_7R1GPrRFD0Rrq88ZrJWEWRHI4vtoKKS1911on1iiHev1KgpWyiH2lyWBDc7LbI4kxW38IdmSvE5ggxli3GtWvfwinLw_MiZBniRYHnO2-vIUcKvSp5Ur64nVthpcdKJa7mMa4sznxqib_hmluzTfUmVVocobSiv36ptZMTAACJAO4TDk7U8ZIIBiDVnB2dXIoJiqd6bXcWoX9HI2n30HejKpQdgaGkxcQIJYioqwIBg_5ulh5qA_WFRwSBEnQOAunXTzDxI")',
+                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQOvwGvn4QiIEwi40WpKUIlmjy9s0jT7sq0uz8L5XoR3PSYRoIudFTffa6ak6wrzZbovpHnk7C7J54x2LtXfQt8mOzzHYLCw1gZvc5LDeC_5IHXS3B6jNpZykqWbMMUpl1a0V4RJRvcDf1sKp_3FohC3FfGEXbA64_jZWj9YB0CYXZw1_8Qrm5TSZMJU8TwMVOVcuvcJqx7eqvyYfFj_oTLbCxa7t51z-p1AhgUlXzuITJiNq6q7_m9DgqRYGyo6exwDXypKMdsXNr")',
                         }}
-                    ></div>
-                    <div className="app-info">
-                        <h1 className="app-title">StudyWise</h1>
-                        <p className="app-subtitle">AI Study Assistant</p>
+                    />
+                    <div className="logo-text">
+                        <h1>Study AI</h1>
+                        <p>Your Assistant</p>
                     </div>
                 </div>
 
-                {/* Navigation */}
-                <nav className="nav-links">
-                    <NavLink to="dashboard" className="nav-item">
-                        <span className="material-symbols-outlined">home</span>
-                        <span>Dashboard</span>
-                    </NavLink>
-                    <NavLink to="summary" className="nav-item">
-                        <span className="material-symbols-outlined">topic</span>
-                        <span>Generate Summary</span>
-                    </NavLink>
-                    {/* <NavLink to="quiz" className="nav-item">
-                        <span className="material-symbols-outlined">quiz</span>
-                        <span>Practice Quizzes</span>
-                    </NavLink> */}
-                    <NavLink to="settings" className="nav-item">
-                        <span className="material-symbols-outlined">settings</span>
-                        <span>Settings</span>
-                    </NavLink>
-                </nav>
+                <button className="new-chat-btn">+ New Chat</button>
+
+                <div className="chat-list">
+                    <div className="chat-item active">
+                        <span className="material-symbols-outlined">chat_bubble</span>
+                        <p>Summary of Cognitive...</p>
+                    </div>
+                    <div className="chat-item">
+                        <span className="material-symbols-outlined">chat_bubble</span>
+                        <p>French Revolution Flashcards</p>
+                    </div>
+                    <div className="chat-item">
+                        <span className="material-symbols-outlined">chat_bubble</span>
+                        <p>Untitled Chat</p>
+                    </div>
+                    <div className="chat-item">
+                        <span className="material-symbols-outlined">chat_bubble</span>
+                        <p>Cellular Biology Quiz</p>
+                    </div>
+                </div>
             </div>
 
-            {/* Add Topic Button */}
-            {/* <div className="sidebar-bottom">
-                <button className="add-btn">+ Add New Topic</button>
-            </div> */}
+            <div className="sidebar-bottom">
+                <div className="nav-item">
+                    <span className="material-symbols-outlined">settings</span>
+                    <p>Settings</p>
+                </div>
+                <div className="nav-item">
+                    <span className="material-symbols-outlined">bookmark</span>
+                    <p>Saved Notes</p>
+                </div>
+                <div className="nav-item">
+                    <span className="material-symbols-outlined">history</span>
+                    <p>History</p>
+                </div>
+            </div>
         </aside>
     );
-}
+};
+
+export default Sidebar;
