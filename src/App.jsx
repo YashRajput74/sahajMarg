@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -17,7 +18,9 @@ function App() {
         <Router>
             <ScrollToTop />
             <Routes>
-                <Route path="/" element={<HomePage />} />
+                {/* <Route path="/" element={<HomePage />} /> */}
+                <Route path="/" element={<Dashboard />} />
+                
             </Routes>
         </Router>
     );
