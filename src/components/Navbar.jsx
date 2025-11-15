@@ -1,22 +1,25 @@
-import "./Navbar.css"
+// src/components/Navbar.jsx
 
-export default function Navbar() {
+const Navbar = () => {
     return (
-        <header>
-            <div>
-                <img src="#" alt="" />
-                <span>SahajMarg</span>
-            </div>
-            <nav>
-                <div>Home</div>
-                <div>About</div>
-                <div>Services</div>
-                <div>Contact</div>
-                {/* later on convert there into Links or anchor tag what ever we need */}
-            </nav>
-            <div>
-                <button>Signup</button>
+        <header className="navbar">
+            <h1 className="navbar-title">Dashboard</h1>
+
+            <div className="navbar-right">
+                <button className="nav-icon-btn">
+                    <span className="material-symbols-outlined">notifications</span>
+                </button>
+
+                <div
+                    className="navbar-avatar"
+                    style={{
+                        backgroundImage:
+                            `url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80")`,
+                    }}
+                />
             </div>
         </header>
-    )
-}
+    );
+};
+
+export default Navbar;

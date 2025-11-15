@@ -1,0 +1,217 @@
+/* =============== FLASHCARD MODAL =============== */
+
+/* Overlay */
+.fc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(17, 22, 33, 0.7);
+    backdrop-filter: blur(6px);
+}
+
+/* Container */
+.fc-modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 42rem;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent;
+}
+
+/* Close Button */
+.fc-modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+
+.fc-close-btn {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: var(--text-light);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.fc-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Flip Card */
+.fc-flip-card {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 30rem;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+}
+
+.fc-flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.fc-flip-card:focus-within .fc-flip-card-inner,
+.fc-flip-card:hover .fc-flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.fc-flip-card-front,
+.fc-flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.75rem;
+    background-color: var(--element-light);
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    backface-visibility: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.fc-flip-card-back {
+    transform: rotateY(180deg);
+}
+
+body.dark .fc-flip-card-front,
+body.dark .fc-flip-card-back {
+    background-color: var(--element-dark);
+    color: var(--text-dark);
+}
+
+.fc-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+}
+
+.fc-question,
+.fc-answer {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.fc-hint,
+.fc-explanation {
+    font-size: 1rem;
+    color: var(--text-muted-light);
+}
+
+body.dark .fc-hint,
+body.dark .fc-explanation {
+    color: var(--text-muted-dark);
+}
+
+/* Navigation */
+.fc-card-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.fc-nav-btn {
+    background: none;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 50%;
+    color: var(--text-muted-light);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.fc-nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.dark .fc-nav-btn {
+    color: var(--text-muted-dark);
+}
+
+body.dark .fc-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.fc-nav-btn.fc-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.fc-progress-text {
+    font-size: 0.875rem;
+    color: var(--text-muted-light);
+    width: 4rem;
+    text-align: center;
+}
+
+body.dark .fc-progress-text {
+    color: var(--text-muted-dark);
+}
+
+/* Footer Buttons */
+.fc-modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1.5rem 0;
+}
+
+.fc-secondary-btn,
+.fc-primary-btn {
+    flex: 1;
+    min-width: 8rem;
+    height: 3rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.fc-secondary-btn {
+    background-color: #e5e7eb;
+    color: var(--text-light);
+}
+
+.fc-secondary-btn:hover {
+    background-color: #d1d5db;
+}
+
+body.dark .fc-secondary-btn {
+    background-color: #243047;
+    color: var(--text-dark);
+}
+
+body.dark .fc-secondary-btn:hover {
+    background-color: #2f3d5e;
+}
+
+.fc-primary-btn {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+}
+
+.fc-primary-btn:hover {
+    background-color: #1348b8;
+}
