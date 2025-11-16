@@ -18,8 +18,8 @@ function App() {
         <Router>
             <ScrollToTop />
             <Routes>
-                {/* <Route path="/" element={<HomePage />} /> */}
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/newchat" element={<HomePage />} />
                 
             </Routes>
         </Router>
