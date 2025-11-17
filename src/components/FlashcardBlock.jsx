@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import FlashcardModal from "./FlashcardModal";
 import "../styles/HomePage.css";
 
-const FlashcardBlock = () => {
+const FlashcardBlock = ({ cards, topic = "Flashcards" }) => {
     const [showModal, setShowModal] = useState(false);
 
     return (
         <>
             <div className="ai-block">
                 <div className="block-header">
-                    <p className="block-title">Flashcards: The Roman Empire</p>
+                    <p className="block-title">{topic}</p>
                     <div className="block-actions">
-                        <p className="block-subtext">10 cards created from your document.</p>
+                        <p className="block-subtext">{cards.length} cards created.</p>
                         <button className="primary-btn" onClick={() => setShowModal(true)}>
                             Open Flashcards
                         </button>
@@ -19,7 +19,13 @@ const FlashcardBlock = () => {
                 </div>
             </div>
 
-            {showModal && <FlashcardModal onClose={() => setShowModal(false)} />}
+            {showModal && (
+                <FlashcardModal
+                    onClose={() => setShowModal(false)}
+                    cards={cards}
+                    topic={topic}
+                />
+            )}
         </>
     );
 };
