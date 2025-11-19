@@ -10,7 +10,6 @@ const HomePage = () => {
     const [messages, setMessages] = useState([]);
 
     const handleSend = async (userText) => {
-        // 1. Add user message
         const newUserMessage = {
             type: "user",
             text: userText,
@@ -20,66 +19,51 @@ const HomePage = () => {
 
         setMessages((prev) => [...prev, newUserMessage]);
 
-        // 2. Detect intent
-        const text = userText.toLowerCase();
-        let intent = "chat";
-
-        if (text.includes("flashcard") || text.includes("cards"))
-            intent = "flashcards";
-        else if (text.includes("quiz") || text.includes("questions"))
-            intent = "quiz";
-        else if (text.includes("summarize") || text.includes("summary"))
-            intent = "summary";
-
-        // 3. Send AI placeholder response
+        // AI placeholder
         setMessages((prev) => [
             ...prev,
             {
                 type: "ai",
-                text: "Generating your result...",
+                text: "Generating summary, flashcards and quiz...",
                 avatar:
                     "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
-        },
+            },
         ]);
 
-        // 4. Insert correct block
+        // Now always add summary → flashcards → quiz
         setTimeout(() => {
-            if (intent === "flashcards") {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        type: "flashcards",
-                        cards: [
-                            { front: "Rome was founded in?", back: "753 BC" },
-                            { front: "First emperor?", back: "Augustus" },
-                        ],
-                    },
-                ]);
-            } else if (intent === "quiz") {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        type: "quiz",
-                        questions: [
-                            {
-                                question: "Who was the first emperor of Rome?",
-                                options: ["Julius Caesar", "Augustus", "Nero"],
-                                answer: "Augustus",
-                            },
-                        ],
-                    },
-                ]);
-            } else {
-                setMessages((prev) => [
-                    ...prev,
-                    {
-                        type: "ai",
-                        text: "Here is a short summary:\nThe Roman Empire was one of the largest empires in history...",
-                        avatar:
-                            "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
-                    },
-                ]);
-            }
+            setMessages((prev) => [
+                ...prev,
+
+                // 1️⃣ Summary block
+                {
+                    type: "ai",
+                    text: `Here is a short summary:\n${userText}... (summary generated here)`,
+                    avatar:
+                        "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
+                },
+
+                // 2️⃣ Flashcards Block
+                {
+                    type: "flashcards",
+                    cards: [
+                        { front: "Card 1", back: "Answer 1" },
+                        { front: "Card 2", back: "Answer 2" },
+                    ],
+                },
+
+                // 3️⃣ Quiz Block
+                {
+                    type: "quiz",
+                    questions: [
+                        {
+                            question: "Sample question?",
+                            options: ["A", "B", "C"],
+                            answer: "A",
+                        },
+                    ],
+                },
+            ]);
         }, 800);
     };
 

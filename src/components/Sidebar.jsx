@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/HomePage.css";
 
 const Sidebar = () => {
+    const navigate = useNavigate();
     return (
         <aside className="sidebar">
             <div className="sidebar-top">
@@ -18,7 +20,7 @@ const Sidebar = () => {
                     </div>
                 </div>
 
-                <button className="new-chat-btn">+ New Chat</button>
+                <button className="new-chat-btn" onClick={() => navigate('/newchat')}>+ New Chat</button>
 
                 <div className="chat-list">
                     <div className="chat-item active">
