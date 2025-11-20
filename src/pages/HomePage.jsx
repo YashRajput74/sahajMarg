@@ -19,7 +19,6 @@ const HomePage = () => {
 
         setMessages((prev) => [...prev, newUserMessage]);
 
-        // AI placeholder
         setMessages((prev) => [
             ...prev,
             {
@@ -29,42 +28,62 @@ const HomePage = () => {
                     "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
             },
         ]);
+        
+        try {
+            const summaryRes = await fetch("http://localhost:5000/summarize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: userText }),
+            });
+            const summaryData = await summaryRes.json();
 
-        // Now always add summary → flashcards → quiz
-        setTimeout(() => {
             setMessages((prev) => [
                 ...prev,
-
-                // 1️⃣ Summary block
                 {
                     type: "ai",
-                    text: `Here is a short summary:\n${userText}... (summary generated here)`,
+                    text: summaryData.summary,
                     avatar:
                         "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
                 },
+            ]);
 
-                // 2️⃣ Flashcards Block
-                {
-                    type: "flashcards",
-                    cards: [
-                        { front: "Card 1", back: "Answer 1" },
-                        { front: "Card 2", back: "Answer 2" },
-                    ],
-                },
+            const flashRes = await fetch("http://localhost:5000/generate-flashcards", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: userText }),
+            });
+            const flashData = await flashRes.json();
 
-                // 3️⃣ Quiz Block
+            setMessages((prev) => [
+                ...prev,
+                { type: "flashcards", cards: flashData.flashcards }
+            ]);
+
+            // --- Quiz ---
+            const quizRes = await fetch("http://localhost:5000/generate-quiz", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: userText }),
+            });
+            const quizData = await quizRes.json();
+
+            setMessages((prev) => [
+                ...prev,
+                { type: "quiz", questions: quizData.quizzes }
+            ]);
+
+        } catch (err) {
+            console.error("❌ FRONTEND ERROR:", err);
+            setMessages((prev) => [
+                ...prev,
                 {
-                    type: "quiz",
-                    questions: [
-                        {
-                            question: "Sample question?",
-                            options: ["A", "B", "C"],
-                            answer: "A",
-                        },
-                    ],
+                    type: "ai",
+                    text: "Something went wrong generating study material.",
+                    avatar:
+                        "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
                 },
             ]);
-        }, 800);
+        }
     };
 
     return (
@@ -76,7 +95,6 @@ const HomePage = () => {
                 ) : (
                     <ChatWindow messages={messages} />
                 )}
-
                 <InputBar onSend={handleSend} />
             </main>
         </div>
