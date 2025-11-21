@@ -1,17 +1,26 @@
 import "../styles/HomePage.css";
+import TypewriterText from "./TypewriterText";
 
 const Message = ({ type, name, text, avatar }) => {
     const isUser = type === "user";
+
     return (
         <div className={`message ${isUser ? "user-message" : "ai-message"}`}>
-            {!isUser && <div className="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>}
+            {!isUser && (
+                <div className="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+            )}
 
             <div className="message-content">
                 <p className="message-name">{name}</p>
-                <p className={`message-bubble ${isUser ? "user-bubble" : "ai-bubble"}`}>{text}</p>
+
+                <p className={`message-bubble ${isUser ? "user-bubble" : "ai-bubble"}`}>
+                    <TypewriterText text={text} />
+                </p>
             </div>
 
-            {isUser && <div className="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>}
+            {isUser && (
+                <div className="avatar" style={{ backgroundImage: `url(${avatar})` }}></div>
+            )}
         </div>
     );
 };

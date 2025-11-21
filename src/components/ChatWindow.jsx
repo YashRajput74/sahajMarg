@@ -1,9 +1,16 @@
+import { useEffect, useRef } from "react";
 import Message from "./Message";
 import FlashcardBlock from "./FlashcardBlock";
 import QuizBlock from "./QuizBlock";
 import "../styles/HomePage.css";
 
 const ChatWindow = ({ messages }) => {
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
     return (
         <div className="chat-window">
             <div className="chat-container">
@@ -44,6 +51,8 @@ const ChatWindow = ({ messages }) => {
                     return null;
                 })}
 
+                {/* AUTO-SCROLL ANCHOR */}
+                <div ref={messagesEndRef}></div>
             </div>
         </div>
     );
