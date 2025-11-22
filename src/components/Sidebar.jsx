@@ -1,11 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import "../styles/HomePage.css";
 
-const Sidebar = () => {
-    const navigate = useNavigate();
+const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat }) => {
     return (
         <aside className="sidebar">
             <div className="sidebar-top">
+
                 <div className="logo-section">
                     <div
                         className="logo"
@@ -20,25 +19,22 @@ const Sidebar = () => {
                     </div>
                 </div>
 
-                <button className="new-chat-btn" onClick={() => navigate('/newchat')}>+ New Chat</button>
+                <button className="new-chat-btn" onClick={onNewChat}>
+                    + New Chat
+                </button>
 
                 <div className="chat-list">
-                    <div className="chat-item active">
-                        <span className="material-symbols-outlined">chat_bubble</span>
-                        <p>Summary of Cognitive...</p>
-                    </div>
-                    <div className="chat-item">
-                        <span className="material-symbols-outlined">chat_bubble</span>
-                        <p>French Revolution Flashcards</p>
-                    </div>
-                    <div className="chat-item">
-                        <span className="material-symbols-outlined">chat_bubble</span>
-                        <p>Untitled Chat</p>
-                    </div>
-                    <div className="chat-item">
-                        <span className="material-symbols-outlined">chat_bubble</span>
-                        <p>Cellular Biology Quiz</p>
-                    </div>
+
+                    {chats.map((chat) => (
+                        <div
+                            key={chat.id}
+                            className={`chat-item ${chat.id === activeChatId ? "active" : ""}`}
+                            onClick={() => onSelectChat(chat.id)}
+                        >
+                            <span className="material-symbols-outlined">chat_bubble</span>
+                            <p>{chat.title}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
 
