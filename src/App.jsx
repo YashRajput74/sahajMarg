@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-
+/* add a new page */
 const ScrollToTop = () => {
     const { pathname } = useLocation();
     useEffect(() => {
