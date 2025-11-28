@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-/* add a new page */
-/* separate tyhe files and add a new animation */
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
