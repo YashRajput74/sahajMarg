@@ -1,8 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import Modal from "../components/Modal";
 import "../styles/Dashboard.css";
+import { useState } from "react";
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
     return (
         <div className="page bg-dark text-white font-display">
             <header className="navbar">
@@ -27,8 +33,8 @@ export default function Dashboard() {
                 </nav>
 
                 <div className="nav-actions">
-                    <button className="btn secondary">Log In</button>
-                    <button className="btn primary">Sign Up Free</button>
+                    <button className="btn secondary" onClick={openModal}>Log In</button>
+                    <button className="btn primary" onClick={openModal}>Sign Up Free</button>
                 </div>
             </header>
 
@@ -165,6 +171,7 @@ export default function Dashboard() {
             <footer className="footer">
                 <p>© 2024 StudyAI. All rights reserved.</p>
             </footer>
+            <Modal isOpen={isModalOpen} onClose={closeModal} />
         </div>
     );
 }
