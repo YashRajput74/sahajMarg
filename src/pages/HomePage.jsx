@@ -6,6 +6,8 @@ import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
 import HomeCenterContent from "../components/HomeCenterContent";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
 const HomePage = () => {
     const [chats, setChats] = useState([
         { id: "1", title: "New Chat", messages: [] }
@@ -75,7 +77,7 @@ const HomePage = () => {
 
         try {
             // SUMMARY
-            const summaryRes = await fetch("http://localhost:5000/summarize", {
+            const summaryRes = await fetch(`${BACKEND_URL}/summarize`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text: userText }),
@@ -101,7 +103,7 @@ const HomePage = () => {
             );
 
             // FLASHCARDS
-            const flashRes = await fetch("http://localhost:5000/generate-flashcards", {
+            const flashRes = await fetch(`${BACKEND_URL}/generate-flashcards`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text: userText }),
@@ -123,7 +125,7 @@ const HomePage = () => {
             );
 
             // QUIZ
-            const quizRes = await fetch("http://localhost:5000/generate-quiz", {
+            const quizRes = await fetch(`${BACKEND_URL}/generate-quiz`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ text: userText }),

@@ -38,7 +38,7 @@ export default function Dashboard() {
                         className="hero-img"
                         style={{
                             backgroundImage:
-                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdKG2r5Az4b8mzai2xCDadeg1CSiDry-qq4cS_fuK6_TGdtB2IDtGYxYDgVVIQi7b1RJng8iaCn_GJtALwHlq1MhQQpGILgVotuPjlC-4B9lzdpuPSbcV1_0_kS4xLhO9hS1sR36CLjM4MOBioopxxUZHCDcKHJz_MjplwHvOgl4FdhKa0vR_4U9U6mJ2GO6zEEiR4x0SRVnGZIKcaR8N_4MP9Bjwj_FyrIrItKWk7GJTtiF9V412uwrdJzj-zMU5_H-7FrHwgknrv")',
+                                'url("/Study.png")',
                         }}
                     ></div>
 
