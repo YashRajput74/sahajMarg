@@ -3,6 +3,36 @@ import Modal from "../components/Modal";
 import "../styles/Dashboard.css";
 import { useState } from "react";
 
+const testimonials = [
+    {
+        id: 1,
+        text: "This app is amazing. Summaries and flashcards saved me hours.",
+        name: "Alex Johnson",
+        major: "Computer Science",
+        photo:
+            "https://lh3.googleusercontent.com/aida-public/AB6AXuBvZASP0gtBL_xYccZwJz_iZ40XiEjmB17Hww7EsRcXZQGM1AGmF8VjTOvfKEgdsmHFnYWO_X5FXohbbTmOznIf4YKK5vuSRY12WjlFT-eG--fYSWAIDgPFn8jrRJPMXm0i-tpoPiNy4ab-dCVj5OS1l09J9ZVsgA4lFS1qvlqzEFblJfNheIikMYrdS04tnSEhk5o5eZyuQJoUjwCA_XcbpTaSMgdgRSX0dPtaM3NYO3YdDJCN7usyDgLzGF0IOps-FCOOuig6qRaI",
+        stars: 5
+    },
+    {
+        id: 2,
+        text: "AI-generated summaries make studying so much faster.",
+        name: "Sara Kim",
+        major: "Biology",
+        photo:
+            "https://randomuser.me/api/portraits/women/44.jpg",
+        stars: 5
+    },
+    {
+        id: 3,
+        text: "The flashcards are incredibly accurate and save me tons of time.",
+        name: "David Lee",
+        major: "Engineering",
+        photo:
+            "https://randomuser.me/api/portraits/men/46.jpg",
+        stars: 5
+    }
+];
+
 export default function Dashboard() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -129,32 +159,25 @@ export default function Dashboard() {
                     <h2 className="section-title">What Students Say</h2>
 
                     <div className="testimonials-grid">
-                        {[1, 2, 3].map((i) => (
-                            <div className="testimonial-card" key={i}>
+                        {testimonials.map((t) => (
+                            <div className="testimonial-card" key={t.id}>
+
                                 <div className="stars">
-                                    {"★★★★★".split("").map((star, j) => (
-                                        <span
-                                            key={j}
-                                            className="material-symbols-outlined star"
-                                        >
-                                            star
-                                        </span>
+                                    {Array.from({ length: t.stars }).map((_, i) => (
+                                        <span key={i} className="material-symbols-outlined star">star</span>
                                     ))}
                                 </div>
 
-                                <blockquote>
-                                    "This app is amazing. Summaries and flashcards saved me hours."
-                                </blockquote>
+                                <blockquote>"{t.text}"</blockquote>
+
                                 <div className="user">
-                                    <img
-                                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvZASP0gtBL_xYccZwJz_iZ40XiEjmB17Hww7EsRcXZQGM1AGmF8VjTOvfKEgdsmHFnYWO_X5FXohbbTmOznIf4YKK5vuSRY12WjlFT-eG--fYSWAIDgPFn8jrRJPMXm0i-tpoPiNy4ab-dCVj5OS1l09J9ZVsgA4lFS1qvlqzEFblJfNheIikMYrdS04tnSEhk5o5eZyuQJoUjwCA_XcbpTaSMgdgRSX0dPtaM3NYO3YdDJCN7usyDgLzGF0IOps-FCOOuig6qRaI"
-                                        alt="User"
-                                    />
+                                    <img src={t.photo} alt={t.name} />
                                     <div>
-                                        <p className="user-name">Alex Johnson</p>
-                                        <p className="user-desc">Computer Science</p>
+                                        <p className="user-name">{t.name}</p>
+                                        <p className="user-desc">{t.major}</p>
                                     </div>
                                 </div>
+
                             </div>
                         ))}
                     </div>

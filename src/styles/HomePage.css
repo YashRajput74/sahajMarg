@@ -270,6 +270,13 @@ body.dark .ai-block {
     color: var(--text-muted-light);
 }
 
+.primary-btn{
+    padding: 0.35rem 1rem;
+    background-color: #14b8a6;
+    border: none;
+    border-radius: 0.5rem;
+}
+
 body.dark .block-subtext {
     color: var(--text-muted-dark);
 }
