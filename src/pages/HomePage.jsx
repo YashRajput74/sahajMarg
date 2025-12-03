@@ -24,10 +24,17 @@ const HomePage = () => {
     };
 
     const handleNewChat = () => {
+        const existingEmptyChat = chats.find(chat => chat.messages.length === 0);
+
+        if (existingEmptyChat) {
+            setActiveChatId(existingEmptyChat.id);
+            return;
+        }
+
         const id = Date.now().toString();
         const newChat = { id, title: "New Chat", messages: [] };
 
-        setChats((prev) => [...prev, newChat]);
+        setChats(prev => [...prev, newChat]);
         setActiveChatId(id);
     };
 

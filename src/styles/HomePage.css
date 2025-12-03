@@ -8,7 +8,7 @@
 }
 
 :root {
-    --primary: #14b8a6;
+    --primary-color: #14b8a6;
     --background-light: #f9fafb;
     --background-dark: #111827;
     --element-light: #ffffff;
@@ -71,7 +71,7 @@ body.dark .logo-text p {
 
 .new-chat-btn {
     margin-top: 1.5rem;
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: #fff;
     font-weight: 600;
     border: none;
@@ -209,7 +209,7 @@ body.dark .message-name {
 }
 
 .user-bubble {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: white;
 }
 
@@ -274,8 +274,8 @@ body.dark .block-subtext {
     color: var(--text-muted-dark);
 }
 
-.primary-btn {
-    background-color: var(--primary);
+.primary-color-btn {
+    background-color: var(--primary-color);
     color: #fff;
     font-size: 0.875rem;
     border: none;
@@ -285,7 +285,7 @@ body.dark .block-subtext {
     font-weight: 500;
 }
 
-.primary-btn:hover {
+.primary-color-btn:hover {
     background-color: #0e8c7f;
 }
 
@@ -337,7 +337,7 @@ body.dark .chat-input {
 }
 
 .icon-btn:hover {
-    color: var(--primary);
+    color: var(--primary-color);
 }
 
 .icon-btn.left {
@@ -349,7 +349,7 @@ body.dark .chat-input {
 }
 
 .send-btn {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: #fff;
     border-radius: var(--radius);
     padding: 0.25rem;
