@@ -313,3 +313,41 @@ body.dark .fc-secondary-btn:hover {
         transform: scale(0.85);
     }
 }
+
+.saved-notes-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 32rem;
+    width: 100%;
+}
+
+.saved-notes-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.saved-empty {
+    text-align: center;
+    color: var(--text-muted-light);
+}
+
+.saved-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.saved-item {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+}
+
+.saved-date {
+    font-size: 0.8rem;
+    color: #6b7280;
+}

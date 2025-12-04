@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
 import HomeCenterContent from "../components/HomeCenterContent";
+import SavedNotesModal from "../components/SavedNotesModal";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
@@ -14,6 +15,14 @@ const HomePage = () => {
     ]);
 
     const [activeChatId, setActiveChatId] = useState("1");
+    const [savedFlashcards, setSavedFlashcards] = useState([]);
+    const [showSavedNotes, setShowSavedNotes] = useState(false);
+    const handleSaveFlashcards = (data) => {
+        setSavedFlashcards(prev => [...prev, data]);
+    };
+    const handleOpenSavedNotes = () => {
+        setShowSavedNotes(true);
+    };
 
     const activeChat = chats.find((c) => c.id === activeChatId);
     const generateChatTitle = (text) => {
@@ -182,16 +191,23 @@ const HomePage = () => {
                 activeChatId={activeChatId}
                 onNewChat={handleNewChat}
                 onSelectChat={handleSelectChat}
+                onOpenSavedNotes={handleOpenSavedNotes}
             />
 
             <main className="main-content">
                 {activeChat.messages.length === 0 ? (
                     <HomeCenterContent />
                 ) : (
-                    <ChatWindow messages={activeChat.messages} />
+                    <ChatWindow messages={activeChat.messages} onSaveFlashcards={handleSaveFlashcards} />
                 )}
 
                 <InputBar onSend={handleSend} />
+                {showSavedNotes && (
+                    <SavedNotesModal
+                        savedFlashcards={savedFlashcards}
+                        onClose={() => setShowSavedNotes(false)}
+                    />
+                )}
             </main>
         </div>
     );

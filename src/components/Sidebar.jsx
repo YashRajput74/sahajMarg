@@ -1,6 +1,6 @@
 import "../styles/HomePage.css";
 
-const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat }) => {
+const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat, onOpenSavedNotes }) => {
     return (
         <aside className="sidebar">
             <div className="sidebar-top">
@@ -43,7 +43,7 @@ const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat }) => {
                     <span className="material-symbols-outlined">settings</span>
                     <p>Settings</p>
                 </div>
-                <div className="nav-item">
+                <div className="nav-item" onClick={onOpenSavedNotes}>
                     <span className="material-symbols-outlined">bookmark</span>
                     <p>Saved Notes</p>
                 </div>

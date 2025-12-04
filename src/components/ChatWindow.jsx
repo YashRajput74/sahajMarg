@@ -4,7 +4,7 @@ import FlashcardBlock from "./FlashcardBlock";
 import QuizBlock from "./QuizBlock";
 import "../styles/HomePage.css";
 
-const ChatWindow = ({ messages }) => {
+const ChatWindow = ({ messages, onSaveFlashcards }) => {
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
@@ -34,6 +34,7 @@ const ChatWindow = ({ messages }) => {
                                 key={index}
                                 cards={msg.cards}
                                 topic={msg.topic}
+                                onSaveFlashcards={onSaveFlashcards}
                             />
                         );
                     }
