@@ -6,9 +6,6 @@
     color: #195de6;
 }
 
-/* ==============================
-   GLOBAL VARIABLES + BASE
-============================== */
 :root {
     --primary: #195de6;
     --bg-dark: #111722;
@@ -16,7 +13,6 @@
     --border: #344465;
     --muted: #93a5c8;
 
-    /* Spacing scale */
     --space-xs: 8px;
     --space-sm: 16px;
     --space-md: 24px;
@@ -33,9 +29,6 @@ body,
     font-family: "Inter", sans-serif;
 }
 
-/* ==============================
-   NAVBAR
-============================== */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -70,9 +63,6 @@ body,
     gap: var(--space-sm);
 }
 
-/* ==============================
-   BUTTONS
-============================== */
 .btn {
     height: 40px;
     padding: 0 var(--space-md);
@@ -98,9 +88,6 @@ body,
     font-size: 16px;
 }
 
-/* ==============================
-   HERO
-============================== */
 .hero {
     display: flex;
     flex-wrap: wrap;
@@ -137,9 +124,6 @@ body,
     line-height: 1.5;
 }
 
-/* ==============================
-   FEATURES
-============================== */
 .features {
     padding: var(--space-xl);
     text-align: center;
@@ -286,5 +270,100 @@ body,
 
     .hero {
         gap: var(--space-lg);
+    }
+}
+
+@media (max-width: 900px) {
+    .nav-links {
+        display: none;
+    }
+
+    .nav-actions {
+        display: none;
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: var(--space-md);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 32px;
+    }
+
+    .hero-text h2 {
+        font-size: 16px;
+    }
+
+    .hero-img {
+        max-width: 100%;
+        aspect-ratio: 16/10;
+    }
+}
+
+@media (max-width: 600px) {
+    .feature-card {
+        padding: var(--space-md);
+    }
+
+    .section-title {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 700px) {
+    .timeline {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline-number {
+        flex-direction: row;
+        justify-content: center;
+        gap: var(--space-md);
+    }
+
+    .timeline-number .line {
+        display: none;
+    }
+
+    .timeline-info {
+        text-align: center;
+        padding-bottom: var(--space-md);
+    }
+}
+
+@media (max-width: 600px) {
+    .testimonial-card {
+        padding: var(--space-md);
+    }
+
+    .user {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .user img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer {
+        padding: var(--space-md);
     }
 }

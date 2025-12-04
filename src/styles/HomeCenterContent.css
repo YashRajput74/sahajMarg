@@ -102,3 +102,89 @@
     font-size: 12px;
     color: #6B7280;
 }
+
+/* ============================================================
+   RESPONSIVE DESIGN — HomeCenterContent
+============================================================ */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .study-center-content {
+        margin-top: -40px;
+        padding: 0 12px;
+    }
+
+    .study-center-title {
+        font-size: 24px;
+    }
+
+    .study-center-subtitle {
+        font-size: 15px;
+        max-width: 380px;
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+    .study-center-wrapper {
+        padding: 16px;
+    }
+
+    .study-center-container {
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .study-center-content {
+        margin-top: 0;
+        gap: 24px;
+    }
+
+    .study-center-icon-circle {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 8px;
+    }
+
+    .study-center-main-icon {
+        font-size: 36px;
+    }
+
+    .study-center-title {
+        font-size: 22px;
+    }
+
+    .study-center-subtitle {
+        font-size: 14px;
+        max-width: 320px;
+    }
+
+    /* Cards become full width */
+    .study-center-feature-card {
+        padding: 14px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    .study-center-title {
+        font-size: 20px;
+    }
+
+    .study-center-subtitle {
+        font-size: 13px;
+        max-width: 260px;
+    }
+
+    .study-center-features {
+        gap: 12px;
+    }
+
+    .study-center-feature-title {
+        font-size: 13px;
+    }
+
+    .study-center-feature-desc {
+        font-size: 11px;
+    }
+}
