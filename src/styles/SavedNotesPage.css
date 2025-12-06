@@ -1,0 +1,156 @@
+.saved-notes-container {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    color: #1F2937;
+}
+
+body.dark .saved-notes-container {
+    color: #D1D5DB;
+}
+
+/* HEADER */
+.saved-notes-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.saved-notes-header p {
+    color: #6B7280;
+}
+
+/* TOOLBAR */
+.saved-notes-toolbar {
+    margin-top: 25px;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.notes-search {
+    flex: 1;
+    padding: 12px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.notes-sort {
+    padding: 12px 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* GRID */
+.flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+}
+
+.no-flashcards {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #6B7280;
+}
+
+/* FLASHCARD BOX */
+.flashcard-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    transition: 0.2s ease;
+}
+
+body.dark .flashcard-box {
+    background: #1F2937;
+    border-color: #374151;
+}
+
+.flashcard-box:hover {
+    border-color: #14B8A6;
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+}
+
+/* HEADER INSIDE CARD */
+.flashcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flashcard-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.tag {
+    background: #14B8A633;
+    color: #14B8A6;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* DESC */
+.flashcard-desc {
+    color: #6B7280;
+    font-size: 14px;
+    margin: 15px 0;
+}
+
+.flashcard-count {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ACTIONS */
+.flashcard-actions {
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.open-btn {
+    flex: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #14B8A6;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.open-btn:hover {
+    background: #0e8c80;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 38px;
+    border-radius: 8px;
+    border: none;
+    background: #f2f2f2;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background: #e2e2e2;
+}
+
+body.dark .icon-btn {
+    background: #2d3748;
+}
+
+body.dark .icon-btn:hover {
+    background: #3a4455;
+}

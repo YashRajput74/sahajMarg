@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
 import HomeCenterContent from "../components/HomeCenterContent";
-import SavedNotesModal from "../components/SavedNotesModal";
+import SavedNotesPage from "../components/SavedNotesPage";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
@@ -33,6 +33,7 @@ const HomePage = () => {
     };
 
     const handleNewChat = () => {
+        setShowSavedNotes(false);
         const existingEmptyChat = chats.find(chat => chat.messages.length === 0);
 
         if (existingEmptyChat) {
@@ -48,6 +49,7 @@ const HomePage = () => {
     };
 
     const handleSelectChat = (id) => {
+        setShowSavedNotes(false);
         setActiveChatId(id);
     };
 
@@ -195,18 +197,21 @@ const HomePage = () => {
             />
 
             <main className="main-content">
-                {activeChat.messages.length === 0 ? (
-                    <HomeCenterContent />
+                {showSavedNotes ? (
+                    <SavedNotesPage savedFlashcards={savedFlashcards} />
                 ) : (
-                    <ChatWindow messages={activeChat.messages} onSaveFlashcards={handleSaveFlashcards} />
-                )}
+                    <>
+                        {activeChat.messages.length === 0 ? (
+                            <HomeCenterContent />
+                        ) : (
+                            <ChatWindow
+                                messages={activeChat.messages}
+                                onSaveFlashcards={handleSaveFlashcards}
+                            />
+                        )}
 
-                <InputBar onSend={handleSend} />
-                {showSavedNotes && (
-                    <SavedNotesModal
-                        savedFlashcards={savedFlashcards}
-                        onClose={() => setShowSavedNotes(false)}
-                    />
+                        <InputBar onSend={handleSend} />
+                    </>
                 )}
             </main>
         </div>
