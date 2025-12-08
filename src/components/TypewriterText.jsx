@@ -4,17 +4,22 @@ const TypewriterText = ({ text, speed = 20 }) => {
     const [displayed, setDisplayed] = useState("");
 
     useEffect(() => {
+        if (!text) return;
+
         let i = 0;
+        setDisplayed(""); 
+        const str = typeof text === "string" ? text : text.toString();
+
         const interval = setInterval(() => {
-            setDisplayed(text.slice(0, i));
+            setDisplayed(str.slice(0, i));
             i++;
-            if (i > text.length) clearInterval(interval);
+            if (i > str.length) clearInterval(interval);
         }, speed);
 
         return () => clearInterval(interval);
-    }, [text]);
+    }, [text, speed]);
 
-    return <span>{displayed}</span>;
+    return <span style={{ whiteSpace: "pre-wrap" }}>{displayed}</span>;
 };
 
 export default TypewriterText;
