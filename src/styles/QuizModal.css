@@ -287,3 +287,29 @@ body.dark .quizModal-sidebar {
         display: none;
     }
 }
+
+.quizModal-option.correct {
+    background: #dfffe0;
+    border: 2px solid #20a020;
+}
+
+.quizModal-option.incorrect {
+    background: #ffe2e2;
+    border: 2px solid #d10000;
+}
+
+.quizModal-feedback {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.quizModal-feedback .correct {
+    color: #0a7e0a;
+    font-weight: bold;
+}
+
+.quizModal-feedback .incorrect {
+    color: #b00000;
+    font-weight: bold;
+}

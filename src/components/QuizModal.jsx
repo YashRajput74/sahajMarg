@@ -4,20 +4,33 @@ import "../styles/QuizModal.css";
 export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
     const [index, setIndex] = useState(0);
     const [answers, setAnswers] = useState({});
-    const total = questions.length;
+    const [showResult, setShowResult] = useState(false);
 
+    const total = questions.length;
     const current = questions[index];
 
     const selectOption = (option) => {
         setAnswers({ ...answers, [index]: option });
+        setShowResult(true); // show correct/incorrect feedback
     };
 
     const next = () => {
-        if (index < total - 1) setIndex(index + 1);
+        if (index < total - 1) {
+            setIndex(index + 1);
+            setShowResult(false); // reset feedback for next question
+        }
     };
 
     const prev = () => {
-        if (index > 0) setIndex(index - 1);
+        if (index > 0) {
+            setIndex(index - 1);
+            setShowResult(false); // reset feedback when going back
+        }
+    };
+
+    const goToQuestion = (i) => {
+        setIndex(i);
+        setShowResult(false);
     };
 
     return (
@@ -46,24 +59,47 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                             </p>
 
                             <div className="quizModal-options">
-                                {current.options.map((option, i) => (
-                                    <label
-                                        key={i}
-                                        className={`quizModal-option ${answers[index] === option ? "selected" : ""
-                                            }`}
-                                        onClick={() => selectOption(option)}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name={`quiz_q_${index}`}
-                                            className="quizModal-radio"
-                                            checked={answers[index] === option}
-                                            onChange={() => selectOption(option)}
-                                        />
-                                        <span className="quizModal-optionText">{option}</span>
-                                    </label>
-                                ))}
+                                {current.options.map((option, i) => {
+                                    const isSelected = answers[index] === option;
+                                    const isCorrectAnswer = showResult && option === current.answer;
+                                    const isWrongSelected = showResult && isSelected && option !== current.answer;
+
+                                    return (
+                                        <label
+                                            key={i}
+                                            className={`quizModal-option
+                                                ${isSelected ? "selected" : ""}
+                                                ${isCorrectAnswer ? "correct" : ""}
+                                                ${isWrongSelected ? "incorrect" : ""}
+                                            `}
+                                            onClick={() => selectOption(option)}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name={`quiz_q_${index}`}
+                                                className="quizModal-radio"
+                                                checked={isSelected}
+                                                onChange={() => selectOption(option)}
+                                            />
+                                            <span className="quizModal-optionText">{option}</span>
+                                        </label>
+                                    );
+                                })}
                             </div>
+
+                            {/* Feedback Section */}
+                            {showResult && (
+                                <div className="quizModal-feedback">
+                                    {answers[index] === current.answer ? (
+                                        <p className="correct">✅ Correct!</p>
+                                    ) : (
+                                        <p className="incorrect">
+                                            ❌ Incorrect. <br />
+                                            <strong>Correct answer:</strong> {current.answer}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Progress */}
@@ -107,13 +143,11 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                             {questions.map((q, i) => (
                                 <div
                                     key={i}
-                                    className={`quizModal-sidebarItem ${i === index
-                                            ? "active"
-                                            : answers[i]
-                                                ? "answered"
-                                                : ""
-                                        }`}
-                                    onClick={() => setIndex(i)}
+                                    className={`quizModal-sidebarItem 
+                                        ${i === index ? "active" : ""}
+                                        ${answers[i] ? "answered" : ""}
+                                    `}
+                                    onClick={() => goToQuestion(i)}
                                 >
                                     <span className="material-symbols-outlined">
                                         {answers[i]
@@ -127,7 +161,7 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                             ))}
                         </div>
 
-                        <button className="quizModal-submit">Submit Quiz</button>
+                        <button className="quizModal-submit">Retry Quiz</button>
                     </aside>
 
                 </div>
