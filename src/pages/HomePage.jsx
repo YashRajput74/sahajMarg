@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/HomePage.css";
 
 import Sidebar from "../components/Sidebar";
@@ -17,18 +17,47 @@ const HomePage = () => {
     const [activeChatId, setActiveChatId] = useState("1");
     const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [showSavedNotes, setShowSavedNotes] = useState(false);
+    const [hydrated, setHydrated] = useState(false);
+
     const handleSaveFlashcards = (data) => {
         setSavedFlashcards(prev => [...prev, data]);
     };
+
     const handleOpenSavedNotes = () => {
         setShowSavedNotes(true);
     };
 
-    const activeChat = chats.find((c) => c.id === activeChatId);
+    // ✅ Load from localStorage ONCE
+    useEffect(() => {
+        const storedChats = localStorage.getItem("studyhub_chats");
+        const storedActiveChat = localStorage.getItem("studyhub_activeChatId");
+
+        if (storedChats) setChats(JSON.parse(storedChats));
+        if (storedActiveChat) setActiveChatId(storedActiveChat);
+
+        setHydrated(true);
+    }, []);
+
+    // ✅ Save chats whenever they change (AFTER hydration)
+    useEffect(() => {
+        if (hydrated) {
+            localStorage.setItem("studyhub_chats", JSON.stringify(chats));
+        }
+    }, [chats, hydrated]);
+
+    // ✅ Save activeChatId whenever it changes
+    useEffect(() => {
+        if (hydrated) {
+            localStorage.setItem("studyhub_activeChatId", activeChatId);
+        }
+    }, [activeChatId, hydrated]);
+
+
+    const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
+
     const generateChatTitle = (text) => {
         const words = text.split(" ");
         const short = words.slice(0, 7).join(" ");
-
         return short.length > 35 ? short.slice(0, 35) + "..." : short;
     };
 
@@ -53,6 +82,7 @@ const HomePage = () => {
         setActiveChatId(id);
     };
 
+
     const handleSend = async (userText) => {
         const userMessage = {
             type: "user",
@@ -61,23 +91,19 @@ const HomePage = () => {
                 "https://lh3.googleusercontent.com/aida-public/AB6AXuCzQbRcneAwdczjkpNqGNx_m8eK1BKxj2s2XS9odEdZljKeVjfqGZVaVbwwvI-43OuaCFtxJ8elsUabNM3H5f2EXdyRi1Q93lcwu09-Fko06U6iDlx5CzNRVL2uwtUeodkDokfeaGVyeh8SOLopSd5WCc9tb_W_inh4f6Ao5dz632VBMo_5XzJArBCxoSatxYdUPd11D92GvruTHUxv7bU1KD2qHOpMWVO4W7Gwd15i7Z9dvfkHS9YNB6qVqaPPdfqIviQkx4h5nMiJ",
         };
 
-        // 🟢 Add user message + update title if first message
-        setChats((prev) =>
-            prev.map((chat) => {
-                if (chat.id === activeChatId) {
-                    const isFirstMessage = chat.messages.length === 0;
-
-                    return {
+        // Add user message
+        setChats(prev =>
+            prev.map(chat =>
+                chat.id === activeChatId
+                    ? {
                         ...chat,
-                        title: isFirstMessage ? generateChatTitle(userText) : chat.title,
-                        messages: [...chat.messages, userMessage],
-                    };
-                }
-                return chat;
-            })
+                        title: chat.messages.length === 0 ? generateChatTitle(userText) : chat.title,
+                        messages: [...chat.messages, userMessage]
+                    }
+                    : chat
+            )
         );
 
-        // 🟡 Add loading message (typing effect)
         const loadingMessage = {
             type: "ai",
             text: "Generating summary, flashcards and quiz...",
@@ -85,8 +111,8 @@ const HomePage = () => {
                 "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
         };
 
-        setChats((prev) =>
-            prev.map((chat) =>
+        setChats(prev =>
+            prev.map(chat =>
                 chat.id === activeChatId
                     ? { ...chat, messages: [...chat.messages, loadingMessage] }
                     : chat
@@ -102,19 +128,16 @@ const HomePage = () => {
             });
             const summaryData = await summaryRes.json();
 
-            setChats((prev) =>
-                prev.map((chat) =>
+            setChats(prev =>
+                prev.map(chat =>
                     chat.id === activeChatId
                         ? {
                             ...chat,
-                            messages: [
-                                ...chat.messages,
-                                {
-                                    type: "ai",
-                                    text: summaryData.summary,
-                                    avatar: loadingMessage.avatar,
-                                },
-                            ],
+                            messages: [...chat.messages, {
+                                type: "ai",
+                                text: summaryData.summary,
+                                avatar: loadingMessage.avatar
+                            }]
                         }
                         : chat
                 )
@@ -128,15 +151,15 @@ const HomePage = () => {
             });
             const flashData = await flashRes.json();
 
-            setChats((prev) =>
-                prev.map((chat) =>
+            setChats(prev =>
+                prev.map(chat =>
                     chat.id === activeChatId
                         ? {
                             ...chat,
-                            messages: [
-                                ...chat.messages,
-                                { type: "flashcards", cards: flashData.flashcards },
-                            ],
+                            messages: [...chat.messages, {
+                                type: "flashcards",
+                                cards: flashData.flashcards
+                            }]
                         }
                         : chat
                 )
@@ -150,39 +173,22 @@ const HomePage = () => {
             });
             const quizData = await quizRes.json();
 
-            setChats((prev) =>
-                prev.map((chat) =>
+            setChats(prev =>
+                prev.map(chat =>
                     chat.id === activeChatId
                         ? {
                             ...chat,
-                            messages: [
-                                ...chat.messages,
-                                { type: "quiz", questions: quizData.quizzes },
-                            ],
+                            messages: [...chat.messages, {
+                                type: "quiz",
+                                questions: quizData.quizzes
+                            }]
                         }
                         : chat
                 )
             );
+
         } catch (err) {
             console.error("❌ FRONTEND ERROR:", err);
-
-            setChats((prev) =>
-                prev.map((chat) =>
-                    chat.id === activeChatId
-                        ? {
-                            ...chat,
-                            messages: [
-                                ...chat.messages,
-                                {
-                                    type: "ai",
-                                    text: "Something went wrong generating study material.",
-                                    avatar: loadingMessage.avatar,
-                                },
-                            ],
-                        }
-                        : chat
-                )
-            );
         }
     };
 
