@@ -1,94 +1,105 @@
-    import { useState } from "react";
-    import "../styles/Modal.css";
+import { useState } from "react";
+import "../styles/Modal.css";
 
-    const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlashcards }) => {
-        const [index, setIndex] = useState(0);
-        const total = cards.length;
+const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlashcards }) => {
+    const safeCards = Array.isArray(cards) ? cards : [];
+    const total = safeCards.length;
 
-        const current = cards[index];
+    const [index, setIndex] = useState(0);
 
-        const nextCard = () => {
-            if (index < total - 1) setIndex(index + 1);
-        };
+    const current = safeCards[index];
 
-        const prevCard = () => {
-            if (index > 0) setIndex(index - 1);
-        };
+    const nextCard = () => {
+        if (index < total - 1) setIndex(index + 1);
+    };
 
-        const saveFlashcards = () => {
-            onSaveFlashcards({
-                topic,
-                card:current,
-                savedAt: Date.now()
-            });
+    const prevCard = () => {
+        if (index > 0) setIndex(index - 1);
+    };
 
-            onClose(); // close modal after saving
-        };
-        return (
-            <div className="fc-modal-overlay">
-                <div className="fc-modal-container">
+    const saveFlashcards = () => {
+        onSaveFlashcards({
+            topic,
+            cards: safeCards,      // save ALL cards
+            savedAt: Date.now()
+        });
+        onClose();
+    };
 
-                    {/* Close button */}
-                    <div className="fc-modal-close">
-                        <button className="fc-close-btn" onClick={onClose}>
-                            <span className="material-symbols-outlined">close</span>
-                        </button>
-                    </div>
+    return (
+        <div className="fc-modal-overlay">
+            <div className="fc-modal-container">
 
-                    {/* Flipcard */}
-                    <div className="fc-flip-card" tabIndex="0">
-                        <div className="fc-flip-card-inner">
-                            <div className="fc-flip-card-front">
-                                <div className="fc-card-content">
-                                    <p className="fc-question">{current.question}</p>
-                                    <p className="fc-hint">Click to flip</p>
+                {/* Close button */}
+                <div className="fc-modal-close">
+                    <button className="fc-close-btn" onClick={onClose}>
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                {total === 0 ? (
+                    <p style={{ padding: "20px", textAlign: "center" }}>
+                        No flashcards generated.
+                    </p>
+                ) : (
+                    <>
+                        {/* Flipcard */}
+                        <div className="fc-flip-card" tabIndex="0">
+                            <div className="fc-flip-card-inner">
+                                <div className="fc-flip-card-front">
+                                    <div className="fc-card-content">
+                                        <p className="fc-question">{current.question}</p>
+                                        <p className="fc-hint">Click to flip</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="fc-flip-card-back">
-                                <div className="fc-card-content">
-                                    <p className="fc-answer">{current.answer}</p>
-                                    {current.explanation && (
-                                        <p className="fc-explanation">{current.explanation}</p>
-                                    )}
+
+                                <div className="fc-flip-card-back">
+                                    <div className="fc-card-content">
+                                        <p className="fc-answer">{current.answer}</p>
+                                        {current.explanation && (
+                                            <p className="fc-explanation">{current.explanation}</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Navigation */}
-                    <div className="fc-card-nav">
-                        <button
-                            className={`fc-nav-btn ${index === 0 ? "fc-disabled" : ""}`}
-                            onClick={prevCard}
-                        >
-                            <span className="material-symbols-outlined">arrow_back</span>
-                        </button>
+                        {/* Navigation */}
+                        <div className="fc-card-nav">
+                            <button
+                                className={`fc-nav-btn ${index === 0 ? "fc-disabled" : ""}`}
+                                onClick={prevCard}
+                            >
+                                <span className="material-symbols-outlined">arrow_back</span>
+                            </button>
 
-                        <p className="fc-progress-text">
-                            {index + 1} / {total}
-                        </p>
+                            <p className="fc-progress-text">
+                                {index + 1} / {total}
+                            </p>
 
-                        <button
-                            className={`fc-nav-btn ${index === total - 1 ? "fc-disabled" : ""}`}
-                            onClick={nextCard}
-                        >
-                            <span className="material-symbols-outlined">arrow_forward</span>
-                        </button>
-                    </div>
+                            <button
+                                className={`fc-nav-btn ${index === total - 1 ? "fc-disabled" : ""}`}
+                                onClick={nextCard}
+                            >
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
 
-                    {/* Footer */}
-                    <div className="fc-modal-footer">
-                        <button className="fc-secondary-btn" onClick={() => setIndex(0)}>
-                            Review Again
-                        </button>
+                        {/* Footer */}
+                        <div className="fc-modal-footer">
+                            <button className="fc-secondary-btn" onClick={() => setIndex(0)}>
+                                Review Again
+                            </button>
 
-                        <button className="fc-primary-btn" onClick={() => saveFlashcards()}>
-                            Save Flashcards
-                        </button>
-                    </div>
-                </div>
+                            <button className="fc-primary-btn" onClick={saveFlashcards}>
+                                Save Flashcards
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
-        );
-    };
+        </div>
+    );
+};
 
-    export default FlashcardModal;
+export default FlashcardModal;

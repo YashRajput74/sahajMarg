@@ -2,34 +2,66 @@ import { useState } from "react";
 import "../styles/QuizModal.css";
 
 export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
+    const safeQuestions = Array.isArray(questions) ? questions : [];
+    const total = safeQuestions.length;
+
     const [index, setIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [showResult, setShowResult] = useState(false);
 
-    const total = questions.length;
-    const current = questions[index];
+    // EARLY EXIT FOR EMPTY QUIZ
+    if (total === 0) {
+        return (
+            <div className="quizModal-overlay">
+                <div className="quizModal-container">
+                    <header className="quizModal-header">
+                        <h2 className="quizModal-title">{topic}</h2>
+                        <button className="quizModal-close" onClick={onClose}>
+                            <span className="material-symbols-outlined">close</span>
+                        </button>
+                    </header>
+
+                    <p style={{ padding: "30px", textAlign: "center" }}>
+                        No quiz questions were generated.
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    const current = safeQuestions[index];
+
+    const options = Array.isArray(current.options) ? current.options : [];
 
     const selectOption = (option) => {
         setAnswers({ ...answers, [index]: option });
-        setShowResult(true); // show correct/incorrect feedback
+        setShowResult(true);
     };
 
     const next = () => {
         if (index < total - 1) {
             setIndex(index + 1);
-            setShowResult(false); // reset feedback for next question
+            setShowResult(false);
         }
     };
 
     const prev = () => {
         if (index > 0) {
             setIndex(index - 1);
-            setShowResult(false); // reset feedback when going back
+            setShowResult(false);
         }
     };
 
     const goToQuestion = (i) => {
-        setIndex(i);
+        if (i >= 0 && i < total) {
+            setIndex(i);
+            setShowResult(false);
+        }
+    };
+
+    const retryQuiz = () => {
+        setIndex(0);
+        setAnswers({});
         setShowResult(false);
     };
 
@@ -46,20 +78,17 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                 </header>
 
                 <div className="quizModal-content">
-
-                    {/* Main Section */}
                     <main className="quizModal-main">
                         <div className="quizModal-questionBlock">
                             <h1 className="quizModal-questionTitle">
                                 Question {index + 1}
                             </h1>
 
-                            <p className="quizModal-questionText">
-                                {current.question}
-                            </p>
+                            <p className="quizModal-questionText">{current.question}</p>
 
+                            {/* OPTIONS */}
                             <div className="quizModal-options">
-                                {current.options.map((option, i) => {
+                                {options.map((option, i) => {
                                     const isSelected = answers[index] === option;
                                     const isCorrectAnswer = showResult && option === current.answer;
                                     const isWrongSelected = showResult && isSelected && option !== current.answer;
@@ -87,7 +116,7 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                                 })}
                             </div>
 
-                            {/* Feedback Section */}
+                            {/* FEEDBACK */}
                             {showResult && (
                                 <div className="quizModal-feedback">
                                     {answers[index] === current.answer ? (
@@ -102,7 +131,7 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                             )}
                         </div>
 
-                        {/* Progress */}
+                        {/* PROGRESS */}
                         <div className="quizModal-progressSection">
                             <div className="quizModal-progressInfo">
                                 <p>Question {index + 1} of {total}</p>
@@ -135,12 +164,12 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                         </div>
                     </main>
 
-                    {/* Sidebar */}
+                    {/* SIDEBAR */}
                     <aside className="quizModal-sidebar">
                         <h3 className="quizModal-sidebarTitle">QUESTIONS</h3>
 
                         <div className="quizModal-sidebarList">
-                            {questions.map((q, i) => (
+                            {safeQuestions.map((q, i) => (
                                 <div
                                     key={i}
                                     className={`quizModal-sidebarItem 
@@ -153,17 +182,18 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                                         {answers[i]
                                             ? "check_circle"
                                             : i === index
-                                                ? "visibility"
-                                                : "radio_button_unchecked"}
+                                            ? "visibility"
+                                            : "radio_button_unchecked"}
                                     </span>
                                     <span>Question {i + 1}</span>
                                 </div>
                             ))}
                         </div>
 
-                        <button className="quizModal-submit">Retry Quiz</button>
+                        <button className="quizModal-submit" onClick={retryQuiz}>
+                            Retry Quiz
+                        </button>
                     </aside>
-
                 </div>
             </div>
         </div>

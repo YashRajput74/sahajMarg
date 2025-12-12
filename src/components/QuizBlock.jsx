@@ -2,8 +2,11 @@ import { useState } from "react";
 import "../styles/HomePage.css";
 import QuizModal from "./QuizModal";
 
-const QuizBlock = ({ questions, topic = "Quiz" }) => {
+const QuizBlock = ({ questions = [], topic = "Quiz" }) => {
     const [showModal, setShowModal] = useState(false);
+
+    const safeQuestions = Array.isArray(questions) ? questions : [];
+    const count = safeQuestions.length;
 
     return (
         <>
@@ -11,9 +14,14 @@ const QuizBlock = ({ questions, topic = "Quiz" }) => {
                 <div className="block-header">
                     <p className="block-title">{topic}</p>
                     <div className="block-actions">
-                        <p className="block-subtext">{questions.length} questions generated.</p>
-                        <button className="primary-btn" onClick={() => setShowModal(true)}>
-                            Take Quiz
+                        <p className="block-subtext">{count} questions generated.</p>
+
+                        <button
+                            className="primary-btn"
+                            disabled={count === 0}
+                            onClick={() => count > 0 && setShowModal(true)}
+                        >
+                            {count === 0 ? "No Quiz Available" : "Take Quiz"}
                         </button>
                     </div>
                 </div>
@@ -22,7 +30,7 @@ const QuizBlock = ({ questions, topic = "Quiz" }) => {
             {showModal && (
                 <QuizModal
                     onClose={() => setShowModal(false)}
-                    questions={questions}
+                    questions={safeQuestions}
                     topic={topic}
                 />
             )}

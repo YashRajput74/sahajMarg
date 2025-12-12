@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/HomePage.css";
 
 import Sidebar from "../components/Sidebar";
@@ -6,191 +6,214 @@ import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
 import HomeCenterContent from "../components/HomeCenterContent";
 import SavedNotesPage from "../components/SavedNotesPage";
+import { supabase } from "../lib/supabaseClient";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BACKEND_URL =
+    import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_BACKEND_URL !== ""
+        ? import.meta.env.VITE_BACKEND_URL
+        : "https://sahajmarg-backend.onrender.com";
 
 const HomePage = () => {
     const [chats, setChats] = useState([
-        { id: "1", title: "New Chat", messages: [] }
+        {
+            id: "temp-landing",
+            title: "New Chat",
+            messages: [],
+            isTemp: true,
+        },
     ]);
+    const [activeChatId, setActiveChatId] = useState("temp-landing");
 
-    const [activeChatId, setActiveChatId] = useState("1");
     const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [showSavedNotes, setShowSavedNotes] = useState(false);
     const [hydrated, setHydrated] = useState(false);
 
-    const handleSaveFlashcards = (data) => {
-        setSavedFlashcards(prev => [...prev, data]);
+    const abortRef = useRef(null);
+
+    const setMessagesForChat = (chatId, newMessages) => {
+        setChats((prev) =>
+            prev.map((c) =>
+                c.id === chatId ? { ...c, messages: newMessages } : c
+            )
+        );
     };
 
-    const handleOpenSavedNotes = () => {
-        setShowSavedNotes(true);
-    };
-
-    // ✅ Load from localStorage ONCE
     useEffect(() => {
-        const storedChats = localStorage.getItem("studyhub_chats");
-        const storedActiveChat = localStorage.getItem("studyhub_activeChatId");
+        const loadChats = async () => {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
 
-        if (storedChats) setChats(JSON.parse(storedChats));
-        if (storedActiveChat) setActiveChatId(storedActiveChat);
+            if (!user) {
+                setHydrated(true);
+                return;
+            }
 
-        setHydrated(true);
+            const res = await fetch(`${BACKEND_URL}/chats/${user.id}`);
+            const loadedChats = await res.json();
+
+            const normalized = loadedChats.map((c) => ({
+                id: c.id,
+                title: c.title,
+                messages: [],
+                isTemp: false,
+            }));
+
+            setChats((prev) => [...normalized, ...prev.filter((c) => c.isTemp)]);
+
+            if (normalized.length > 0) {
+                setActiveChatId(normalized[0].id);
+            }
+
+            setHydrated(true);
+        };
+
+        loadChats();
     }, []);
 
-    // ✅ Save chats whenever they change (AFTER hydration)
-    useEffect(() => {
-        if (hydrated) {
-            localStorage.setItem("studyhub_chats", JSON.stringify(chats));
+    const handleSelectChat = async (id) => {
+        setShowSavedNotes(false);
+        setActiveChatId(id);
+
+        if (abortRef.current) abortRef.current.abort();
+        abortRef.current = new AbortController();
+
+        try {
+            const res = await fetch(`${BACKEND_URL}/messages/${id}`, {
+                signal: abortRef.current.signal,
+            });
+            const msgs = await res.json();
+
+            setMessagesForChat(id, msgs);
+        } catch (err) {
+            if (err.name !== "AbortError") console.error(err);
         }
-    }, [chats, hydrated]);
-
-    // ✅ Save activeChatId whenever it changes
-    useEffect(() => {
-        if (hydrated) {
-            localStorage.setItem("studyhub_activeChatId", activeChatId);
-        }
-    }, [activeChatId, hydrated]);
-
-
-    const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
-
-    const generateChatTitle = (text) => {
-        const words = text.split(" ");
-        const short = words.slice(0, 7).join(" ");
-        return short.length > 35 ? short.slice(0, 35) + "..." : short;
     };
 
     const handleNewChat = () => {
         setShowSavedNotes(false);
-        const existingEmptyChat = chats.find(chat => chat.messages.length === 0);
 
-        if (existingEmptyChat) {
-            setActiveChatId(existingEmptyChat.id);
-            return;
-        }
+        const tempId = "temp-" + Date.now();
 
-        const id = Date.now().toString();
-        const newChat = { id, title: "New Chat", messages: [] };
+        setChats((prev) => [
+            {
+                id: tempId,
+                title: "New Chat",
+                messages: [],
+                isTemp: true,
+            },
+            ...prev,
+        ]);
 
-        setChats(prev => [...prev, newChat]);
-        setActiveChatId(id);
+        setActiveChatId(tempId);
     };
-
-    const handleSelectChat = (id) => {
-        setShowSavedNotes(false);
-        setActiveChatId(id);
-    };
-
 
     const handleSend = async (userText) => {
-        const userMessage = {
-            type: "user",
-            text: userText,
-            avatar:
-                "https://lh3.googleusercontent.com/aida-public/AB6AXuCzQbRcneAwdczjkpNqGNx_m8eK1BKxj2s2XS9odEdZljKeVjfqGZVaVbwwvI-43OuaCFtxJ8elsUabNM3H5f2EXdyRi1Q93lcwu09-Fko06U6iDlx5CzNRVL2uwtUeodkDokfeaGVyeh8SOLopSd5WCc9tb_W_inh4f6Ao5dz632VBMo_5XzJArBCxoSatxYdUPd11D92GvruTHUxv7bU1KD2qHOpMWVO4W7Gwd15i7Z9dvfkHS9YNB6qVqaPPdfqIviQkx4h5nMiJ",
-        };
+        const chatId = activeChatId;
 
-        // Add user message
-        setChats(prev =>
-            prev.map(chat =>
-                chat.id === activeChatId
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return alert("You must be logged in");
+
+        setChats((prev) =>
+            prev.map((c) =>
+                c.id === chatId
                     ? {
-                        ...chat,
-                        title: chat.messages.length === 0 ? generateChatTitle(userText) : chat.title,
-                        messages: [...chat.messages, userMessage]
+                        ...c,
+                        messages: [
+                            ...c.messages,
+                            {
+                                type: "user",
+                                text: userText,
+                                avatar: "...",
+                            },
+                            {
+                                type: "ai",
+                                text: "Generating summary, flashcards and quiz...",
+                                avatar: "...",
+                                loading: true,
+                            },
+                        ],
                     }
-                    : chat
-            )
-        );
-
-        const loadingMessage = {
-            type: "ai",
-            text: "Generating summary, flashcards and quiz...",
-            avatar:
-                "https://lh3.googleusercontent.com/aida-public/AB6AXuCzxX4sNsEhQ8eNXiqCIZQhqIX84xR39xZBP9NxUbNGzf8oMSIxWqNlR0V_CU9Lzhm7ylwl4kh2d_A7D1qaf7zzLLw-rp9QKNr_CxNMeVviX5P70CPQc0M740BrDnfZ7XTpMcT6wjpw0WFfqVyoFT127KBuL4BEhO3oY4kIHrYC5HYC-9yXeF9PZzN4eIpElscY6g6QSApYyWeksXqPCIbOZmU-Zp7TfHIsmSNbRpV5RsNuyC8HSV3nk12dLukHBV_Repr0SqrFsGnO",
-        };
-
-        setChats(prev =>
-            prev.map(chat =>
-                chat.id === activeChatId
-                    ? { ...chat, messages: [...chat.messages, loadingMessage] }
-                    : chat
+                    : c
             )
         );
 
         try {
-            // SUMMARY
-            const summaryRes = await fetch(`${BACKEND_URL}/summarize`, {
+            const res = await fetch(`${BACKEND_URL}/message`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: userText }),
+                body: JSON.stringify({
+                    userId: user.id,
+                    chatId: chatId.startsWith("temp") ? null : chatId,
+                    text: userText,
+                }),
             });
-            const summaryData = await summaryRes.json();
 
-            setChats(prev =>
-                prev.map(chat =>
-                    chat.id === activeChatId
-                        ? {
-                            ...chat,
-                            messages: [...chat.messages, {
-                                type: "ai",
-                                text: summaryData.summary,
-                                avatar: loadingMessage.avatar
-                            }]
-                        }
-                        : chat
-                )
+            const data = await res.json();
+            const newChatId = data.chatId;
+
+            setChats((prev) =>
+                prev.map((c) => {
+                    if (chatId.startsWith("temp") && c.id === chatId) {
+                        return {
+                            ...c,
+                            id: newChatId,
+                            isTemp: false,
+                            messages: c.messages.map((msg) =>
+                                msg.loading
+                                    ? {
+                                        type: "ai",
+                                        text: data.assistant.summary,
+                                        flashcards: data.assistant.flashcards,
+                                        quiz: data.assistant.quiz,
+                                        avatar: "...",
+                                        loading: false,
+                                    }
+                                    : msg
+                            ),
+                        };
+                    }
+
+                    if (c.id === (chatId.startsWith("temp") ? newChatId : chatId)) {
+                        return {
+                            ...c,
+                            messages: c.messages.map((msg) =>
+                                msg.loading
+                                    ? {
+                                        type: "ai",
+                                        text: data.assistant.summary,
+                                        flashcards: data.assistant.flashcards,
+                                        quiz: data.assistant.quiz,
+                                        avatar: "...",
+                                        loading: false,
+                                    }
+                                    : msg
+                            ),
+                        };
+                    }
+
+                    return c;
+                })
             );
 
-            // FLASHCARDS
-            const flashRes = await fetch(`${BACKEND_URL}/generate-flashcards`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: userText }),
-            });
-            const flashData = await flashRes.json();
-
-            setChats(prev =>
-                prev.map(chat =>
-                    chat.id === activeChatId
-                        ? {
-                            ...chat,
-                            messages: [...chat.messages, {
-                                type: "flashcards",
-                                cards: flashData.flashcards
-                            }]
-                        }
-                        : chat
-                )
-            );
-
-            // QUIZ
-            const quizRes = await fetch(`${BACKEND_URL}/generate-quiz`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: userText }),
-            });
-            const quizData = await quizRes.json();
-
-            setChats(prev =>
-                prev.map(chat =>
-                    chat.id === activeChatId
-                        ? {
-                            ...chat,
-                            messages: [...chat.messages, {
-                                type: "quiz",
-                                questions: quizData.quizzes
-                            }]
-                        }
-                        : chat
-                )
-            );
-
+            if (chatId.startsWith("temp")) {
+                setActiveChatId(newChatId);
+            }
         } catch (err) {
-            console.error("❌ FRONTEND ERROR:", err);
+            console.error("❌ FRONTEND SEND ERROR:", err);
         }
     };
+
+    const handleSaveFlashcards = (fc) => {
+        setSavedFlashcards((prev) => [...prev, fc]);
+    };
+
+    if (!hydrated) return <div className="loading-screen">Loading...</div>;
+
+    const activeChat = chats.find((c) => c.id === activeChatId);
 
     return (
         <div className="home-container">
@@ -199,23 +222,23 @@ const HomePage = () => {
                 activeChatId={activeChatId}
                 onNewChat={handleNewChat}
                 onSelectChat={handleSelectChat}
-                onOpenSavedNotes={handleOpenSavedNotes}
+                onOpenSavedNotes={() => setShowSavedNotes(true)}
             />
 
             <main className="main-content">
                 {showSavedNotes ? (
                     <SavedNotesPage savedFlashcards={savedFlashcards} />
+                ) : activeChat && activeChat.messages.length > 0 ? (
+                    <>
+                        <ChatWindow
+                            messages={activeChat.messages}
+                            onSaveFlashcards={handleSaveFlashcards}
+                        />
+                        <InputBar onSend={handleSend} />
+                    </>
                 ) : (
                     <>
-                        {activeChat.messages.length === 0 ? (
-                            <HomeCenterContent />
-                        ) : (
-                            <ChatWindow
-                                messages={activeChat.messages}
-                                onSaveFlashcards={handleSaveFlashcards}
-                            />
-                        )}
-
+                        <HomeCenterContent />
                         <InputBar onSend={handleSend} />
                     </>
                 )}

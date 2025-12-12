@@ -1,17 +1,29 @@
 import "../styles/HomePage.css";
 
-const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat, onOpenSavedNotes }) => {
+const Sidebar = ({
+    chats = [],
+    activeChatId,
+    hydrated = true,        // ADDED
+    onNewChat,
+    onSelectChat,
+    onOpenSavedNotes
+}) => {
+
+    const handleChatClick = (id) => {
+        if (!hydrated) return; // prevent crash
+        if (!id) return;
+        onSelectChat(id);
+    };
+
     return (
         <aside className="sidebar">
             <div className="sidebar-top">
-
+                
+                {/* Logo */}
                 <div className="logo-section">
                     <div
                         className="logo"
-                        style={{
-                            backgroundImage:
-                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAQOvwGvn4QiIEwi40WpKUIlmjy9s0jT7sq0uz8L5XoR3PSYRoIudFTffa6ak6wrzZbovpHnk7C7J54x2LtXfQt8mOzzHYLCw1gZvc5LDeC_5IHXS3B6jNpZykqWbMMUpl1a0V4RJRvcDf1sKp_3FohC3FfGEXbA64_jZWj9YB0CYXZw1_8Qrm5TSZMJU8TwMVOVcuvcJqx7eqvyYfFj_oTLbCxa7t51z-p1AhgUlXzuITJiNq6q7_m9DgqRYGyo6exwDXypKMdsXNr")',
-                        }}
+                        style={{ backgroundImage: `url("/logo.png")` }} // local image
                     />
                     <div className="logo-text">
                         <h1>Study AI</h1>
@@ -23,18 +35,37 @@ const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat, onOpenSavedNote
                     + New Chat
                 </button>
 
+                {/* Chats */}
                 <div className="chat-list">
+                    {chats.length === 0 && (
+                        <p style={{ padding: "10px", opacity: 0.6 }}>
+                            No chats yet.
+                        </p>
+                    )}
 
-                    {chats.map((chat) => (
-                        <div
-                            key={chat.id}
-                            className={`chat-item ${chat.id === activeChatId ? "active" : ""}`}
-                            onClick={() => onSelectChat(chat.id)}
-                        >
-                            <span className="material-symbols-outlined">chat_bubble</span>
-                            <p>{chat.title}</p>
-                        </div>
-                    ))}
+                    {chats.map((chat) => {
+                        // Fix untitled chat name
+                        const title =
+                            chat.title ||
+                            (chat.messages?.[0]?.text
+                                ? chat.messages[0].text.slice(0, 20) + "..."
+                                : "New Chat");
+
+                        return (
+                            <div
+                                key={chat.id}
+                                className={`chat-item ${
+                                    chat.id === activeChatId ? "active" : ""
+                                }`}
+                                onClick={() => handleChatClick(chat.id)}
+                            >
+                                <span className="material-symbols-outlined">
+                                    chat_bubble
+                                </span>
+                                <p>{title}</p>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
 
@@ -43,10 +74,12 @@ const Sidebar = ({ chats, activeChatId, onNewChat, onSelectChat, onOpenSavedNote
                     <span className="material-symbols-outlined">settings</span>
                     <p>Settings</p>
                 </div>
+
                 <div className="nav-item" onClick={onOpenSavedNotes}>
                     <span className="material-symbols-outlined">bookmark</span>
                     <p>Saved Notes</p>
                 </div>
+
                 <div className="nav-item">
                     <span className="material-symbols-outlined">history</span>
                     <p>History</p>

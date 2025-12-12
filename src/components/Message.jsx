@@ -6,20 +6,28 @@ import rehypeHighlight from "rehype-highlight";
 const Message = ({ type, name, text, avatar }) => {
     const isUser = type === "user";
 
+    const defaultAvatar = isUser
+        ? "/avatars/user.png"
+        : "/avatars/ai.png";
+
     const renderers = {
-        code({ node, inline, className, children, ...props }) {
+        p({ children }) {
+            if (typeof children[0] === "string") {
+                return (
+                    <p>
+                        <TypewriterText text={children[0]} />
+                    </p>
+                );
+            }
+
+            return <p>{children}</p>;
+        },
+        code({ className, children }) {
             return (
-                <pre className={className} style={{ whiteSpace: "pre-wrap" }}>
-                    <code {...props}>{children}</code>
+                <pre className={className || ""}>
+                    <code>{children}</code>
                 </pre>
             );
-        },
-        p({ node, children }) {
-            const arr = Array.isArray(children) ? children : [children];
-            const content = arr.map((child, idx) =>
-                typeof child === "string" ? <TypewriterText key={idx} text={child} /> : child
-            );
-            return <p>{content}</p>;
         },
     };
 
@@ -28,7 +36,9 @@ const Message = ({ type, name, text, avatar }) => {
             {!isUser && (
                 <div
                     className="avatar"
-                    style={{ backgroundImage: `url(${avatar})` }}
+                    style={{
+                        backgroundImage: `url(${avatar || defaultAvatar})`,
+                    }}
                 />
             )}
 
@@ -39,7 +49,10 @@ const Message = ({ type, name, text, avatar }) => {
                     {isUser ? (
                         text
                     ) : (
-                        <ReactMarkdown rehypePlugins={[rehypeHighlight]} components={renderers}>
+                        <ReactMarkdown
+                            rehypePlugins={[rehypeHighlight]}
+                            components={renderers}
+                        >
                             {text}
                         </ReactMarkdown>
                     )}
@@ -49,7 +62,9 @@ const Message = ({ type, name, text, avatar }) => {
             {isUser && (
                 <div
                     className="avatar"
-                    style={{ backgroundImage: `url(${avatar})` }}
+                    style={{
+                        backgroundImage: `url(${avatar || defaultAvatar})`,
+                    }}
                 />
             )}
         </div>
