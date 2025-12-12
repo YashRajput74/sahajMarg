@@ -3,14 +3,15 @@ import "../styles/HomePage.css";
 const Sidebar = ({
     chats = [],
     activeChatId,
-    hydrated = true,        // ADDED
+    hydrated = true,
     onNewChat,
     onSelectChat,
-    onOpenSavedNotes
+    onOpenSavedNotes,
+    onDeleteChat
 }) => {
 
     const handleChatClick = (id) => {
-        if (!hydrated) return; // prevent crash
+        if (!hydrated) return;
         if (!id) return;
         onSelectChat(id);
     };
@@ -18,12 +19,11 @@ const Sidebar = ({
     return (
         <aside className="sidebar">
             <div className="sidebar-top">
-                
-                {/* Logo */}
+
                 <div className="logo-section">
                     <div
                         className="logo"
-                        style={{ backgroundImage: `url("/logo.png")` }} // local image
+                        style={{ backgroundImage: `url("/logo.png")` }}
                     />
                     <div className="logo-text">
                         <h1>Study AI</h1>
@@ -35,7 +35,6 @@ const Sidebar = ({
                     + New Chat
                 </button>
 
-                {/* Chats */}
                 <div className="chat-list">
                     {chats.length === 0 && (
                         <p style={{ padding: "10px", opacity: 0.6 }}>
@@ -54,15 +53,30 @@ const Sidebar = ({
                         return (
                             <div
                                 key={chat.id}
-                                className={`chat-item ${
-                                    chat.id === activeChatId ? "active" : ""
-                                }`}
+                                className={`chat-item ${chat.id === activeChatId ? "active" : ""
+                                    }`}
                                 onClick={() => handleChatClick(chat.id)}
                             >
-                                <span className="material-symbols-outlined">
-                                    chat_bubble
+                                <div
+                                    className="chat-info"
+                                    onClick={() => handleChatClick(chat.id)}
+                                >
+                                    <span className="material-symbols-outlined">
+                                        chat_bubble
+                                    </span>
+                                    <p>{title}</p>
+                                </div>
+
+                                {/* Delete Icon */}
+                                <span
+                                    className="material-symbols-outlined delete-icon"
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // prevent opening chat
+                                        onDeleteChat(chat.id);
+                                    }}
+                                >
+                                    delete
                                 </span>
-                                <p>{title}</p>
                             </div>
                         );
                     })}

@@ -71,9 +71,28 @@ const HomePage = () => {
         loadChats();
     }, []);
 
+    const handleDeleteChat = async (chatId) => {
+        if (!confirm("Delete this chat permanently?")) return;
+
+        try {
+            await fetch(`${BACKEND_URL}/chat/${chatId}`, { method: "DELETE" });
+
+            setChats(prev => prev.filter(c => c.id !== chatId));
+
+            if (activeChatId === chatId) {
+                setActiveChatId("temp-landing");
+            }
+
+        } catch (err) {
+            console.error("Delete chat error:", err);
+        }
+    };
+
     const handleSelectChat = async (id) => {
         setShowSavedNotes(false);
         setActiveChatId(id);
+
+        if (id.startsWith("temp")) return;  // prevent crash for temp chats
 
         if (abortRef.current) abortRef.current.abort();
         abortRef.current = new AbortController();
@@ -84,7 +103,26 @@ const HomePage = () => {
             });
             const msgs = await res.json();
 
-            setMessagesForChat(id, msgs);
+            const formatted = msgs.map(m => {
+                if (m.role === "user") {
+                    return {
+                        type: "user",
+                        text: m.input_text,
+                        avatar: "...",
+                    };
+                } else {
+                    return {
+                        type: "ai",
+                        text: m.summary,
+                        flashcards: m.flashcards,
+                        quiz: m.quiz,
+                        avatar: "...",
+                    };
+                }
+            });
+
+            setMessagesForChat(id, formatted);
+
         } catch (err) {
             if (err.name !== "AbortError") console.error(err);
         }
@@ -223,6 +261,7 @@ const HomePage = () => {
                 onNewChat={handleNewChat}
                 onSelectChat={handleSelectChat}
                 onOpenSavedNotes={() => setShowSavedNotes(true)}
+                onDeleteChat={handleDeleteChat}
             />
 
             <main className="main-content">

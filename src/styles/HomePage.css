@@ -270,7 +270,7 @@ body.dark .ai-block {
     color: var(--text-muted-light);
 }
 
-.primary-btn{
+.primary-btn {
     padding: 0.5rem 1rem;
     background-color: #14b8a6;
     border: none;
@@ -526,4 +526,33 @@ body.dark .chat-input {
         font-size: 0.8rem;
         padding: 0.45rem 0.65rem;
     }
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.chat-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.delete-icon {
+    opacity: 0.3;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.delete-icon:hover {
+    background: rgba(255, 0, 0, 0.15);
+    opacity: 1;
+    color: red;
 }
