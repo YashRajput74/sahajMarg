@@ -1,7 +1,7 @@
 import "../styles/HomePage.css";
-import TypewriterText from "./TypewriterText";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+import useTypewriter from "../hooks/useTypewriter";
 
 const Message = ({ type, name, text, avatar }) => {
     const isUser = type === "user";
@@ -10,26 +10,10 @@ const Message = ({ type, name, text, avatar }) => {
         ? "/avatars/user.png"
         : "/avatars/ai.png";
 
-    const renderers = {
-        p({ children }) {
-            if (typeof children[0] === "string") {
-                return (
-                    <p>
-                        <TypewriterText text={children[0]} />
-                    </p>
-                );
-            }
-
-            return <p>{children}</p>;
-        },
-        code({ className, children }) {
-            return (
-                <pre className={className || ""}>
-                    <code>{children}</code>
-                </pre>
-            );
-        },
-    };
+    // 🔥 Animate AI messages only
+    const animatedText = !isUser
+        ? useTypewriter(text)
+        : text;
 
     return (
         <div className={`message ${isUser ? "user-message" : "ai-message"}`}>
@@ -49,11 +33,8 @@ const Message = ({ type, name, text, avatar }) => {
                     {isUser ? (
                         text
                     ) : (
-                        <ReactMarkdown
-                            rehypePlugins={[rehypeHighlight]}
-                            components={renderers}
-                        >
-                            {text}
+                        <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                            {animatedText}
                         </ReactMarkdown>
                     )}
                 </div>
