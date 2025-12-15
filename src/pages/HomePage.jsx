@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import "../styles/HomePage.css";
-
+import { v4 as uuidv4 } from "uuid";
 import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
@@ -23,7 +23,7 @@ const HomePage = () => {
         },
     ]);
     const [activeChatId, setActiveChatId] = useState("temp-landing");
-
+    const [sessionId, setSessionId] = useState(null);
     const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [showSavedNotes, setShowSavedNotes] = useState(false);
     const [hydrated, setHydrated] = useState(false);
@@ -39,37 +39,93 @@ const HomePage = () => {
     };
 
     useEffect(() => {
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                if (event === "SIGNED_IN") {
+                    const sid = localStorage.getItem("session_id");
+
+                    if (sid && session?.user) {
+                        await fetch(`${BACKEND_URL}/claim-chats`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                userId: session.user.id,
+                                sessionId: sid,
+                            }),
+                        });
+
+                        localStorage.removeItem("session_id");
+                        window.location.reload();
+                    }
+                }
+            }
+        );
+
+        return () => authListener.subscription.unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        let sid = localStorage.getItem("session_id");
+
+        if (!sid) {
+            sid = uuidv4();
+            localStorage.setItem("session_id", sid);
+        }
+
+        setSessionId(sid);
+    }, []);
+
+    useEffect(() => {
         const loadChats = async () => {
             const {
                 data: { user },
             } = await supabase.auth.getUser();
 
-            if (!user) {
-                setHydrated(true);
-                return;
-            }
+            if (user) {
+                const res = await fetch(`${BACKEND_URL}/chats/${user.id}`);
+                const loadedChats = await res.json();
 
-            const res = await fetch(`${BACKEND_URL}/chats/${user.id}`);
-            const loadedChats = await res.json();
+                const normalized = loadedChats.map((c) => ({
+                    id: c.id,
+                    title: c.title,
+                    messages: [],
+                    isTemp: false,
+                }));
 
-            const normalized = loadedChats.map((c) => ({
-                id: c.id,
-                title: c.title,
-                messages: [],
-                isTemp: false,
-            }));
+                setChats((prev) => [
+                    ...normalized,
+                    ...prev.filter((c) => c.isTemp),
+                ]);
 
-            setChats((prev) => [...normalized, ...prev.filter((c) => c.isTemp)]);
+                if (normalized.length > 0) {
+                    setActiveChatId(normalized[0].id);
+                }
+            } else if (sessionId) {
+                const res = await fetch(`${BACKEND_URL}/guest-chats/${sessionId}`);
+                const loadedChats = await res.json();
 
-            if (normalized.length > 0) {
-                setActiveChatId(normalized[0].id);
+                const normalized = loadedChats.map((c) => ({
+                    id: c.id,
+                    title: c.title,
+                    messages: [],
+                    isTemp: false,
+                }));
+
+                setChats((prev) => [
+                    ...normalized,
+                    ...prev.filter((c) => c.isTemp),
+                ]);
+
+                if (normalized.length > 0) {
+                    setActiveChatId(normalized[0].id);
+                }
             }
 
             setHydrated(true);
         };
 
-        loadChats();
-    }, []);
+        if (sessionId) loadChats();
+    }, [sessionId]);
 
     const handleDeleteChat = async (chatId) => {
         if (!confirm("Delete this chat permanently?")) return;
@@ -92,15 +148,25 @@ const HomePage = () => {
         setShowSavedNotes(false);
         setActiveChatId(id);
 
-        if (id.startsWith("temp")) return;  // prevent crash for temp chats
+        if (id.startsWith("temp")) return;
 
         if (abortRef.current) abortRef.current.abort();
         abortRef.current = new AbortController();
 
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
         try {
-            const res = await fetch(`${BACKEND_URL}/messages/${id}`, {
-                signal: abortRef.current.signal,
-            });
+            const res = await fetch(
+                `${BACKEND_URL}/messages/${id}?` +
+                new URLSearchParams({
+                    userId: user ? user.id : "",
+                    sessionId: user ? "" : sessionId,
+                }),
+                { signal: abortRef.current.signal }
+            );
+
             const msgs = await res.json();
 
             const formatted = msgs.map(m => {
@@ -122,7 +188,6 @@ const HomePage = () => {
             });
 
             setMessagesForChat(id, formatted);
-
         } catch (err) {
             if (err.name !== "AbortError") console.error(err);
         }
@@ -153,8 +218,6 @@ const HomePage = () => {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) return alert("You must be logged in");
-
         setChats((prev) =>
             prev.map((c) =>
                 c.id === chatId
@@ -184,7 +247,8 @@ const HomePage = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    userId: user.id,
+                    userId: user ? user.id : null,
+                    sessionId: user ? null : sessionId,
                     chatId: chatId.startsWith("temp") ? null : chatId,
                     text: userText,
                 }),
