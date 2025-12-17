@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import "../styles/HomePage.css";
-import { v4 as uuidv4 } from "uuid";
 import Sidebar from "../components/Sidebar";
 import ChatWindow from "../components/ChatWindow";
 import InputBar from "../components/InputBar";
@@ -22,183 +21,131 @@ const HomePage = () => {
             isTemp: true,
         },
     ]);
+
     const [activeChatId, setActiveChatId] = useState("temp-landing");
-    const [sessionId, setSessionId] = useState(null);
-    const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [showSavedNotes, setShowSavedNotes] = useState(false);
+    const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [hydrated, setHydrated] = useState(false);
 
     const abortRef = useRef(null);
 
-    const setMessagesForChat = (chatId, newMessages) => {
-        setChats((prev) =>
-            prev.map((c) =>
-                c.id === chatId ? { ...c, messages: newMessages } : c
-            )
-        );
-    };
-
     useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             async (event, session) => {
-                if (event === "SIGNED_IN") {
-                    const sid = localStorage.getItem("session_id");
+                if (event === "SIGNED_IN" && session?.user) {
+                    const guestChats = chats
+                        .filter(c => c.isTemp)
+                        .map(c => ({
+                            title: c.title,
+                            messages: c.messages.map(m => ({
+                                role: m.type === "user" ? "user" : "assistant",
+                                text: m.type === "user" ? m.text : null,
+                                summary: m.type === "ai" ? m.text : null,
+                                flashcards: m.flashcards ?? null,
+                                quiz: m.quiz ?? null,
+                            })),
+                        }));
 
-                    if (sid && session?.user) {
-                        await fetch(`${BACKEND_URL}/claim-chats`, {
+                    if (guestChats.length > 0) {
+                        await fetch(`${BACKEND_URL}/claim-guest-chats`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
                                 userId: session.user.id,
-                                sessionId: sid,
+                                guestChats,
                             }),
                         });
+                    }
 
-                        localStorage.removeItem("session_id");
-                        window.location.reload();
+                    const res = await fetch(`${BACKEND_URL}/chats/${session.user.id}`);
+                    const data = await res.json();
+
+                    const normalized = data.map(c => ({
+                        id: c.id,
+                        title: c.title,
+                        messages: [],
+                        isTemp: false,
+                    }));
+
+                    setChats(normalized);
+                    if (normalized.length > 0) {
+                        setActiveChatId(normalized[0].id);
                     }
                 }
             }
         );
 
         return () => authListener.subscription.unsubscribe();
-    }, []);
+    }, [chats]);
 
     useEffect(() => {
-        let sid = localStorage.getItem("session_id");
-
-        if (!sid) {
-            sid = uuidv4();
-            localStorage.setItem("session_id", sid);
-        }
-
-        setSessionId(sid);
-    }, []);
-
-    useEffect(() => {
-        const loadChats = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
+        const loadUserChats = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
 
             if (user) {
                 const res = await fetch(`${BACKEND_URL}/chats/${user.id}`);
-                const loadedChats = await res.json();
+                const data = await res.json();
 
-                const normalized = loadedChats.map((c) => ({
+                setChats(data.map(c => ({
                     id: c.id,
                     title: c.title,
                     messages: [],
                     isTemp: false,
-                }));
+                })));
 
-                setChats((prev) => [
-                    ...normalized,
-                    ...prev.filter((c) => c.isTemp),
-                ]);
-
-                if (normalized.length > 0) {
-                    setActiveChatId(normalized[0].id);
-                }
-            } else if (sessionId) {
-                const res = await fetch(`${BACKEND_URL}/guest-chats/${sessionId}`);
-                const loadedChats = await res.json();
-
-                const normalized = loadedChats.map((c) => ({
-                    id: c.id,
-                    title: c.title,
-                    messages: [],
-                    isTemp: false,
-                }));
-
-                setChats((prev) => [
-                    ...normalized,
-                    ...prev.filter((c) => c.isTemp),
-                ]);
-
-                if (normalized.length > 0) {
-                    setActiveChatId(normalized[0].id);
-                }
+                if (data.length > 0) setActiveChatId(data[0].id);
             }
 
             setHydrated(true);
         };
 
-        if (sessionId) loadChats();
-    }, [sessionId]);
+        loadUserChats();
+    }, []);
 
-    const handleDeleteChat = async (chatId) => {
-        if (!confirm("Delete this chat permanently?")) return;
-
-        try {
-            await fetch(`${BACKEND_URL}/chat/${chatId}`, { method: "DELETE" });
-
-            setChats(prev => prev.filter(c => c.id !== chatId));
-
-            if (activeChatId === chatId) {
-                setActiveChatId("temp-landing");
-            }
-
-        } catch (err) {
-            console.error("Delete chat error:", err);
-        }
+    const setMessagesForChat = (chatId, messages) => {
+        setChats(prev =>
+            prev.map(c => (c.id === chatId ? { ...c, messages } : c))
+        );
     };
 
-    const handleSelectChat = async (id) => {
+    const handleSelectChat = async (chatId) => {
         setShowSavedNotes(false);
-        setActiveChatId(id);
+        setActiveChatId(chatId);
 
-        if (id.startsWith("temp")) return;
+        if (chatId.startsWith("temp")) return;
 
         if (abortRef.current) abortRef.current.abort();
         abortRef.current = new AbortController();
 
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-
         try {
-            const res = await fetch(
-                `${BACKEND_URL}/messages/${id}?` +
-                new URLSearchParams({
-                    userId: user ? user.id : "",
-                    sessionId: user ? "" : sessionId,
-                }),
-                { signal: abortRef.current.signal }
-            );
+            const res = await fetch(`${BACKEND_URL}/messages/${chatId}`, {
+                signal: abortRef.current.signal,
+            });
 
             const msgs = await res.json();
 
-            const formatted = msgs.map(m => {
-                if (m.role === "user") {
-                    return {
-                        type: "user",
-                        text: m.input_text,
-                        avatar: "...",
-                    };
-                } else {
-                    return {
+            const formatted = msgs.map(m =>
+                m.role === "user"
+                    ? { type: "user", text: m.input_text, avatar: "..." }
+                    : {
                         type: "ai",
                         text: m.summary,
                         flashcards: m.flashcards,
                         quiz: m.quiz,
                         avatar: "...",
-                    };
-                }
-            });
+                    }
+            );
 
-            setMessagesForChat(id, formatted);
+            setMessagesForChat(chatId, formatted);
         } catch (err) {
             if (err.name !== "AbortError") console.error(err);
         }
     };
 
     const handleNewChat = () => {
-        setShowSavedNotes(false);
+        const tempId = `temp-${Date.now()}`;
 
-        const tempId = "temp-" + Date.now();
-
-        setChats((prev) => [
+        setChats(prev => [
             {
                 id: tempId,
                 title: "New Chat",
@@ -209,113 +156,141 @@ const HomePage = () => {
         ]);
 
         setActiveChatId(tempId);
+        setShowSavedNotes(false);
     };
 
-    const handleSend = async (userText) => {
+    const handleSend = async (text) => {
         const chatId = activeChatId;
+        const { data: { user } } = await supabase.auth.getUser();
 
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-
-        setChats((prev) =>
-            prev.map((c) =>
+        // Optimistic UI
+        setChats(prev =>
+            prev.map(c =>
                 c.id === chatId
                     ? {
                         ...c,
                         messages: [
                             ...c.messages,
-                            {
-                                type: "user",
-                                text: userText,
-                                avatar: "...",
-                            },
-                            {
-                                type: "ai",
-                                text: "Generating summary, flashcards and quiz...",
-                                avatar: "...",
-                                loading: true,
-                            },
+                            { type: "user", text, avatar: "..." },
+                            { type: "ai", text: "Thinking...", loading: true, avatar: "..." },
                         ],
                     }
                     : c
             )
         );
 
-        try {
-            const res = await fetch(`${BACKEND_URL}/message`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: user ? user.id : null,
-                    sessionId: user ? null : sessionId,
-                    chatId: chatId.startsWith("temp") ? null : chatId,
-                    text: userText,
-                }),
-            });
+        const endpoint = user
+            ? `${BACKEND_URL}/message`
+            : `${BACKEND_URL}/message/guest`;
 
-            const data = await res.json();
-            const newChatId = data.chatId;
+        const res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(
+                user
+                    ? {
+                        userId: user.id,
+                        chatId: chatId.startsWith("temp") ? null : chatId,
+                        text,
+                    }
+                    : { text }
+            ),
+        });
 
-            setChats((prev) =>
-                prev.map((c) => {
-                    if (chatId.startsWith("temp") && c.id === chatId) {
-                        return {
+        const data = await res.json();
+
+        if (!user) {
+            setChats(prev =>
+                prev.map(c =>
+                    c.id === chatId
+                        ? {
                             ...c,
-                            id: newChatId,
-                            isTemp: false,
-                            messages: c.messages.map((msg) =>
-                                msg.loading
+                            messages: c.messages.map(m =>
+                                m.loading
                                     ? {
                                         type: "ai",
-                                        text: data.assistant.summary,
-                                        flashcards: data.assistant.flashcards,
-                                        quiz: data.assistant.quiz,
+                                        text: data.summary,
+                                        flashcards: data.flashcards,
+                                        quiz: data.quiz,
                                         avatar: "...",
                                         loading: false,
                                     }
-                                    : msg
+                                    : m
                             ),
-                        };
-                    }
-
-                    if (c.id === (chatId.startsWith("temp") ? newChatId : chatId)) {
-                        return {
-                            ...c,
-                            messages: c.messages.map((msg) =>
-                                msg.loading
-                                    ? {
-                                        type: "ai",
-                                        text: data.assistant.summary,
-                                        flashcards: data.assistant.flashcards,
-                                        quiz: data.assistant.quiz,
-                                        avatar: "...",
-                                        loading: false,
-                                    }
-                                    : msg
-                            ),
-                        };
-                    }
-
-                    return c;
-                })
+                        }
+                        : c
+                )
             );
+            return;
+        }
 
-            if (chatId.startsWith("temp")) {
-                setActiveChatId(newChatId);
-            }
-        } catch (err) {
-            console.error("❌ FRONTEND SEND ERROR:", err);
+        const newChatId = data.chatId;
+
+        setChats(prev =>
+            prev.map(c => {
+                if (chatId.startsWith("temp") && c.id === chatId) {
+                    return {
+                        ...c,
+                        id: newChatId,
+                        isTemp: false,
+                        messages: c.messages.map(m =>
+                            m.loading
+                                ? {
+                                    type: "ai",
+                                    text: data.assistant.summary,
+                                    flashcards: data.assistant.flashcards,
+                                    quiz: data.assistant.quiz,
+                                    avatar: "...",
+                                    loading: false,
+                                }
+                                : m
+                        ),
+                    };
+                }
+
+                if (c.id === newChatId) {
+                    return {
+                        ...c,
+                        messages: c.messages.map(m =>
+                            m.loading
+                                ? {
+                                    type: "ai",
+                                    text: data.assistant.summary,
+                                    flashcards: data.assistant.flashcards,
+                                    quiz: data.assistant.quiz,
+                                    avatar: "...",
+                                    loading: false,
+                                }
+                                : m
+                        ),
+                    };
+                }
+
+                return c;
+            })
+        );
+
+        if (chatId.startsWith("temp")) {
+            setActiveChatId(newChatId);
         }
     };
 
+    const handleDeleteChat = async (chatId) => {
+        if (!confirm("Delete this chat permanently?")) return;
+
+        await fetch(`${BACKEND_URL}/chat/${chatId}`, { method: "DELETE" });
+
+        setChats(prev => prev.filter(c => c.id !== chatId));
+        if (activeChatId === chatId) setActiveChatId("temp-landing");
+    };
+
     const handleSaveFlashcards = (fc) => {
-        setSavedFlashcards((prev) => [...prev, fc]);
+        setSavedFlashcards(prev => [...prev, fc]);
     };
 
     if (!hydrated) return <div className="loading-screen">Loading...</div>;
 
-    const activeChat = chats.find((c) => c.id === activeChatId);
+    const activeChat = chats.find(c => c.id === activeChatId);
 
     return (
         <div className="home-container">
@@ -324,8 +299,8 @@ const HomePage = () => {
                 activeChatId={activeChatId}
                 onNewChat={handleNewChat}
                 onSelectChat={handleSelectChat}
-                onOpenSavedNotes={() => setShowSavedNotes(true)}
                 onDeleteChat={handleDeleteChat}
+                onOpenSavedNotes={() => setShowSavedNotes(true)}
             />
 
             <main className="main-content">
