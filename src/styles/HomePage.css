@@ -556,3 +556,26 @@ body.dark .chat-input {
     opacity: 1;
     color: red;
 }
+
+.login-cta {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.login-cta button {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid rgba(20, 184, 166, 0.4);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.login-cta button:hover {
+    background-color: rgba(20, 184, 166, 0.1);
+    border-color: var(--primary-color);
+}

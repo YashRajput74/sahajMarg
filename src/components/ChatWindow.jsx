@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import FlashcardBlock from "./FlashcardBlock";
 import QuizBlock from "./QuizBlock";
+import Modal from "./Modal";
 import "../styles/HomePage.css";
 
 const ChatWindow = ({ messages, onSaveFlashcards }) => {
     const messagesEndRef = useRef(null);
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -13,7 +15,13 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
 
     return (
         <div className="chat-window">
+            <div className="login-cta">
+                <button onClick={() => setShowAuthModal(true)}>
+                    Log in / Sign up
+                </button>
+            </div>
             <div className="chat-container">
+
 
                 {messages.map((msg, index) => {
                     if (msg.type === "user" || msg.type === "ai") {
@@ -26,7 +34,7 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
                                     avatar={msg.avatar}
                                 />
 
-                                {msg.flashcards && msg.flashcards.length > 0 && (
+                                {msg.flashcards?.length > 0 && (
                                     <FlashcardBlock
                                         cards={msg.flashcards}
                                         topic="Flashcards"
@@ -34,7 +42,7 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
                                     />
                                 )}
 
-                                {msg.quiz && msg.quiz.length > 0 && (
+                                {msg.quiz?.length > 0 && (
                                     <QuizBlock
                                         questions={msg.quiz}
                                         topic="Quiz"
@@ -43,11 +51,15 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
                             </div>
                         );
                     }
-
                     return null;
                 })}
 
-                <div ref={messagesEndRef}></div>
+                <div ref={messagesEndRef} />
+
+                <Modal
+                    isOpen={showAuthModal}
+                    onClose={() => setShowAuthModal(false)}
+                />
             </div>
         </div>
     );

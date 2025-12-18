@@ -26,15 +26,26 @@ const HomePage = () => {
     const [showSavedNotes, setShowSavedNotes] = useState(false);
     const [savedFlashcards, setSavedFlashcards] = useState([]);
     const [hydrated, setHydrated] = useState(false);
-
+    const chatsRef = useRef([]);
+    const hasClaimedRef = useRef(false);
     const abortRef = useRef(null);
+
+    useEffect(() => {
+        chatsRef.current = chats;
+    }, [chats]);
 
     useEffect(() => {
         const { data: authListener } = supabase.auth.onAuthStateChange(
             async (event, session) => {
-                if (event === "SIGNED_IN" && session?.user) {
-                    const guestChats = chats
-                        .filter(c => c.isTemp)
+                if (
+                    event === "SIGNED_IN" &&
+                    session?.user &&
+                    !hasClaimedRef.current
+                ) {
+                    hasClaimedRef.current = true;
+
+                    const guestChats = chatsRef.current
+                        .filter(c => c.isTemp && c.messages.length > 0)
                         .map(c => ({
                             title: c.title,
                             messages: c.messages.map(m => ({
@@ -57,26 +68,30 @@ const HomePage = () => {
                         });
                     }
 
-                    const res = await fetch(`${BACKEND_URL}/chats/${session.user.id}`);
+                    // Reload real chats from backend
+                    const res = await fetch(
+                        `${BACKEND_URL}/chats/${session.user.id}`
+                    );
                     const data = await res.json();
 
-                    const normalized = data.map(c => ({
-                        id: c.id,
-                        title: c.title,
-                        messages: [],
-                        isTemp: false,
-                    }));
+                    setChats(
+                        data.map(c => ({
+                            id: c.id,
+                            title: c.title,
+                            messages: [],
+                            isTemp: false,
+                        }))
+                    );
 
-                    setChats(normalized);
-                    if (normalized.length > 0) {
-                        setActiveChatId(normalized[0].id);
+                    if (data.length > 0) {
+                        setActiveChatId(data[0].id);
                     }
                 }
             }
         );
 
         return () => authListener.subscription.unsubscribe();
-    }, [chats]);
+    }, []);
 
     useEffect(() => {
         const loadUserChats = async () => {
@@ -162,6 +177,17 @@ const HomePage = () => {
     const handleSend = async (text) => {
         const chatId = activeChatId;
         const { data: { user } } = await supabase.auth.getUser();
+        setChats(prev =>
+            prev.map(c => {
+                if (c.id === chatId && c.isTemp && c.title === "New Chat") {
+                    return {
+                        ...c,
+                        title: text.length > 50 ? text.slice(0, 50) + "..." : text
+                    };
+                }
+                return c;
+            })
+        );
 
         // Optimistic UI
         setChats(prev =>
