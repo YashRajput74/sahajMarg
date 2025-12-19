@@ -43,7 +43,6 @@ const Sidebar = ({
                     )}
 
                     {chats.map((chat) => {
-                        // Fix untitled chat name
                         const title =
                             chat.title ||
                             (chat.messages?.[0]?.text
@@ -67,11 +66,10 @@ const Sidebar = ({
                                     <p>{title}</p>
                                 </div>
 
-                                {/* Delete Icon */}
                                 <span
                                     className="material-symbols-outlined delete-icon"
                                     onClick={(e) => {
-                                        e.stopPropagation(); // prevent opening chat
+                                        e.stopPropagation();
                                         onDeleteChat(chat.id);
                                     }}
                                 >

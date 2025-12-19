@@ -9,7 +9,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
     const [answers, setAnswers] = useState({});
     const [showResult, setShowResult] = useState(false);
 
-    // EARLY EXIT FOR EMPTY QUIZ
     if (total === 0) {
         return (
             <div className="quizModal-overlay">
@@ -69,7 +68,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
         <div className="quizModal-overlay">
             <div className="quizModal-container">
 
-                {/* Header */}
                 <header className="quizModal-header">
                     <h2 className="quizModal-title">{topic}</h2>
                     <button className="quizModal-close" onClick={onClose}>
@@ -86,7 +84,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
 
                             <p className="quizModal-questionText">{current.question}</p>
 
-                            {/* OPTIONS */}
                             <div className="quizModal-options">
                                 {options.map((option, i) => {
                                     const isSelected = answers[index] === option;
@@ -116,7 +113,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                                 })}
                             </div>
 
-                            {/* FEEDBACK */}
                             {showResult && (
                                 <div className="quizModal-feedback">
                                     {answers[index] === current.answer ? (
@@ -131,7 +127,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                             )}
                         </div>
 
-                        {/* PROGRESS */}
                         <div className="quizModal-progressSection">
                             <div className="quizModal-progressInfo">
                                 <p>Question {index + 1} of {total}</p>
@@ -164,7 +159,6 @@ export default function QuizModal({ onClose, questions = [], topic = "Quiz" }) {
                         </div>
                     </main>
 
-                    {/* SIDEBAR */}
                     <aside className="quizModal-sidebar">
                         <h3 className="quizModal-sidebarTitle">QUESTIONS</h3>
 

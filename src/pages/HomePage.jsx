@@ -68,7 +68,6 @@ const HomePage = () => {
                         });
                     }
 
-                    // Reload real chats from backend
                     const res = await fetch(
                         `${BACKEND_URL}/chats/${session.user.id}`
                     );
@@ -189,7 +188,6 @@ const HomePage = () => {
             })
         );
 
-        // Optimistic UI
         setChats(prev =>
             prev.map(c =>
                 c.id === chatId
