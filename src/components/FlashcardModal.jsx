@@ -4,6 +4,7 @@ import "../styles/Modal.css";
 const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlashcards }) => {
     const safeCards = Array.isArray(cards) ? cards : [];
     const total = safeCards.length;
+    const [isSaved, setIsSaved] = useState(false);
 
     const [index, setIndex] = useState(0);
 
@@ -18,19 +19,21 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
     };
 
     const saveFlashcards = () => {
+        if (isSaved) return;
+
         onSaveFlashcards({
             topic,
-            cards: safeCards,      // save ALL cards
+            cards: safeCards,
             savedAt: Date.now()
         });
-        onClose();
+
+        setIsSaved(true);
     };
 
     return (
         <div className="fc-modal-overlay">
             <div className="fc-modal-container">
 
-                {/* Close button */}
                 <div className="fc-modal-close">
                     <button className="fc-close-btn" onClick={onClose}>
                         <span className="material-symbols-outlined">close</span>
@@ -43,7 +46,6 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
                     </p>
                 ) : (
                     <>
-                        {/* Flipcard */}
                         <div className="fc-flip-card" tabIndex="0">
                             <div className="fc-flip-card-inner">
                                 <div className="fc-flip-card-front">
@@ -64,7 +66,6 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
                             </div>
                         </div>
 
-                        {/* Navigation */}
                         <div className="fc-card-nav">
                             <button
                                 className={`fc-nav-btn ${index === 0 ? "fc-disabled" : ""}`}
@@ -85,16 +86,33 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
                             </button>
                         </div>
 
-                        {/* Footer */}
                         <div className="fc-modal-footer">
-                            <button className="fc-secondary-btn" onClick={() => setIndex(0)}>
+                            <button
+                                className="fc-secondary-btn"
+                                onClick={() => setIndex(0)}
+                                disabled={isSaved}
+                            >
                                 Review Again
                             </button>
 
-                            <button className="fc-primary-btn" onClick={saveFlashcards}>
-                                Save Flashcards
+                            <button
+                                className={`fc-primary-btn ${isSaved ? "fc-saved" : ""}`}
+                                onClick={saveFlashcards}
+                                disabled={isSaved}
+                            >
+                                {isSaved ? "Saved ✓" : "Save Flashcards"}
                             </button>
+
+                            {isSaved && (
+                                <button
+                                    className="fc-secondary-btn"
+                                    onClick={onClose}
+                                >
+                                    Close
+                                </button>
+                            )}
                         </div>
+
                     </>
                 )}
             </div>

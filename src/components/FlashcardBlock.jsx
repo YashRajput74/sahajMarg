@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import FlashcardModal from "./FlashcardModal";
 import "../styles/HomePage.css";
 

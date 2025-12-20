@@ -171,13 +171,14 @@ body.dark .fc-progress-text {
 .fc-secondary-btn,
 .fc-primary-btn {
     flex: 1;
-    min-width: 8rem;
+    min-width: 9rem;
     height: 3rem;
     border-radius: var(--radius);
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.2s ease;
+    padding: 0.5rem;
 }
 
 .fc-secondary-btn {

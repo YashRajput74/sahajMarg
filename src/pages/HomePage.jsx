@@ -6,6 +6,8 @@ import InputBar from "../components/InputBar";
 import HomeCenterContent from "../components/HomeCenterContent";
 import SavedNotesPage from "../components/SavedNotesPage";
 import { supabase } from "../lib/supabaseClient";
+import { normalizeMessage } from "../utils/normalizeMessages";
+import Modal from "../components/Modal";
 
 const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_BACKEND_URL !== ""
@@ -29,6 +31,7 @@ const HomePage = () => {
     const chatsRef = useRef([]);
     const hasClaimedRef = useRef(false);
     const abortRef = useRef(null);
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     useEffect(() => {
         chatsRef.current = chats;
@@ -138,17 +141,7 @@ const HomePage = () => {
 
             const msgs = await res.json();
 
-            const formatted = msgs.map(m =>
-                m.role === "user"
-                    ? { type: "user", text: m.input_text, avatar: "..." }
-                    : {
-                        type: "ai",
-                        text: m.summary,
-                        flashcards: m.flashcards,
-                        quiz: m.quiz,
-                        avatar: "...",
-                    }
-            );
+            const formatted = msgs.map(normalizeMessage);
 
             setMessagesForChat(chatId, formatted);
         } catch (err) {
@@ -156,7 +149,14 @@ const HomePage = () => {
         }
     };
 
-    const handleNewChat = () => {
+    const handleNewChat = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+            setShowAuthModal(true);
+            return;
+        }
+
         const tempId = `temp-${Date.now()}`;
 
         setChats(prev => [
@@ -176,17 +176,6 @@ const HomePage = () => {
     const handleSend = async (text) => {
         const chatId = activeChatId;
         const { data: { user } } = await supabase.auth.getUser();
-        setChats(prev =>
-            prev.map(c => {
-                if (c.id === chatId && c.isTemp && c.title === "New Chat") {
-                    return {
-                        ...c,
-                        title: text.length > 50 ? text.slice(0, 50) + "..." : text
-                    };
-                }
-                return c;
-            })
-        );
 
         setChats(prev =>
             prev.map(c =>
@@ -225,25 +214,34 @@ const HomePage = () => {
 
         if (!user) {
             setChats(prev =>
-                prev.map(c =>
-                    c.id === chatId
-                        ? {
-                            ...c,
-                            messages: c.messages.map(m =>
-                                m.loading
-                                    ? {
-                                        type: "ai",
-                                        text: data.summary,
-                                        flashcards: data.flashcards,
-                                        quiz: data.quiz,
-                                        avatar: "...",
-                                        loading: false,
-                                    }
-                                    : m
-                            ),
-                        }
-                        : c
-                )
+                prev.map(c => {
+                    if (c.id !== chatId) return c;
+
+                    const newTitle =
+                        c.title === "New Chat"
+                            ? text.length > 40
+                                ? text.slice(0, 40) + "..."
+                                : text
+                            : c.title;
+
+                    return {
+                        ...c,
+                        title: newTitle,
+                        messages: c.messages.map(m =>
+                            m.loading
+                                ? {
+                                    type: "ai",
+                                    text: data.assistant.summary,
+                                    flashcards: data.assistant.flashcards,
+                                    quiz: data.assistant.quiz,
+                                    avatar: "...",
+                                    loading: false,
+                                    animated: true
+                                }
+                                : m
+                        ),
+                    };
+                })
             );
             return;
         }
@@ -256,6 +254,7 @@ const HomePage = () => {
                     return {
                         ...c,
                         id: newChatId,
+                        title: data.title || c.title,
                         isTemp: false,
                         messages: c.messages.map(m =>
                             m.loading
@@ -266,6 +265,7 @@ const HomePage = () => {
                                     quiz: data.assistant.quiz,
                                     avatar: "...",
                                     loading: false,
+                                    animated: true
                                 }
                                 : m
                         ),
@@ -284,6 +284,7 @@ const HomePage = () => {
                                     quiz: data.assistant.quiz,
                                     avatar: "...",
                                     loading: false,
+                                    animated: true
                                 }
                                 : m
                         ),
@@ -345,6 +346,11 @@ const HomePage = () => {
                     </>
                 )}
             </main>
+
+            <Modal
+                isOpen={showAuthModal}
+                onClose={() => setShowAuthModal(false)}
+            />
         </div>
     );
 };

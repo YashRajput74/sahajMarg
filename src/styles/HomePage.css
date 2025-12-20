@@ -225,6 +225,13 @@ body.dark .ai-bubble {
     border-color: #374151;
 }
 
+.ai-bubble>ol{
+    padding-left: 1.5rem;  
+}
+
+.ai-bubble>ul{
+    padding-left: 1.5rem;
+}
 .avatar {
     width: 2.5rem;
     height: 2.5rem;
@@ -312,7 +319,7 @@ body.dark .block-subtext {
 .chat-input {
     width: 100%;
     height: 3.5rem;
-    padding: 0 3rem;
+    padding: 0 4rem;
     border-radius: var(--radius);
     background-color: var(--element-light);
     border: 1px solid #e5e7eb;

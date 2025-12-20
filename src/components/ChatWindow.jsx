@@ -32,9 +32,10 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
                                     name={msg.type === "user" ? "You" : "AI Assistant"}
                                     text={msg.text}
                                     avatar={msg.avatar}
+                                    animated={msg.animated}
                                 />
 
-                                {msg.flashcards?.length > 0 && (
+                                {Array.isArray(msg.flashcards) && msg.flashcards.length > 0 && (
                                     <FlashcardBlock
                                         cards={msg.flashcards}
                                         topic="Flashcards"
