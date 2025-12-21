@@ -23,4 +23,3 @@ const useTypewriter = (text, speed = 20) => {
 };
 
 export default useTypewriter;
-/* user must be able to enter chat without login */
