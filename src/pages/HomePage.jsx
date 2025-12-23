@@ -149,6 +149,36 @@ const HomePage = () => {
         }
     };
 
+    const saveFlashcard = async ({ cardId, messageId, chatId }) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return false;
+
+        const res = await fetch(`${BACKEND_URL}/flashcards/save`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: user.id,
+                cardId,
+                messageId,
+                chatId
+            })
+        });
+
+        return res.ok;
+    };
+
+    const fetchSavedFlashcards = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const res = await fetch(
+            `${BACKEND_URL}/flashcards/saved/${user.id}`
+        );
+        const cards = await res.json();
+
+        setSavedFlashcards(cards);
+    };
+
     const handleNewChat = async () => {
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -325,7 +355,10 @@ const HomePage = () => {
                 onNewChat={handleNewChat}
                 onSelectChat={handleSelectChat}
                 onDeleteChat={handleDeleteChat}
-                onOpenSavedNotes={() => setShowSavedNotes(true)}
+                onOpenSavedNotes={() => {
+                    setShowSavedNotes(true);
+                    fetchSavedFlashcards();
+                }}
             />
 
             <main className="main-content">
@@ -335,7 +368,8 @@ const HomePage = () => {
                     <>
                         <ChatWindow
                             messages={activeChat.messages}
-                            onSaveFlashcards={handleSaveFlashcards}
+                            chatId={activeChat.id}
+                            onSaveFlashcards={saveFlashcard}
                         />
                         <InputBar onSend={handleSend} />
                     </>

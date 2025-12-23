@@ -5,7 +5,7 @@ import QuizBlock from "./QuizBlock";
 import Modal from "./Modal";
 import "../styles/HomePage.css";
 
-const ChatWindow = ({ messages, onSaveFlashcards }) => {
+const ChatWindow = ({ messages,chatId, onSaveFlashcards }) => {
     const messagesEndRef = useRef(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -39,6 +39,8 @@ const ChatWindow = ({ messages, onSaveFlashcards }) => {
                                     <FlashcardBlock
                                         cards={msg.flashcards}
                                         topic="Flashcards"
+                                        chatId={chatId}
+                                        messageId={msg.id}
                                         onSaveFlashcards={onSaveFlashcards}
                                     />
                                 )}

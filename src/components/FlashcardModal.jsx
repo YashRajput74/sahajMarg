@@ -1,10 +1,18 @@
 import { useState } from "react";
 import "../styles/Modal.css";
 
-const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlashcards }) => {
+const FlashcardModal = ({
+    onClose,
+    cards = [],
+    topic = "Flashcards",
+    chatId,
+    messageId,
+    onSaveFlashcards
+}) => {
     const safeCards = Array.isArray(cards) ? cards : [];
     const total = safeCards.length;
-    const [isSaved, setIsSaved] = useState(false);
+    const [savedCards, setSavedCards] = useState(new Set());
+    const isSaved = savedCards.size === total && total > 0;
 
     const [index, setIndex] = useState(0);
 
@@ -18,16 +26,25 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
         if (index > 0) setIndex(index - 1);
     };
 
-    const saveFlashcards = () => {
-        if (isSaved) return;
+    const saveCurrentCard = async () => {
+        if (!current?.id || !messageId) {
+            console.error("Missing IDs", { current, messageId, chatId });
+            return;
+        }
 
-        onSaveFlashcards({
-            topic,
-            cards: safeCards,
-            savedAt: Date.now()
+        const ok = await onSaveFlashcards({
+            cardId: current.id,
+            chatId,
+            messageId
         });
 
-        setIsSaved(true);
+        if (!ok) return;
+
+        setSavedCards(prev => {
+            const next = new Set(prev);
+            next.add(current.id);
+            return next;
+        });
     };
 
     return (
@@ -96,11 +113,12 @@ const FlashcardModal = ({ onClose, cards = [], topic = "Flashcards", onSaveFlash
                             </button>
 
                             <button
-                                className={`fc-primary-btn ${isSaved ? "fc-saved" : ""}`}
-                                onClick={saveFlashcards}
-                                disabled={isSaved}
+                                className={`fc-primary-btn ${savedCards.has(current.id) ? "fc-saved" : ""
+                                    }`}
+                                onClick={saveCurrentCard}
+                                disabled={savedCards.has(current.id)}
                             >
-                                {isSaved ? "Saved ✓" : "Save Flashcards"}
+                                {savedCards.has(current.id) ? "Saved ✓" : "Save Card"}
                             </button>
 
                             {isSaved && (

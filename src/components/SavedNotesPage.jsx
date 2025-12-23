@@ -1,6 +1,32 @@
+import { useState } from "react";
 import "../styles/SavedNotesPage.css";
+import FlashcardModal from "./FlashcardModal";
+
+const groupByChat = (cards) => {
+    const map = {};
+
+    cards.forEach(card => {
+        const key = card.chatId || "unknown";
+
+        if (!map[key]) {
+            map[key] = {
+                title: card.chatTitle || "Untitled Chat",
+                topic: "Flashcards",
+                description: "Saved from chat",
+                cards: []
+            };
+        }
+
+        map[key].cards.push(card);
+    });
+
+    return Object.values(map);
+};
 
 const SavedNotesPage = ({ savedFlashcards = [] }) => {
+    const [activeDeck, setActiveDeck] = useState(null);
+    const collections = groupByChat(savedFlashcards);
+
     return (
         <div className="saved-notes-container">
             <header className="saved-notes-header">
@@ -23,11 +49,11 @@ const SavedNotesPage = ({ savedFlashcards = [] }) => {
             </div>
 
             <div className="flashcards-grid">
-                {savedFlashcards.length === 0 && (
+                {collections.length === 0 && (
                     <p className="no-flashcards">No flashcards saved yet.</p>
                 )}
 
-                {savedFlashcards.map((item, index) => (
+                {collections.map((item, index) => (
                     <div className="flashcard-box" key={index}>
                         <div className="flashcard-header">
                             <h3>{item.title || "Untitled Set"}</h3>
@@ -45,10 +71,23 @@ const SavedNotesPage = ({ savedFlashcards = [] }) => {
                         </p>
 
                         <div className="flashcard-actions">
-                            <button className="open-btn">Open</button>
+                            <button
+                                className="open-btn"
+                                onClick={() => setActiveDeck(item.cards)}
+                            >
+                                Open
+                            </button>
                             <button className="icon-btn">✏️</button>
                             <button className="icon-btn">🗑️</button>
                         </div>
+                        {activeDeck && (
+                            <FlashcardModal
+                                cards={activeDeck}
+                                topic="Saved Flashcards"
+                                onClose={() => setActiveDeck(null)}
+                            />
+                        )}
+
                     </div>
                 ))}
             </div>

@@ -2,7 +2,13 @@ import { useState } from "react";
 import FlashcardModal from "./FlashcardModal";
 import "../styles/HomePage.css";
 
-const FlashcardBlock = ({ cards = [], topic = "Flashcards", onSaveFlashcards }) => {
+const FlashcardBlock = ({
+    cards = [],
+    topic,
+    chatId,
+    messageId,
+    onSaveFlashcards
+}) => {
     const [showModal, setShowModal] = useState(false);
     const count = Array.isArray(cards) ? cards.length : 0;
 
@@ -25,6 +31,8 @@ const FlashcardBlock = ({ cards = [], topic = "Flashcards", onSaveFlashcards }) 
                     onClose={() => setShowModal(false)}
                     cards={cards}
                     topic={topic}
+                    chatId={chatId}
+                    messageId={messageId}
                     onSaveFlashcards={onSaveFlashcards}
                 />
             )}
