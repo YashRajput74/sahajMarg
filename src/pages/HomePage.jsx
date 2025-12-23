@@ -151,20 +151,36 @@ const HomePage = () => {
 
     const saveFlashcard = async ({ cardId, messageId, chatId }) => {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return false;
 
-        const res = await fetch(`${BACKEND_URL}/flashcards/save`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userId: user.id,
-                cardId,
-                messageId,
-                chatId
-            })
-        });
+        if (!user) {
+            return { status: "unauthenticated" };
+        }
 
-        return res.ok;
+        try {
+            const res = await fetch(`${BACKEND_URL}/flashcards/save`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: user.id,
+                    cardId,
+                    messageId,
+                    chatId
+                })
+            });
+
+            if (res.status === 409) {
+                return { status: "already_saved" };
+            }
+
+            if (!res.ok) {
+                return { status: "error" };
+            }
+
+            return { status: "success" };
+
+        } catch {
+            return { status: "error" };
+        }
     };
 
     const fetchSavedFlashcards = async () => {
@@ -247,16 +263,9 @@ const HomePage = () => {
                 prev.map(c => {
                     if (c.id !== chatId) return c;
 
-                    const newTitle =
-                        c.title === "New Chat"
-                            ? text.length > 40
-                                ? text.slice(0, 40) + "..."
-                                : text
-                            : c.title;
-
                     return {
                         ...c,
-                        title: newTitle,
+                        title: c.title === "New Chat" && data.title ? data.title : c.title,
                         messages: c.messages.map(m =>
                             m.loading
                                 ? {

@@ -13,6 +13,8 @@ const FlashcardModal = ({
     const total = safeCards.length;
     const [savedCards, setSavedCards] = useState(new Set());
     const isSaved = savedCards.size === total && total > 0;
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState(null);
 
     const [index, setIndex] = useState(0);
 
@@ -27,24 +29,36 @@ const FlashcardModal = ({
     };
 
     const saveCurrentCard = async () => {
-        if (!current?.id || !messageId) {
-            console.error("Missing IDs", { current, messageId, chatId });
-            return;
-        }
+        if (!current?.id || !messageId) return;
 
-        const ok = await onSaveFlashcards({
+        setSaving(true);
+        setError(null);
+
+        const result = await onSaveFlashcards({
             cardId: current.id,
             chatId,
             messageId
         });
 
-        if (!ok) return;
+        setSaving(false);
 
-        setSavedCards(prev => {
-            const next = new Set(prev);
-            next.add(current.id);
-            return next;
-        });
+        if (result.status === "unauthenticated") {
+            setError("Login required to save flashcards");
+            return;
+        }
+
+        if (result.status === "error") {
+            setError("Failed to save. Try again.");
+            return;
+        }
+
+        if (result.status === "success") {
+            setSavedCards(prev => {
+                const next = new Set(prev);
+                next.add(current.id);
+                return next;
+            });
+        }
     };
 
     return (
@@ -116,9 +130,13 @@ const FlashcardModal = ({
                                 className={`fc-primary-btn ${savedCards.has(current.id) ? "fc-saved" : ""
                                     }`}
                                 onClick={saveCurrentCard}
-                                disabled={savedCards.has(current.id)}
+                                disabled={savedCards.has(current.id) || saving}
                             >
-                                {savedCards.has(current.id) ? "Saved ✓" : "Save Card"}
+                                {saving
+                                    ? "Saving..."
+                                    : savedCards.has(current.id)
+                                        ? "Saved ✓"
+                                        : "Save Card"}
                             </button>
 
                             {isSaved && (
@@ -129,8 +147,13 @@ const FlashcardModal = ({
                                     Close
                                 </button>
                             )}
-                        </div>
 
+                            {error && (
+                                <p className="fc-error-text">
+                                    {error}
+                                </p>
+                            )}
+                        </div>
                     </>
                 )}
             </div>

@@ -609,3 +609,9 @@ body.dark .chat-input {
     background: none;
     padding: 0;
 }
+
+.fc-error-text {
+    margin-top: 8px;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+}
