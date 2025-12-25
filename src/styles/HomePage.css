@@ -219,6 +219,10 @@ body.dark .message-name {
     border: 1px solid #e5e7eb;
 }
 
+.ai-bubble p{
+    margin: 5px;
+}
+
 body.dark .ai-bubble {
     background-color: var(--element-dark);
     color: var(--text-dark);
@@ -248,6 +252,7 @@ body.dark .ai-bubble {
     border: 1px solid #e5e7eb;
     border-radius: var(--radius);
     padding: 1rem;
+    margin:1rem;
 }
 
 body.dark .ai-block {
@@ -280,6 +285,7 @@ body.dark .ai-block {
 .primary-btn {
     padding: 0.5rem 1rem;
     background-color: #14b8a6;
+    color: white;
     border: none;
     border-radius: 0.5rem;
 }

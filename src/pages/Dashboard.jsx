@@ -185,7 +185,7 @@ export default function Dashboard() {
             </main>
 
             <footer className="footer">
-                <p>© 2024 StudyAI. All rights reserved.</p>
+                <p>© 2025 StudyAI. All rights reserved.</p>
             </footer>
             <Modal isOpen={isModalOpen} onClose={closeModal} />
         </div>
