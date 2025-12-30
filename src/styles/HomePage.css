@@ -189,7 +189,7 @@ body.dark .nav-item:hover {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    max-width: 32rem;
+    max-width: 45rem;
 }
 
 .message-name {
@@ -253,6 +253,8 @@ body.dark .ai-bubble {
     border-radius: var(--radius);
     padding: 1rem;
     margin:1rem;
+    margin-left: 3.4rem;
+    max-width: 45rem;
 }
 
 body.dark .ai-block {
@@ -288,6 +290,14 @@ body.dark .ai-block {
     color: white;
     border: none;
     border-radius: 0.5rem;
+}
+
+.logo-section {
+    display: flex;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
 
 body.dark .block-subtext {
