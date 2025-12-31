@@ -245,7 +245,6 @@ body.dark .ai-bubble {
     flex-shrink: 0;
 }
 
-/* Flashcard / Quiz Blocks */
 .ai-block {
     width: 100%;
     background-color: var(--element-light);
