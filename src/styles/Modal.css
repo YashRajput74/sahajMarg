@@ -23,6 +23,7 @@
 
 .fc-modal-close {
     position: absolute;
+    z-index: 50;
     top: 0.5rem;
     right: 0.5rem;
 }
@@ -44,7 +45,8 @@
 .fc-flip-card {
     perspective: 1000px;
     width: 100%;
-    max-width: 30rem;
+    z-index: 1;
+    max-width: 50rem;
     aspect-ratio: 16 / 9;
     cursor: pointer;
 }
@@ -151,7 +153,7 @@ body.dark .fc-nav-btn:hover {
 
 .fc-progress-text {
     font-size: 0.875rem;
-    color: var(--text-muted-light);
+    color: #fff;
     width: 4rem;
     text-align: center;
 }
@@ -200,7 +202,7 @@ body.dark .fc-secondary-btn:hover {
 }
 
 .fc-primary-btn {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: #fff;
     border: none;
 }
