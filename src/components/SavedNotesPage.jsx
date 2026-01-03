@@ -77,7 +77,7 @@ const SavedNotesPage = ({ savedFlashcards = [] }) => {
                             >
                                 Open
                             </button>
-                            <span class="material-symbols-outlined delete-icon">delete</span>
+                            <span className="material-symbols-outlined delete-icon">delete</span>
                         </div>
                         {activeDeck && (
                             <FlashcardModal

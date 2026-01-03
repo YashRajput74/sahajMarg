@@ -155,3 +155,15 @@ body.dark .icon-btn {
 body.dark .icon-btn:hover {
     background: #3a4455;
 }
+
+@media (max-width: 768px){
+    .saved-notes-toolbar{
+        gap: 0px;
+    }
+}
+
+@media (max-width: 480px){
+    .saved-notes-toolbar{
+        gap: 0px;
+    }
+}
