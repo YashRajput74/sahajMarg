@@ -427,6 +427,7 @@ body.dark .chat-input {
 
     .chat-window {
         padding: 1rem;
+        overflow: hidden;
     }
 
     .input-bar {
@@ -477,6 +478,8 @@ body.dark .chat-input {
 @media (max-width: 1024px) {
     .chat-window {
         padding: 0 1rem;
+        overflow: hidden;
+
     }
 
     .chat-container {
@@ -491,6 +494,7 @@ body.dark .chat-input {
 @media (max-width: 768px) {
     .chat-window {
         padding: 0.5rem;
+        overflow: hidden;
         height: calc(100vh - 140px);
     }
 
