@@ -91,10 +91,6 @@ const Sidebar = ({
                     <p>Saved Notes</p>
                 </div>
 
-                <div className="nav-item">
-                    <span className="material-symbols-outlined">history</span>
-                    <p>History</p>
-                </div>
             </div>
         </aside>
     );
