@@ -203,6 +203,16 @@ const HomePage = () => {
             return;
         }
 
+        const existingEmptyTemp = chats.find(
+            c => c.isTemp && c.messages.length === 0
+        );
+
+        if (existingEmptyTemp) {
+            setActiveChatId(existingEmptyTemp.id);
+            setShowSavedNotes(false);
+            return;
+        }
+
         const tempId = `temp-${Date.now()}`;
 
         setChats(prev => [
