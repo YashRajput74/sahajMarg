@@ -28,6 +28,7 @@ const FlashcardBlock = ({
 
             {showModal && (
                 <FlashcardModal
+                    mode = "generated"
                     onClose={() => setShowModal(false)}
                     cards={cards}
                     topic={topic}

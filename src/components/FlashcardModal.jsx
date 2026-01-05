@@ -2,11 +2,13 @@ import { useState } from "react";
 import "../styles/Modal.css";
 
 const FlashcardModal = ({
+    mode = "generated",
     onClose,
     cards = [],
     topic = "Flashcards",
     chatId,
     messageId,
+    onDeleteFlashcard,
     onSaveFlashcards
 }) => {
     const safeCards = Array.isArray(cards) ? cards : [];
@@ -19,6 +21,14 @@ const FlashcardModal = ({
     const [index, setIndex] = useState(0);
 
     const current = safeCards[index];
+    const deleteCurrentCard = async () => {
+        await onDeleteFlashcard({
+            cardId: current.id,
+            messageId: current.messageId
+        });
+
+        if (index > 0) setIndex(i => i - 1);
+    };
 
     const nextCard = () => {
         if (index < total - 1) setIndex(index + 1);
@@ -126,18 +136,24 @@ const FlashcardModal = ({
                                 Review Again
                             </button>
 
-                            <button
-                                className={`fc-primary-btn ${savedCards.has(current.id) ? "fc-saved" : ""
-                                    }`}
-                                onClick={saveCurrentCard}
-                                disabled={savedCards.has(current.id) || saving}
-                            >
-                                {saving
-                                    ? "Saving..."
-                                    : savedCards.has(current.id)
-                                        ? "Saved ✓"
-                                        : "Save Card"}
-                            </button>
+                            {mode === "generated" && (
+                                <button
+                                    className={`fc-primary-btn ${savedCards.has(current.id) ? "fc-saved" : ""}`}
+                                    onClick={saveCurrentCard}
+                                    disabled={savedCards.has(current.id) || saving}
+                                >
+                                    {saving ? "Saving..." : savedCards.has(current.id) ? "Saved ✓" : "Save Card"}
+                                </button>
+                            )}
+
+                            {mode === "saved" && (
+                                <button
+                                    className="fc-primary-btn"
+                                    onClick={deleteCurrentCard}
+                                >
+                                    Delete Card
+                                </button>
+                            )}
 
                             {isSaved && (
                                 <button

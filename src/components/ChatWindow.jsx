@@ -4,22 +4,38 @@ import FlashcardBlock from "./FlashcardBlock";
 import QuizBlock from "./QuizBlock";
 import Modal from "./Modal";
 import "../styles/HomePage.css";
+import { supabase } from "../lib/supabaseClient";
 
-const ChatWindow = ({ messages,chatId, onSaveFlashcards }) => {
+const ChatWindow = ({ messages, chatId, onSaveFlashcards }) => {
     const messagesEndRef = useRef(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
-
+    const [user, setUser] = useState(null);
+    const isAuthenticated = !!user;
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+    useEffect(() => {
+        supabase.auth.getUser().then(({ data }) => {
+            setUser(data.user ?? null);
+        });
 
+        const { data: listener } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                setUser(session?.user ?? null);
+            }
+        );
+
+        return () => listener.subscription.unsubscribe();
+    }, []);
     return (
         <div className="chat-window">
-            <div className="login-cta">
-                <button onClick={() => setShowAuthModal(true)}>
-                    Log in / Sign up
-                </button>
-            </div>
+            {!isAuthenticated && (
+                <div className="login-cta">
+                    <button onClick={() => setShowAuthModal(true)}>
+                        Log in / Sign up
+                    </button>
+                </div>
+            )}
             <div className="chat-container">
 
 

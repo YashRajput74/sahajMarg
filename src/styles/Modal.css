@@ -315,13 +315,15 @@ body.dark .fc-secondary-btn:hover {
         padding: 0.35rem !important;
         transform: scale(0.85);
     }
+    .saved-notes-container{
+        max-width: 32rem;
+    }
 }
 
 .saved-notes-container {
     background: white;
     padding: 2rem;
     border-radius: 10px;
-    max-width: 32rem;
     width: 100%;
 }
 

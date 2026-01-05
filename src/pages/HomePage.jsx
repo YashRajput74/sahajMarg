@@ -151,36 +151,60 @@ const HomePage = () => {
 
     const saveFlashcard = async ({ cardId, messageId, chatId }) => {
         const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return { status: "unauthenticated" };
 
-        if (!user) {
-            return { status: "unauthenticated" };
-        }
+        const res = await fetch(`${BACKEND_URL}/flashcards/save`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: user.id,
+                cardId,
+                messageId,
+                chatId
+            })
+        });
 
-        try {
-            const res = await fetch(`${BACKEND_URL}/flashcards/save`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: user.id,
-                    cardId,
-                    messageId,
-                    chatId
-                })
-            });
-
-            if (res.status === 409) {
-                return { status: "already_saved" };
-            }
-
-            if (!res.ok) {
-                return { status: "error" };
-            }
-
-            return { status: "success" };
-
-        } catch {
+        if (!res.ok && res.status !== 409) {
             return { status: "error" };
         }
+
+        await fetchSavedFlashcards();
+
+        return { status: "success" };
+    };
+
+    const deleteSavedFlashcard = async ({ cardId, messageId }) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        await fetch(`${BACKEND_URL}/flashcards/saved`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: user.id,
+                cardId,
+                messageId
+            })
+        });
+
+        setSavedFlashcards(prev =>
+            prev.filter(c => c.id !== cardId)
+        );
+    };
+
+    const deleteSavedFlashcardSet = async (chatId) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        await fetch(`${BACKEND_URL}/flashcards/saved/chat/${chatId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: user.id })
+        });
+
+        setSavedFlashcards(prev =>
+            prev.filter(c => c.chatId !== chatId)
+        );
     };
 
     const fetchSavedFlashcards = async () => {
@@ -358,10 +382,6 @@ const HomePage = () => {
         if (activeChatId === chatId) setActiveChatId("temp-landing");
     };
 
-    const handleSaveFlashcards = (fc) => {
-        setSavedFlashcards(prev => [...prev, fc]);
-    };
-
     if (!hydrated) return <div className="loading-screen">Loading...</div>;
 
     const activeChat = chats.find(c => c.id === activeChatId);
@@ -382,7 +402,11 @@ const HomePage = () => {
 
             <main className="main-content">
                 {showSavedNotes ? (
-                    <SavedNotesPage savedFlashcards={savedFlashcards} />
+                    <SavedNotesPage
+                        savedFlashcards={savedFlashcards}
+                        onDeleteCard={deleteSavedFlashcard}
+                        onDeleteSet={deleteSavedFlashcardSet}
+                    />
                 ) : activeChat && activeChat.messages.length > 0 ? (
                     <>
                         <ChatWindow

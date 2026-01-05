@@ -10,6 +10,7 @@ const groupByChat = (cards) => {
 
         if (!map[key]) {
             map[key] = {
+                chatId: key,
                 title: card.chatTitle || "Untitled Chat",
                 topic: "Flashcards",
                 description: "Saved from chat",
@@ -23,7 +24,7 @@ const groupByChat = (cards) => {
     return Object.values(map);
 };
 
-const SavedNotesPage = ({ savedFlashcards = [] }) => {
+const SavedNotesPage = ({ savedFlashcards = [], onDeleteCard, onDeleteSet }) => {
     const [activeDeck, setActiveDeck] = useState(null);
     const collections = groupByChat(savedFlashcards);
 
@@ -77,18 +78,25 @@ const SavedNotesPage = ({ savedFlashcards = [] }) => {
                             >
                                 Open
                             </button>
-                            <span className="material-symbols-outlined delete-icon">delete</span>
+                            <span
+                                className="material-symbols-outlined delete-icon"
+                                onClick={() => onDeleteSet(item.chatId)}
+                            >
+                                delete
+                            </span>
                         </div>
-                        {activeDeck && (
-                            <FlashcardModal
-                                cards={activeDeck}
-                                topic="Saved Flashcards"
-                                onClose={() => setActiveDeck(null)}
-                            />
-                        )}
 
                     </div>
                 ))}
+                {activeDeck && (
+                    <FlashcardModal
+                        mode="saved"
+                        cards={activeDeck}
+                        topic="Saved Flashcards"
+                        onClose={() => setActiveDeck(null)}
+                        onDeleteFlashcard={onDeleteCard}
+                    />
+                )}
             </div>
         </div>
     );
