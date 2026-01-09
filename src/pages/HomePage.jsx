@@ -253,9 +253,15 @@ const HomePage = () => {
         setShowSavedNotes(false);
     };
 
-    const handleSend = async (text) => {
-        const chatId = activeChatId;
+    const handleSend = async ({ text, file }) => {
         const { data: { user } } = await supabase.auth.getUser();
+
+        if (file && !user) {
+            setShowAuthModal(true);
+            return;
+        }
+
+        const chatId = activeChatId;
 
         setChats(prev =>
             prev.map(c =>
@@ -264,7 +270,11 @@ const HomePage = () => {
                         ...c,
                         messages: [
                             ...c.messages,
-                            { type: "user", text, avatar: "..." },
+                            {
+                                type: "user",
+                                text: file ? `📎 Uploaded file: ${file.name}` : text,
+                                avatar: "..."
+                            },
                             { type: "ai", text: "Thinking...", loading: true, avatar: "..." },
                         ],
                     }
@@ -275,19 +285,33 @@ const HomePage = () => {
         const endpoint = user
             ? `${BACKEND_URL}/message`
             : `${BACKEND_URL}/message/guest`;
+        let body;
+        let headers = {};
+
+        if (user) {
+            body = new FormData();
+
+            if (file) {
+                body.append("file", file);
+            } else {
+                body.append("text", text.trim());
+            }
+
+            body.append("userId", user.id);
+
+            if (!chatId.startsWith("temp")) {
+                body.append("chatId", chatId);
+            }
+        }
+        else {
+            headers["Content-Type"] = "application/json";
+            body = JSON.stringify({ text });
+        }
 
         const res = await fetch(endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(
-                user
-                    ? {
-                        userId: user.id,
-                        chatId: chatId.startsWith("temp") ? null : chatId,
-                        text,
-                    }
-                    : { text }
-            ),
+            headers,
+            body,
         });
 
         const data = await res.json();
