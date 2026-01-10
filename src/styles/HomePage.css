@@ -34,11 +34,20 @@ body.dark .home-container {
     padding: 1rem;
     background-color: var(--element-light);
     border-right: 1px solid #e5e7eb;
+    height: 100vh;
+    overflow: hidden;
 }
 
 body.dark .sidebar {
     background-color: var(--element-dark);
     border-color: #1f2937;
+}
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
 }
 
 .logo-section {
@@ -91,6 +100,9 @@ body.dark .logo-text p {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+     overflow-y: auto;
+    flex: 1;
+    min-height: 0; 
 }
 
 .chat-item {
