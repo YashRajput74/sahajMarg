@@ -8,7 +8,9 @@ const Sidebar = ({
     onNewChat,
     onSelectChat,
     onOpenSavedNotes,
-    onDeleteChat
+    onDeleteChat,
+    isOpen,
+    onClose
 }) => {
 
     const handleChatClick = (id) => {
@@ -18,7 +20,10 @@ const Sidebar = ({
     };
 
     return (
-        <aside className="sidebar">
+        <aside className={`sidebar ${isOpen ? "open" : ""}`}>
+            <button className="close-sidebar" onClick={onClose}>
+                <span className="material-symbols-outlined">close</span>
+            </button>
             <div className="sidebar-top">
 
                 <Link to="/" className="logo-section">
@@ -57,7 +62,6 @@ const Sidebar = ({
                             >
                                 <div
                                     className="chat-info"
-                                    onClick={() => handleChatClick(chat.id)}
                                 >
                                     <span className="material-symbols-outlined">
                                         chat_bubble

@@ -14,7 +14,8 @@ const groupByChat = (cards) => {
                 title: card.chatTitle || "Untitled Chat",
                 topic: "Flashcards",
                 description: "Saved from chat",
-                cards: []
+                cards: [],
+                date: card.savedAt
             };
         }
 
@@ -27,6 +28,35 @@ const groupByChat = (cards) => {
 const SavedNotesPage = ({ savedFlashcards = [], onDeleteCard, onDeleteSet }) => {
     const [activeDeck, setActiveDeck] = useState(null);
     const collections = groupByChat(savedFlashcards);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortOption, setSortOption] = useState("date");
+
+    const filteredCollections = collections.filter((item) => {
+        const query = searchQuery.toLowerCase();
+
+        return (
+            item.title?.toLowerCase().includes(query) ||
+            item.topic?.toLowerCase().includes(query) ||
+            item.description?.toLowerCase().includes(query)
+        );
+    });
+
+    const sortedCollections = [...filteredCollections].sort((a, b) => {
+        if (sortOption === "name") {
+            return a.title.localeCompare(b.title);
+        }
+
+        if (sortOption === "topic") {
+            return a.topic.localeCompare(b.topic);
+        }
+
+        if (sortOption === "date") {
+            return new Date(b.date) - new Date(a.date);
+            return 0;
+        }
+
+        return 0;
+    });
 
     return (
         <div className="saved-notes-container">
@@ -40,21 +70,27 @@ const SavedNotesPage = ({ savedFlashcards = [], onDeleteCard, onDeleteSet }) => 
                     type="text"
                     placeholder="Search collections..."
                     className="notes-search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
 
-                <select className="notes-sort">
-                    <option>Sort by: Date</option>
-                    <option>Sort by: Topic</option>
-                    <option>Sort by: Name</option>
+                <select
+                    className="notes-sort"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
+                >
+                    <option value="date">Sort by: Date</option>
+                    <option value="topic">Sort by: Topic</option>
+                    <option value="name">Sort by: Name</option>
                 </select>
             </div>
 
             <div className="flashcards-grid">
-                {collections.length === 0 && (
+                {sortedCollections.length === 0 && (
                     <p className="no-flashcards">No flashcards saved yet.</p>
                 )}
 
-                {collections.map((item, index) => (
+                {sortedCollections.map((item, index) => (
                     <div className="flashcard-box" key={index}>
                         <div className="flashcard-header">
                             <h3>{item.title || "Untitled Set"}</h3>

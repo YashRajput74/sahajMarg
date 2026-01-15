@@ -428,7 +428,6 @@ body.dark .chat-input {
     }
 
     .chat-list {
-        max-height: 200px;
         overflow-y: auto;
     }
 
@@ -490,12 +489,13 @@ body.dark .chat-input {
 @media (max-width: 1024px) {
     .chat-window {
         padding: 0 1rem;
-        overflow: hidden;
+        overflow: scroll;
 
     }
 
     .chat-container {
-        padding-bottom: 6rem;
+        max-width: 80%;
+        padding-bottom: 1rem;
     }
 
     .ai-block {
@@ -511,8 +511,9 @@ body.dark .chat-input {
     }
 
     .chat-container {
+        max-width: none;
         gap: 1rem;
-        padding: 0 0.25rem 5rem;
+        padding: 0 0.25rem 1rem;
     }
 
     .message-bubble {
@@ -563,6 +564,80 @@ body.dark .chat-input {
     .primary-btn {
         font-size: 0.8rem;
         padding: 0.45rem 0.65rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 18rem;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 50;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 40;
+}
+
+.mobile-header {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        height: 4rem;
+        padding: 0 1rem;
+        background: var(--element-light);
+        border-bottom: 1px solid #e5e7eb;
+        z-index: 30;
+        position: sticky;
+        top: 0;
+    }
+
+    body.dark .mobile-header {
+        background: var(--element-dark);
+        border-color: #1f2937;
+    }
+
+    .hamburger-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .hamburger-btn span {
+        font-size: 1.75rem;
+    }
+}
+
+.close-sidebar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .close-sidebar {
+        display: flex;
+        align-self: flex-end;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
     }
 }
 

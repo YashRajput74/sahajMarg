@@ -32,6 +32,7 @@ const HomePage = () => {
     const hasClaimedRef = useRef(false);
     const abortRef = useRef(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         chatsRef.current = chats;
@@ -412,18 +413,51 @@ const HomePage = () => {
 
     return (
         <div className="home-container">
+            <header className="mobile-header">
+                <button
+                    className="hamburger-btn"
+                    onClick={() => setIsSidebarOpen(true)}
+                >
+                    <span className="material-symbols-outlined">menu</span>
+                </button>
+
+                <div className="header-brand">
+                    <div
+                        className="navbar-avatar"
+                        style={{
+                            backgroundImage:
+                                `url("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80")`,
+                        }}
+                    />
+                    <div className="logo-text">
+                        <h1>Study AI</h1>
+                        <p>Your Assistant</p>
+                    </div>
+                </div>
+            </header>
             <Sidebar
                 chats={chats}
                 activeChatId={activeChatId}
                 onNewChat={handleNewChat}
-                onSelectChat={handleSelectChat}
+                onSelectChat={(id) => {
+                    handleSelectChat(id);
+                    setIsSidebarOpen(false);
+                }}
                 onDeleteChat={handleDeleteChat}
                 onOpenSavedNotes={() => {
                     setShowSavedNotes(true);
+                    setIsSidebarOpen(false);
                     fetchSavedFlashcards();
                 }}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
             />
-
+            {isSidebarOpen && (
+                <div
+                    className="sidebar-overlay"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
             <main className="main-content">
                 {showSavedNotes ? (
                     <SavedNotesPage
