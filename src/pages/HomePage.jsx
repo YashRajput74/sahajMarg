@@ -8,6 +8,7 @@ import SavedNotesPage from "../components/SavedNotesPage";
 import { supabase } from "../lib/supabaseClient";
 import { normalizeMessage } from "../utils/normalizeMessages";
 import Modal from "../components/Modal";
+import AppLoader from "../components/AppLoader";
 
 const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_BACKEND_URL !== ""
@@ -407,7 +408,7 @@ const HomePage = () => {
         if (activeChatId === chatId) setActiveChatId("temp-landing");
     };
 
-    if (!hydrated) return <div className="loading-screen">Loading...</div>;
+    if (!hydrated) return <AppLoader />
 
     const activeChat = chats.find(c => c.id === activeChatId);
 
