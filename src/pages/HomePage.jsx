@@ -9,6 +9,7 @@ import { supabase } from "../lib/supabaseClient";
 import { normalizeMessage } from "../utils/normalizeMessages";
 import Modal from "../components/Modal";
 import AppLoader from "../components/AppLoader";
+import DeleteChatModal from "../components/DeleteChatModal";
 
 const BACKEND_URL =
     import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_BACKEND_URL !== ""
@@ -34,6 +35,7 @@ const HomePage = () => {
     const abortRef = useRef(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [deleteChatId, setDeleteChatId] = useState(null);
 
     useEffect(() => {
         chatsRef.current = chats;
@@ -399,13 +401,28 @@ const HomePage = () => {
         }
     };
 
-    const handleDeleteChat = async (chatId) => {
-        if (!confirm("Delete this chat permanently?")) return;
+    const handleDeleteChatRequest = (chatId) => {
+        setDeleteChatId(chatId);
+    };
 
-        await fetch(`${BACKEND_URL}/chat/${chatId}`, { method: "DELETE" });
+    const confirmDeleteChat = async () => {
+        if (!deleteChatId) return;
 
-        setChats(prev => prev.filter(c => c.id !== chatId));
-        if (activeChatId === chatId) setActiveChatId("temp-landing");
+        await fetch(`${BACKEND_URL}/chat/${deleteChatId}`, {
+            method: "DELETE"
+        });
+
+        setChats(prev => prev.filter(c => c.id !== deleteChatId));
+
+        if (activeChatId === deleteChatId) {
+            setActiveChatId("temp-landing");
+        }
+
+        setDeleteChatId(null); // close modal
+    };
+
+    const cancelDeleteChat = () => {
+        setDeleteChatId(null);
     };
 
     if (!hydrated) return <AppLoader />
@@ -444,7 +461,7 @@ const HomePage = () => {
                     handleSelectChat(id);
                     setIsSidebarOpen(false);
                 }}
-                onDeleteChat={handleDeleteChat}
+                onDeleteChat={handleDeleteChatRequest}
                 onOpenSavedNotes={() => {
                     setShowSavedNotes(true);
                     setIsSidebarOpen(false);
@@ -457,6 +474,12 @@ const HomePage = () => {
                 <div
                     className="sidebar-overlay"
                     onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+            {deleteChatId && (
+                <DeleteChatModal
+                    onCancel={cancelDeleteChat}
+                    onConfirm={confirmDeleteChat}
                 />
             )}
             <main className="main-content">

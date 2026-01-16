@@ -1,0 +1,99 @@
+.delete-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 16px;
+}
+
+.delete-modal {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+    background: var(--element-bg, #fff);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.delete-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.delete-modal-close:hover {
+    opacity: 1;
+}
+
+.delete-modal-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.delete-modal-icon span {
+    color: #ef4444;
+    font-size: 36px;
+}
+
+.delete-modal h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.delete-modal p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.delete-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-cancel:hover {
+    background: #f3f4f6;
+}
+
+.btn-delete {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+}
