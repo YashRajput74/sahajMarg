@@ -51,7 +51,7 @@ export default function Dashboard() {
                 </div>
 
                 <nav className="nav-links">
-                    <a href="#">Features</a>
+                    <a href="#">Learning Mode</a>
                     <a href="#">Pricing</a>
                     <a href="#">Testimonials</a>
                 </nav>
