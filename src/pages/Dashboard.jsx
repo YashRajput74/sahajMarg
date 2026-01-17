@@ -51,7 +51,7 @@ export default function Dashboard() {
                 </div>
 
                 <nav className="nav-links">
-                    <a href="#">Learning Mode</a>
+                    <button style={{backgroundColor:"none"}} onClick={() => { navigate("/learning-mode") }}>Learning Mode</button>
                     <a href="#">Pricing</a>
                     <a href="#">Testimonials</a>
                 </nav>

@@ -1,0 +1,310 @@
+/* ROOT */
+.ls-root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Lexend", sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.dark .ls-root {
+    background: #0f172a;
+    color: #f8fafc;
+}
+
+/* HEADER */
+.ls-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+}
+
+.dark .ls-header {
+    background: #020617;
+    border-color: #1e293b;
+}
+.ls-next-btn .material-symbols-outlined{
+    color: white;
+}
+.ls-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ls-header-icon {
+    color: #2b8cee;
+    width: 24px;
+}
+
+.ls-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ls-progress-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.ls-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ls-progress-bar {
+    width: 8rem;
+    height: 0.5rem;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ls-progress-fill {
+    width: 33.3%;
+    height: 100%;
+    background: #2b8cee;
+}
+
+.ls-divider {
+    width: 1px;
+    height: 2rem;
+    background: #e2e8f0;
+}
+
+.ls-exit-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* MAIN */
+.ls-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* LEFT */
+.ls-left {
+    width: 40%;
+    padding: 3rem;
+    overflow-y: auto;
+    background: white;
+}
+
+.dark .ls-left {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.ls-left-inner {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.ls-badge {
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(43, 140, 238, 0.1);
+    color: #2b8cee;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.ls-text-primary {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.ls-text-secondary {
+    margin-top: 1.5rem;
+    color: #64748b;
+}
+
+.ls-highlight {
+    color: #2b8cee;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.ls-highlight-muted {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.ls-tip {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(99, 102, 241, 0.08);
+    display: flex;
+    gap: 1rem;
+}
+
+/* RIGHT */
+.ls-right {
+    width: 60%;
+    padding: 4rem;
+    overflow-y: auto;
+    background: #f1f5f9;
+}
+
+.dark .ls-right {
+    background: #020617;
+}
+
+.ls-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.ls-card {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    border-radius: 1.5rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s;
+}
+
+.ls-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(43, 140, 238, 0.3);
+}
+
+.ls-card-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FOOTER */
+.ls-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid #e2e8f0;
+    padding: 1rem 2rem;
+}
+
+.ls-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.ls-reflection {
+    flex: 1;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.ls-reflection summary {
+    cursor: pointer;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ls-reflection-body {
+    padding: 1rem;
+}
+
+.ls-reflection textarea {
+    width: 100%;
+    height: 6rem;
+    resize: none;
+    padding: 0.75rem;
+}
+
+.ls-save-reflection {
+    margin-top: 1rem;
+    background: #2b8cee;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.75rem;
+}
+
+/* ACTIONS */
+.ls-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ls-action-btn {
+    background: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ls-next-btn {
+    background: #2b8cee;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* BACKGROUND */
+.ls-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.ls-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+}
+
+.ls-blob.primary {
+    top: -10%;
+    left: -5%;
+    width: 40%;
+    height: 40%;
+    background: rgba(43, 140, 238, 0.08);
+}
+
+.ls-blob.purple {
+    top: 40%;
+    right: -10%;
+    width: 35%;
+    height: 35%;
+    background: rgba(168, 85, 247, 0.08);
+}
