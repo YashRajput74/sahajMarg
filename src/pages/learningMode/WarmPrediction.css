@@ -1,0 +1,292 @@
+/* Root & fonts */
+.wp-root {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    min-height: 100vh;
+    color: #181511;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background */
+.wp-background {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg,
+            #fffcf5 0%,
+            #fff6e0 50%,
+            #faefd6 100%);
+    z-index: 0;
+}
+
+/* Layout container */
+.wp-container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.wp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+}
+
+.wp-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.wp-back-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.wp-back-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.wp-header-title {
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.wp-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.wp-topic {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.wp-topic-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8c857b;
+    font-weight: 700;
+}
+
+.wp-topic-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wp-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #fff;
+}
+
+/* Main */
+.wp-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+}
+
+.wp-question {
+    font-size: 30px;
+    padding: 0px 80px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Options */
+.wp-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    opacity: 0.6;
+    pointer-events: none;
+    margin-bottom: 64px;
+}
+
+.wp-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.wp-option-selected {
+    border-color: #efaf39;
+    background: rgba(239, 175, 57, 0.2);
+}
+
+.wp-option p {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Loader */
+.wp-loader {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 24px;
+}
+
+.wp-loader-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 4px solid rgba(239, 175, 57, 0.15);
+}
+
+.wp-loader-spinner {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 4px solid #efaf39;
+    border-top-color: transparent;
+    animation: wp-spin 3s linear infinite;
+}
+
+.wp-loader-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #efaf39;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: wp-pulse 3s ease-in-out infinite;
+}
+
+@keyframes wp-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes wp-pulse {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 0.6;
+    }
+}
+
+.wp-loader-text {
+    font-size: 18px;
+    color: #8c857b;
+    margin-bottom: 48px;
+}
+
+/* Continue button */
+.wp-continue-wrapper {
+    position: absolute;
+    bottom: 32px;
+    right: 40px;
+}
+
+.wp-continue-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(to right, #efaf39, #d97706);
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(239, 175, 57, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.wp-continue-button .material-symbols-outlined {
+    color: white;
+}
+
+.wp-continue-button:hover {
+    transform: scale(1.05);
+}
+
+.wp-continue-button:active {
+    transform: scale(0.95);
+}
+
+/* Footer */
+.wp-footer {
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.wp-progress-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8c857b;
+    font-weight: 700;
+}
+
+.wp-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.wp-progress-fill {
+    height: 100%;
+    width: 35%;
+    background: #efaf39;
+    border-radius: 999px;
+}
+
+/* Loader entrance animation */
+.wp-loader-wrapper {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.wp-loader-wrapper.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+

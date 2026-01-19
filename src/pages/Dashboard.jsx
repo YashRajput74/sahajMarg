@@ -52,6 +52,8 @@ export default function Dashboard() {
 
                 <nav className="nav-links">
                     <button style={{backgroundColor:"none"}} onClick={() => { navigate("/learning-mode") }}>Learning Mode</button>
+                    <button style={{backgroundColor:"none"}} onClick={() => { navigate("/choice-prediction") }}>Set 1</button>
+                    <button style={{backgroundColor:"none"}} onClick={() => { navigate("/choice-second") }}>Set 2</button>
                     <a href="#">Pricing</a>
                     <a href="#">Testimonials</a>
                 </nav>

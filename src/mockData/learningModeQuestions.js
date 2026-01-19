@@ -7,29 +7,29 @@ export const learningModeQuestions = [
 
         explanation: {
             definition:
-                "Web Vitals are a set of metrics defined by Google to measure the quality of user experience on the web, focusing on loading, interactivity, and visual stability.",
+                "Web Vitals are simple ways to check how good a website feels to users.",
 
             description:
-                "Web Vitals help developers understand how real users experience a website. Core Web Vitals include Largest Contentful Paint (LCP), First Input Delay (FID), and Cumulative Layout Shift (CLS)."
+                "They tell us if a website loads fast, responds quickly, and doesn’t jump around while loading."
         },
 
-        tip: "Think of Web Vitals as a health check for your website—fast, responsive, and stable pages make happy users.",
+        tip: "If a website feels slow, laggy, or annoying, Web Vitals will tell you why.",
 
         examples: [
             {
-                title: "Largest Contentful Paint (LCP)",
+                title: "Slow Loading Page",
                 description:
-                    "Measures loading performance. For a good user experience, LCP should occur within 2.5 seconds of when the page first starts loading."
+                    "If the main content takes too long to appear, users feel the site is slow. This affects LCP."
             },
             {
-                title: "First Input Delay (FID)",
+                title: "Button Click Delay",
                 description:
-                    "Measures interactivity. Pages should have an FID of less than 100 milliseconds to feel responsive."
+                    "If clicking a button doesn’t respond instantly, users feel the site is broken. This affects FID."
             },
             {
-                title: "Cumulative Layout Shift (CLS)",
+                title: "Moving Content",
                 description:
-                    "Measures visual stability. A CLS score below 0.1 ensures that elements don’t unexpectedly shift on the page."
+                    "If text or buttons move while loading, users may click the wrong thing. This affects CLS."
             }
         ]
     },
@@ -204,3 +204,52 @@ export const learningModeQuestions = [
         ]
     }
 ];
+
+
+export const set1Questions= [
+    {
+        "question": "Largest Contentful Paint (LCP) measures how long it takes the main content to load. If a site’s LCP is 4 seconds, what do you think will happen to user experience?",
+        "options": [
+            "Users feel the site is slow",
+            "Users don’t notice",
+            "Users enjoy the site normally"
+        ],
+        "outcome": "An LCP over 2.5 seconds is considered poor. Users will perceive the site as slow, impacting engagement."
+    },
+    {
+        "question": "First Input Delay (FID) measures the responsiveness of a page to user interactions. If a page takes 500ms to respond after a click, what do you expect the user to do?",
+        "options": [
+            "Users get frustrated and click multiple times",
+            "Users wait patiently",
+            "Users don’t notice"
+        ],
+        "outcome": "A high FID (>100ms) makes the site feel sluggish. Users often click multiple times or leave, hurting usability."
+    },
+    {
+        "question": "Cumulative Layout Shift (CLS) tracks unexpected movement of page elements. If images load late and push text down, what do you think happens?",
+        "options": [
+            "Users click wrong buttons by accident",
+            "Users scroll normally",
+            "Nothing changes"
+        ],
+        "outcome": "High CLS leads to mis-clicks and frustration. Pages should maintain layout stability as content loads."
+    },
+    {
+        "question": "Web Vitals also include mobile performance. If a page is fast on desktop but buttons are tiny on mobile, what do you expect the user experience to be?",
+        "options": [
+            "Users leave or struggle to tap",
+            "Users use it anyway",
+            "Users ignore the buttons"
+        ],
+        "outcome": "Even with good speed, poor mobile usability hurts engagement. Mobile-friendly layout is critical for Core Web Vitals."
+    },
+    {
+        "question": "A page loads quickly, but its largest content is below the fold. What do you think happens to LCP?",
+        "options": [
+            "LCP is delayed because main content appears late",
+            "LCP is fast since page loads quickly",
+            "LCP doesn’t matter"
+        ],
+        "outcome": "LCP measures when the largest visible content appears. If it’s below the fold, users perceive slow loading even if the page technically loads fast."
+    }
+]

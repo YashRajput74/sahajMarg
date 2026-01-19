@@ -57,7 +57,7 @@ const LearningSession = () => {
                             <span>Concept Definition</span>
                         </div>
 
-                        <h1>{currentQuestion.topic}</h1>
+                        <h1>{currentQuestion.question}</h1>
 
                         <p className="ls-text-primary">
                             {currentQuestion.explanation.definition}

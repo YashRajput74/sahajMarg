@@ -1,0 +1,274 @@
+/* Root */
+.ce-root {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    min-height: 100vh;
+    color: #181511;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background gradient */
+.ce-background {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #fffcf5 0%, #fff6e0 50%, #faefd6 100%);
+    z-index: 0;
+}
+
+/* Container */
+.ce-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.ce-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+}
+
+.ce-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ce-back-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.ce-header-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.ce-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ce-topic {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.ce-topic-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #8c857b;
+}
+
+.ce-topic-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ce-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #fff;
+}
+
+/* Main content */
+.ce-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 0;
+    position: relative;
+}
+
+.ce-content {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ce-title {
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.ce-input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.ce-input {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-style: italic;
+    color: #181511;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(239, 175, 57, 0.4);
+    border-radius: 24px;
+    cursor: not-allowed;
+}
+
+.ce-input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #efaf39;
+}
+
+/* Loader */
+.ce-loader-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.ce-loader {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.ce-loader-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(239, 175, 57, 0.2);
+}
+
+.ce-loader-spinner {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid #efaf39;
+    border-top-color: transparent;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ce-loader-text {
+    font-size: 14px;
+    color: #8c857b;
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* Example explanation */
+.ce-example {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    padding: 32px;
+    text-align: center;
+    font-size: 18px;
+    font-style: italic;
+    color: #181511;
+    margin-bottom: 40px;
+}
+
+/* Continue button */
+.ce-continue-wrapper {
+    position: absolute;
+    bottom: 32px;
+    right: 40px;
+}
+
+.ce-continue-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    background: linear-gradient(to right, #efaf39, #d97706);
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(239, 175, 57, 0.4);
+    transition: 0.2s;
+}
+
+.ce-continue-button:hover {
+    transform: scale(1.05);
+}
+
+.ce-continue-button:active {
+    transform: scale(0.95);
+}
+
+/* Footer */
+.ce-footer {
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+}
+
+.ce-progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 960px;
+}
+
+.ce-progress-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #8c857b;
+    letter-spacing: 0.2em;
+}
+
+.ce-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ce-progress-fill {
+    height: 100%;
+    background: #efaf39;
+    border-radius: 999px;
+}
+
+.ce-progress-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #efaf39;
+}
