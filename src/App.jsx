@@ -8,6 +8,7 @@ import LearningEntry from "./pages/learningMode/LearningEntry";
 import LearningSession from "./pages/learningMode/LearningSession";
 import WarmPrediction from "./pages/learningMode/WarmPrediction";
 import ConstrainedExplanation from "./pages/learningMode/ConstrainedExplanation";
+import LearningView from "./pages/learningMode/LearningView";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -25,7 +26,7 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/newchat" element={<HomePage />} />
                 <Route path="/learning-mode" element={<LearningEntry />} />
-                <Route path="/learning-mode/session" element={<LearningSession />} />
+                <Route path="/learning-mode/session" element={<LearningView />} />
                 <Route path="/choice-prediction" element={<WarmPrediction />} />
                 <Route path="/choice-second" element={<ConstrainedExplanation />} />
             </Routes>

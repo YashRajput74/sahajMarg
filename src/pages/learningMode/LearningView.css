@@ -1,0 +1,375 @@
+/* Root */
+.lv-root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Lexend", sans-serif;
+    background: #fffcf9;
+    color: #292524;
+}
+
+/* Header */
+.lv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid #fed7aa;
+    background: #fff;
+}
+
+.lv-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lv-header-icon {
+    font-size: 32px;
+    color: #c2410c;
+}
+
+.lv-header-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.lv-exit-btn {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: #78716c;
+}
+
+.lv-exit-btn .material-symbols-outlined{
+    color: #78716c;
+}
+
+/* Main */
+.lv-main {
+    flex: 1;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Concept Panel */
+.lv-concept-panel {
+    width: 35%;
+    background: #fffbeb;
+    border-right: 1px solid #fed7aa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lv-concept-inner {
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.lv-concept-badge {
+    display: inline-flex;
+    align-items: center;
+    max-width: fit-content;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.lv-concept-badge span:nth-child(2){
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.lv-concept-badge .material-symbols-outlined{
+    color: #c2410c;
+}
+
+.lv-concept-title {
+    font-size: 36px;
+    font-weight: 800;
+}
+
+.lv-concept-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lv-concept-list li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #57534e;
+}
+
+.lv-concept-list .material-symbols-outlined{
+    color: #c2410c;
+}
+
+.lv-quote-box {
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid #fed7aa;
+    font-style: italic;
+    color: #78716c;
+}
+
+/* Content */
+.lv-content-panel {
+    flex: 1;
+    padding: 64px;
+    overflow-y: auto;
+}
+
+.lv-card {
+    max-width: 640px;
+    margin: auto;
+    padding: 48px;
+    border-radius: 32px;
+    background: #fff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.lv-card-header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.lv-card-icon {
+    width: 64px;
+    height: 64px;
+    background: #fef3c7;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c2410c;
+}
+
+.lv-card-icon .material-symbols-outlined{
+    color: #c2410c;
+}
+
+.lv-card-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.lv-card-header p {
+    margin: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #c2410c;
+}
+
+.lv-card-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #57534e;
+}
+
+.lv-card-highlight {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #fff7ed;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.lv-card-highlight .material-symbols-outlined{
+    color: #c2410c;
+}
+
+/* Notes */
+.lv-notes-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 350px;
+    background: #fff;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #fed7aa;
+}
+
+.lv-notes-open {
+    transform: translateX(0);
+}
+
+.lv-notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #fed7aa;
+}
+
+.lv-notes-header .material-symbols-outlined{
+    color: #c2410c;
+}
+
+.lv-notes-header div{
+    display: flex;
+}
+
+.lv-notes-header div h4 {
+    margin-left: 6px;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.lv-notes-header button{
+    border: none;
+    background-color: white;
+}
+
+.lv-notes-textarea {
+    flex: 1;
+    border: none;
+    padding: 16px;
+    resize: none;
+    font-size: 16px;
+    outline: none;
+}
+
+.lv-notes-save {
+    margin: 16px;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #431407;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Notes Trigger */
+.lv-notes-trigger {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 112px;
+    border-radius: 100px 0 0 100px;
+    background: #431407;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.lv-notes-trigger .material-symbols-outlined{
+    color: white;
+}
+
+/* Footer */
+.lv-footer {
+    padding: 20px 40px;
+    border-top: 1px solid #fed7aa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+}
+
+.lv-footer-module {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #a8a29e;
+}
+
+.lv-footer-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.lv-skip-btn {
+    background: none;
+    border: none;
+    color: #a8a29e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.lv-skip-btn .material-symbols-outlined{
+    color: #a8a29e;
+}
+
+.lv-continue-btn {
+    padding: 14px 32px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #c2410c, #ea580c);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.lv-continue-btn .material-symbols-outlined{
+    color: white;
+}
+
+/* Doubt input (Footer) */
+.lv-doubt-wrapper {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lv-doubt-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 20px;
+  color: #a8a29e;
+  pointer-events: none;
+}
+
+.lv-doubt-input {
+  width: 100%;
+  padding: 10px 16px 10px 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 146, 60, 0.3);
+  background: rgba(255, 237, 213, 0.3);
+  font-size: 14px;
+  color: #44403c;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.lv-doubt-input::placeholder {
+  color: #a8a29e;
+}
+
+.lv-doubt-input:focus {
+  border-color: rgba(251, 146, 60, 0.6);
+  box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
+  background: #fff;
+}
