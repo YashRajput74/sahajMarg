@@ -1,0 +1,213 @@
+/* ====================
+   Variables (scoped)
+==================== */
+.ls-page {
+  --ls-primary: #d97706;
+  --ls-terracotta: #c2410c;
+  --ls-sienna: #431407;
+  --ls-bg: #fffcf9;
+  --ls-gradient: linear-gradient(135deg, #d97706 0%, #c2410c 100%);
+}
+
+/* ====================
+   Base Layout
+==================== */
+.ls-page {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--ls-bg);
+  color: #444;
+  font-family: "Lexend", sans-serif;
+}
+
+.ls-content {
+  z-index: 2;
+  max-width: 720px;
+  padding: 0 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ====================
+   Blobs
+==================== */
+.ls-blob-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ls-blob {
+  position: absolute;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.ls-blob-1 {
+  width: 500px;
+  height: 500px;
+  background: #fde68a;
+  border-radius: 50%;
+  top: -80px;
+  left: -80px;
+}
+
+.ls-blob-2 {
+  width: 400px;
+  height: 400px;
+  background: #fed7aa;
+  border-radius: 40%;
+  top: 50%;
+  right: -80px;
+}
+
+.ls-blob-3 {
+  width: 600px;
+  height: 600px;
+  background: #ffe4e6;
+  border-radius: 50%;
+  bottom: -160px;
+  left: 33%;
+}
+
+.ls-blob-4 {
+  width: 300px;
+  height: 300px;
+  background: #fef9c3;
+  border-radius: 50%;
+  top: 80px;
+  right: 25%;
+}
+
+/* ====================
+   Header / Text
+==================== */
+.ls-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border: 1px solid #fde68a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.ls-icon {
+  font-size: 40px;
+  color: var(--ls-terracotta);
+}
+
+.ls-subtitle {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: #78716c;
+  margin-bottom: 24px;
+}
+
+.ls-headline h1 {
+  font-family: "Instrument Serif", serif;
+  font-style: italic;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  color: var(--ls-sienna);
+  margin: 0 0 16px;
+}
+
+.ls-headline p {
+  font-size: 1.25rem;
+  color: rgba(194, 65, 12, 0.7);
+  font-weight: 300;
+}
+
+/* ====================
+   Buttons
+==================== */
+.ls-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ls-btn {
+  border: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  border-radius: 16px;
+  padding: 20px 40px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ls-btn span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ls-btn-primary {
+  background: var(--ls-gradient);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 12px 30px rgba(194, 65, 12, 0.25);
+}
+
+.ls-btn-primary:hover {
+  transform: translateY(-4px);
+}
+
+.ls-btn-secondary {
+  background: #fffbeb;
+  color: var(--ls-terracotta);
+  border: 2px solid #fde68a;
+  font-weight: 600;
+}
+
+.ls-btn-secondary:hover {
+  background: #fef3c7;
+  transform: translateY(-4px);
+}
+
+.ls-arrow,
+.ls-arrow-left {
+  transition: transform 0.2s ease;
+}
+
+.ls-btn-primary:hover .ls-arrow {
+  transform: translateX(4px);
+}
+
+.ls-btn-secondary:hover .ls-arrow-left {
+  transform: translateX(-4px);
+}
+
+/* ====================
+   Footer
+==================== */
+.ls-footer {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  gap: 8px;
+  opacity: 0.3;
+}
+
+.ls-footer span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ls-terracotta);
+}
+
+.ls-footer span:nth-child(2) {
+  background: #f59e0b;
+}
