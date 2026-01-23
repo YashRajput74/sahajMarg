@@ -5,8 +5,6 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import LearningEntry from "./pages/learningMode/LearningEntry";
-import WarmPrediction from "./pages/learningMode/WarmPrediction";
-import ConstrainedExplanation from "./pages/learningMode/ConstrainedExplanation";
 import Flowchart from "./pages/learningMode/Flowchart";
 
 const ScrollToTop = () => {
@@ -26,8 +24,6 @@ function App() {
                 <Route path="/newchat" element={<HomePage />} />
                 <Route path="/learning-mode" element={<LearningEntry />} />
                 <Route path="/learning-mode/session" element={<Flowchart />} />
-                <Route path="/choice-prediction" element={<WarmPrediction />} />
-                <Route path="/choice-second" element={<ConstrainedExplanation />} />
             </Routes>
         </Router>
     );

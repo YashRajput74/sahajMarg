@@ -1,9 +1,19 @@
 import "./Flowchart.css";
+import { nodesData, tooltips, overlayData } from "../../data";
+import Overlay from "./Overlay";
+import { useState } from "react";
 
 export default function Flowchart() {
+    const [activeNode, setActiveNode] = useState(null);
+
+    const handleNodeClick = (nodeId) => {
+        if (overlayData[nodeId]) {
+            setActiveNode(overlayData[nodeId]);
+        }
+    };
+
     return (
         <div className="fc-root">
-            {/* Header */}
             <header className="fc-header">
                 <div className="fc-header-left">
                     <div className="fc-logo">
@@ -19,128 +29,60 @@ export default function Flowchart() {
                 <button className="fc-close">✕</button>
             </header>
 
-            {/* Main */}
             <main className="fc-main">
-                {/* Root node */}
                 <div className="fc-root-node">
                     <div className="fc-root-card">
-                        <p className="fc-root-label">Root Concept</p>
-                        <h1>Web Performance</h1>
+                        <p className="fc-root-label">{nodesData.root.label}</p>
+                        <h1>{nodesData.root.title}</h1>
                     </div>
                     <div className="fc-line-vertical" />
                 </div>
 
-                {/* Columns */}
                 <div className="fc-columns">
                     <div className="fc-horizontal-line" />
 
-                    {/* Column 1 */}
-                    <div className="fc-column">
-                        <div className="fc-line-vertical small" />
-                        <div className="fc-column-card">
-                            <h3>Core Web Vitals</h3>
-                            <p>User experience metrics</p>
-                        </div>
-                        <div className="fc-line-vertical" />
+                    {nodesData.columns.map((column) => (
+                        <div className="fc-column" key={column.id}>
+                            <div className="fc-line-vertical small" />
 
-                        <div className="fc-item-list">
-                            <div className="fc-item fc-tooltip-trigger">
-                                <span className="fc-dot" />
-                                <div>
-                                    <strong>LCP</strong>
-                                    <small>Largest Contentful Paint</small>
-                                </div>
-
-                                <div className="fc-tooltip">
-                                    <strong>Largest Contentful Paint (LCP)</strong>
-                                    <p>
-                                        Measures the time it takes for the largest image or text block
-                                        to become visible in the viewport.
-                                    </p>
-                                </div>
+                            <div className="fc-column-card">
+                                <h3>{column.title}</h3>
+                                <p>{column.subtitle}</p>
                             </div>
 
-                            <div className="fc-item">
-                                <span className="fc-dot" />
-                                <div>
-                                    <strong>FID</strong>
-                                    <small>First Input Delay</small>
-                                </div>
-                            </div>
+                            <div className="fc-line-vertical" />
 
-                            <div className="fc-item">
-                                <span className="fc-dot" />
-                                <div>
-                                    <strong>CLS</strong>
-                                    <small>Cumulative Layout Shift</small>
-                                </div>
+                            <div className="fc-item-list">
+                                {column.nodes.map((node) => {
+                                    const tooltip = tooltips[node.id];
+
+                                    return (
+                                        <div
+                                            key={node.id}
+                                            className={`fc-item ${tooltip ? "fc-tooltip-trigger" : ""}`}
+                                            onClick={() => handleNodeClick(node.id)}
+                                        >
+                                            <span className="fc-dot" />
+
+                                            <div>
+                                                <strong>{node.label}</strong>
+                                                <small>{node.subtitle}</small>
+                                            </div>
+
+                                            {tooltip && (
+                                                <div className="fc-tooltip">
+                                                    <strong>{tooltip.heading}</strong>
+                                                    <p>{tooltip.data}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
-                    </div>
-
-                    {/* Column 2 */}
-                    <div className="fc-column">
-                        <div className="fc-line-vertical small" />
-                        <div className="fc-column-card">
-                            <h3>Network Timing</h3>
-                            <p>Latency and delivery</p>
-                        </div>
-                        <div className="fc-line-vertical" />
-
-                        <div className="fc-item-list">
-                            <div className="fc-item">
-                                <span className="fc-dot muted" />
-                                <div>
-                                    <strong>TTFB</strong>
-                                    <small>Time to First Byte</small>
-                                </div>
-                            </div>
-                            <div className="fc-item">
-                                <span className="fc-dot muted" />
-                                <div>
-                                    <strong>DNS Lookup</strong>
-                                    <small>Domain resolution time</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Column 3 */}
-                    <div className="fc-column">
-                        <div className="fc-line-vertical small" />
-                        <div className="fc-column-card">
-                            <h3>Asset Optimization</h3>
-                            <p>Resource efficiency</p>
-                        </div>
-                        <div className="fc-line-vertical" />
-
-                        <div className="fc-item-list">
-                            <div className="fc-item">
-                                <span className="fc-dot light" />
-                                <div>
-                                    <strong>Compression</strong>
-                                    <small>Gzip, Brotli</small>
-                                </div>
-                            </div>
-                            <div className="fc-item">
-                                <span className="fc-dot light" />
-                                <div>
-                                    <strong>Caching</strong>
-                                    <small>CDN, Browser Cache</small>
-                                </div>
-                            </div>
-                            <div className="fc-item">
-                                <span className="fc-dot light" />
-                                <div>
-                                    <strong>Bundling</strong>
-                                    <small>Minification, Tree Shaking</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
-
-                {/* Study guide */}
+                
                 <div className="fc-guide">
                     <h4>Study Guide</h4>
                     <p>
@@ -149,6 +91,9 @@ export default function Flowchart() {
                     </p>
                 </div>
             </main>
+            {activeNode && (
+                <Overlay nodeData={activeNode} onClose={() => setActiveNode(null)} />
+            )}
         </div>
     );
 }
