@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap");
+
+.fc-root {
+    font-family: "Lexend", sans-serif;
+    background: #fafaf9;
+    color: #262626;
+    min-height: 100vh;
+}
+
+/* Header */
+.fc-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid #e7e5e4;
+    backdrop-filter: blur(6px);
+}
+
+.fc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fc-logo {
+    width: 32px;
+    height: 32px;
+    color: #d97706;
+}
+
+.fc-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.fc-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid #e7e5e4;
+    background: white;
+    cursor: pointer;
+}
+
+/* Main */
+.fc-main {
+    padding: 40px;
+    position: relative;
+}
+
+/* Root node */
+.fc-root-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fc-root-card {
+    padding: 16px 32px;
+    border: 2px solid #d97706;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+}
+
+.fc-root-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: #d97706;
+    text-transform: uppercase;
+}
+
+.fc-line-vertical {
+    width: 2px;
+    height: 48px;
+    background: #d1d5db;
+}
+
+.fc-line-vertical.small {
+    height: 24px;
+}
+
+/* Columns */
+.fc-columns {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.fc-horizontal-line {
+    position: absolute;
+    top: 0;
+    left: 17%;
+    width: 66%;
+    height: 2px;
+    background: #d1d5db;
+}
+
+/* Column cards */
+.fc-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fc-column-card {
+    width: 100%;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(217, 119, 6, 0.3);
+    background: white;
+    text-align: center;
+}
+
+/* Items */
+.fc-item-list {
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fc-item {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid #e7e5e4;
+}
+
+.fc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #d97706;
+    margin-top: 6px;
+}
+
+.fc-dot.muted {
+    opacity: 0.6;
+}
+
+.fc-dot.light {
+    opacity: 0.4;
+}
+
+.fc-item small {
+    display: block;
+    font-size: 10px;
+    color: #44403c;
+}
+
+/* Tooltip */
+
+
+/* Guide */
+.fc-guide {
+    position: fixed;
+    bottom: 32px;
+    left: 32px;
+    max-width: 280px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e7e5e4;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+/* NODE */
+.fc-node {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+}
+
+.fc-node-card {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border: 1px solid #e7e5e4;
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    cursor: help;
+}
+
+.fc-node-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fc-node-subtitle {
+    font-size: 10px;
+    color: #44403c;
+}
+
+/* ACTIVE NODE (Tailwind: border-2 + glow + scale) */
+.fc-node-active .fc-node-card {
+    border: 2px solid rgba(217, 119, 6, 0.6);
+    box-shadow: 0 0 20px -2px rgba(217, 119, 6, 0.3);
+    transform: scale(1.02);
+}
+
+/* DOT */
+.fc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #d97706;
+    margin-top: 6px;
+}
+
+.fc-dot-pulse {
+    animation: fc-pulse 1.5s infinite;
+}
+
+@keyframes fc-pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* TOOLTIP (FIXED) */
+.fc-tooltip {
+    position: absolute;
+    left: calc(100% + 16px);
+    top: 50%;
+    transform: translate(-6px, -50%);
+    width: 260px;
+
+    background: white;
+    border: 1px solid #fcd34d;
+    border-radius: 12px;
+    padding: 14px;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.fc-tooltip-trigger {
+    position: relative;
+}
+
+.fc-tooltip-trigger:hover .fc-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, -50%);
+    pointer-events: auto;
+}
+
+.fc-tooltip-trigger {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.fc-tooltip-trigger:hover {
+    border-color: rgba(217, 119, 6, 0.6);
+    box-shadow: 0 0 20px -2px rgba(217, 119, 6, 0.3);
+    transform: scale(1.02);
+}
+
+.fc-tooltip-trigger:hover .fc-dot {
+    animation: fc-pulse 1.5s infinite;
+}
+
+@keyframes fc-pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* IMPORTANT: wrapper does NOT transform */
+.fc-tooltip-trigger {
+    position: relative;
+    z-index: 1;
+}
+
+/* transform only the card content */
+.fc-tooltip-trigger:hover {
+    z-index: 10;
+}
+
+.fc-tooltip-trigger:hover .fc-item-content {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px -2px rgba(217, 119, 6, 0.3);
+    border-color: rgba(217, 119, 6, 0.6);
+}
