@@ -103,22 +103,14 @@ import "./Flowchart.css";
 import Overlay from "./Overlay";
 import { useState } from "react";
 
-export default function Flowchart({ flowchart }) {
+export default function Flowchart({ flowchart, topic, onExit }) {
     const [activeNodeId, setActiveNodeId] = useState(null);
 
-    if (
-        !flowchart ||
-        !flowchart.root ||
-        !Array.isArray(flowchart.columns)
-    ) {
+    if (!flowchart?.root || !Array.isArray(flowchart?.columns)) {
         return <div className="fc-error">Invalid flowchart data</div>;
     }
 
     const { root, columns } = flowchart;
-
-    const handleNodeClick = (nodeId) => {
-        setActiveNodeId(nodeId);
-    };
 
     return (
         <div className="fc-root">
@@ -132,12 +124,17 @@ export default function Flowchart({ flowchart }) {
                             />
                         </svg>
                     </div>
-                    <h2 className="fc-title">Study AI</h2>
+                    <h2 className="fc-title">{topic || "Study Session"}</h2>
                 </div>
-                <button className="fc-close">✕</button>
+
+                {/* ✅ exit button now works */}
+                <button className="fc-close" onClick={onExit}>
+                    ✕
+                </button>
             </header>
 
             <main className="fc-main">
+                {/* Root */}
                 <div className="fc-root-node">
                     <div className="fc-root-card">
                         <p className="fc-root-label">{root.label}</p>
@@ -146,6 +143,7 @@ export default function Flowchart({ flowchart }) {
                     <div className="fc-line-vertical" />
                 </div>
 
+                {/* Columns */}
                 <div className="fc-columns">
                     <div className="fc-horizontal-line" />
 
@@ -161,32 +159,19 @@ export default function Flowchart({ flowchart }) {
                             <div className="fc-line-vertical" />
 
                             <div className="fc-item-list">
-                                {column.nodes.map((node) => {
-                                    // const tooltip = tooltips[node.id];
-
-                                    return (
-                                        <div
-                                            key={node.id}
-                                            // className={`fc-item ${tooltip ? "fc-tooltip-trigger" : ""}`}
-                                            className="fc-item"
-                                            onClick={() => handleNodeClick(node.id)}
-                                        >
-                                            <span className="fc-dot" />
-
-                                            <div>
-                                                <strong>{node.label}</strong>
-                                                <small>{node.subtitle}</small>
-                                            </div>
-
-                                            {/* {tooltip && (
-                                                <div className="fc-tooltip">
-                                                    <strong>{tooltip.heading}</strong>
-                                                    <p>{tooltip.data}</p>
-                                                </div>
-                                            )} */}
+                                {column.nodes.map((node) => (
+                                    <div
+                                        key={node.id}
+                                        className="fc-item"
+                                        onClick={() => setActiveNodeId(node.id)}
+                                    >
+                                        <span className="fc-dot" />
+                                        <div>
+                                            <strong>{node.label}</strong>
+                                            <small>{node.subtitle}</small>
                                         </div>
-                                    );
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}
@@ -195,14 +180,15 @@ export default function Flowchart({ flowchart }) {
                 <div className="fc-guide">
                     <h4>Study Guide</h4>
                     <p>
-                        Explore the hierarchy of web performance. Hover nodes like{" "}
-                        <strong>LCP</strong> for quick definitions.
+                        Click any node to dive deeper. Take it one concept at a time.
                     </p>
                 </div>
             </main>
+
             {activeNodeId && (
                 <Overlay
                     nodeId={activeNodeId}
+                    topic={topic}
                     onClose={() => setActiveNodeId(null)}
                 />
             )}

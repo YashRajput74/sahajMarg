@@ -138,6 +138,7 @@
     border-radius: 10px;
     background: white;
     border: 1px solid #e7e5e4;
+    z-index: 100;
 }
 
 .fc-dot {
@@ -175,6 +176,7 @@
     border: 1px solid #e7e5e4;
     border-radius: 16px;
     padding: 16px;
+    z-index: 1;
 }
 
 /* NODE */

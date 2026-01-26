@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import "../../styles/LearningEntry.css";
 import { useRef, useState } from "react";
 
-export default function LearningEntry() {
-    const navigate = useNavigate();
+export default function LearningEntry({ onStart }) {
     const [topic, setTopic] = useState("");
     const abortRef = useRef(null);
     const [loading, setLoading] = useState(false);
@@ -38,9 +36,7 @@ export default function LearningEntry() {
 
             const flowchart = await res.json();
 
-            navigate("/learning-mode/session", {
-                state: { flowchart, topic },
-            });
+            onStart(flowchart, topic);
 
         } catch (err) {
             if (err.name !== "AbortError") {
