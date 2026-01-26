@@ -48,6 +48,13 @@ body,
     gap: var(--space-lg);
 }
 
+.nav-links button{
+    color: white;
+    background-color: #111827;
+    border: none;
+    cursor: pointer;
+}
+
 .nav-links a {
     color: white;
     font-size: 14px;
