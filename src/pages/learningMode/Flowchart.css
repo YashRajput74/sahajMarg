@@ -7,7 +7,6 @@
     min-height: 100vh;
 }
 
-/* Header */
 .fc-header {
     position: sticky;
     top: 0;
@@ -47,13 +46,11 @@
     cursor: pointer;
 }
 
-/* Main */
 .fc-main {
     padding: 40px;
     position: relative;
 }
 
-/* Root node */
 .fc-root-node {
     display: flex;
     flex-direction: column;
@@ -86,7 +83,6 @@
     height: 24px;
 }
 
-/* Columns */
 .fc-columns {
     position: relative;
     display: grid;
@@ -105,7 +101,6 @@
     background: #d1d5db;
 }
 
-/* Column cards */
 .fc-column {
     display: flex;
     flex-direction: column;
@@ -121,7 +116,6 @@
     text-align: center;
 }
 
-/* Items */
 .fc-item-list {
     width: 100%;
     padding: 0 16px;
@@ -163,10 +157,6 @@
     color: #44403c;
 }
 
-/* Tooltip */
-
-
-/* Guide */
 .fc-guide {
     position: fixed;
     bottom: 32px;
@@ -179,7 +169,6 @@
     z-index: 0;
 }
 
-/* NODE */
 .fc-node {
     position: relative;
     width: 100%;
@@ -207,14 +196,12 @@
     color: #44403c;
 }
 
-/* ACTIVE NODE (Tailwind: border-2 + glow + scale) */
 .fc-node-active .fc-node-card {
     border: 2px solid rgba(217, 119, 6, 0.6);
     box-shadow: 0 0 20px -2px rgba(217, 119, 6, 0.3);
     transform: scale(1.02);
 }
 
-/* DOT */
 .fc-dot {
     width: 8px;
     height: 8px;

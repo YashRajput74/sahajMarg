@@ -189,14 +189,11 @@
     position: absolute;
     bottom: 12px;
     right: 16px;
-    font-size: 10px;
-    color: #a8a29e;
-    display: flex;
-    gap: 4px;
-    align-items: center;
+    max-width: calc(100% - 32px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-/* Footer */
 
 .ov-footer {
     padding: 24px 40px;
@@ -229,4 +226,12 @@
 
 .ov-btn-outline {
     background: #ffffff;
+}
+
+.ov-backdrop {
+    overflow-x: hidden;
+}
+
+.ov-modal {
+    overflow: hidden;
 }

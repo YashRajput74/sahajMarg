@@ -55,7 +55,7 @@ export default function Overlay({ topic, node, onClose }) {
                     <div className="ov-header-left">
                         <div className="ov-icon">
                             <span className="material-symbols-outlined">
-                                {data?.meta?.icon || "school"}
+                                school
                             </span>
                         </div>
 
@@ -94,7 +94,7 @@ export default function Overlay({ topic, node, onClose }) {
                             );
                         }
 
-                        if (section.type === "notes") {
+                        /* if (section.type === "notes") {
                             return (
                                 <section className="ov-section" key={idx}>
                                     <h3 className="ov-section-title">
@@ -113,7 +113,7 @@ export default function Overlay({ topic, node, onClose }) {
                                     </div>
                                 </section>
                             );
-                        }
+                        } */
 
                         return null;
                     })}

@@ -1,4 +1,3 @@
-/* Root */
 .le-root {
     position: relative;
     min-height: 100vh;
@@ -8,7 +7,6 @@
     overflow: hidden;
 }
 
-/* Background */
 .le-bg-pattern {
     position: absolute;
     inset: 0;
@@ -53,7 +51,6 @@
     opacity: 0.25;
 }
 
-/* Header */
 .le-header {
     display: flex;
     justify-content: space-between;
@@ -94,7 +91,6 @@
     cursor: pointer;
 }
 
-/* Main */
 .le-main {
     display: flex;
     justify-content: center;
@@ -121,7 +117,6 @@
     margin: 0 auto 48px;
 }
 
-/* Buttons */
 .le-learning-btn {
     display: inline-flex;
     align-items: center;
@@ -143,7 +138,6 @@
     color: white;
 }
 
-/* Input */
 .le-input-wrapper {
     display: flex;
     max-width: 600px;
@@ -160,6 +154,7 @@
     padding: 0 24px;
     font-size: 18px;
     outline: none;
+    border-radius: inherit;
 }
 
 .le-start-btn {
@@ -182,7 +177,7 @@
 .le-start-btn .material-symbols-outlined{
     color: white;
 }
-/* Suggestions */
+
 .le-suggestions {
     display: flex;
     flex-wrap: wrap;
