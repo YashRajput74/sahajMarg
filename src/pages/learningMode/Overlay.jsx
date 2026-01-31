@@ -94,27 +94,6 @@ export default function Overlay({ topic, node, onClose }) {
                             );
                         }
 
-                        /* if (section.type === "notes") {
-                            return (
-                                <section className="ov-section" key={idx}>
-                                    <h3 className="ov-section-title">
-                                        {section.heading}
-                                    </h3>
-                                    <div className="ov-textarea-wrapper">
-                                        <textarea
-                                            placeholder={section.placeholder}
-                                        />
-                                        <div className="ov-hint">
-                                            <span className="material-symbols-outlined">
-                                                auto_awesome
-                                            </span>
-                                            Saved to your study guide
-                                        </div>
-                                    </div>
-                                </section>
-                            );
-                        } */
-
                         return null;
                     })}
                 </div>
