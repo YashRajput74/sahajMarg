@@ -228,7 +228,6 @@
     }
 }
 
-/* TOOLTIP (FIXED) */
 .fc-tooltip {
     position: absolute;
     left: calc(100% + 16px);
@@ -290,7 +289,6 @@
     }
 }
 
-/* IMPORTANT: wrapper does NOT transform */
 .fc-tooltip-trigger {
     position: relative;
     z-index: 1;
