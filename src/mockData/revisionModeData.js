@@ -36,6 +36,16 @@ export const javascriptPromises = {
                 { label: ".catch()", description: "Handles failure" },
                 { label: ".finally()", description: "Runs always" }
             ]
+        },
+        {
+            type: "flow",
+            title: "Static Methods",
+            steps: [
+                { label: "Promise.all()", description: "Waits for all promises to fulfill. Rejects if one fails." },
+                { label: "Promise.race()", description: "Waits for the frst promise to settle(fulfill or reject)." },
+                { label: "Promise.allSettled()", description: "Waits for all promises to finish, regardless of their result" },
+                { label: "Promise.any()", description: "Waits for the first successfully fulfilled promise." }
+            ]
         }
     ]
 };
