@@ -1,4 +1,4 @@
-import "./Overlay.css";
+import "../../styles/Overlay.css";
 import { useEffect, useState } from "react";
 
 export default function Overlay({ topic, node, onClose }) {

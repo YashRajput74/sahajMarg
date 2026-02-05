@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./LearningView.css";
+import "../../styles/LearningView.css";
 import { webVitalsTopic } from "../../data";
 
 export default function LearningView() {
-    const [currentPage, setCurrentPage] = useState(0); // tracks page index
+    const [currentPage, setCurrentPage] = useState(0);
     const [notesOpen, setNotesOpen] = useState(false);
     const [doubt, setDoubt] = useState("");
 
@@ -19,7 +19,6 @@ export default function LearningView() {
 
     return (
         <div className="lv-root">
-            {/* Header */}
             <header className="lv-header">
                 <div className="lv-header-left">
                     <span className="material-symbols-outlined lv-header-icon">
@@ -33,9 +32,7 @@ export default function LearningView() {
                 </button>
             </header>
 
-            {/* Main */}
             <main className="lv-main">
-                {/* Concept Panel */}
                 <section className="lv-concept-panel">
                     <div className="lv-concept-inner">
                         <div className="lv-concept-badge">
@@ -62,7 +59,6 @@ export default function LearningView() {
                     </div>
                 </section>
 
-                {/* Example Card */}
                 <section className="lv-content-panel">
                     <div className="lv-card">
                         <div className="lv-card-header">
@@ -88,7 +84,6 @@ export default function LearningView() {
                     </div>
                 </section>
 
-                {/* Notes Panel */}
                 <aside
                     className={`lv-notes-panel ${notesOpen ? "lv-notes-open" : ""}`}
                 >
@@ -110,7 +105,6 @@ export default function LearningView() {
                     <button className="lv-notes-save">Save Progress</button>
                 </aside>
 
-                {/* Notes Trigger */}
                 {!notesOpen && (
                     <button
                         className="lv-notes-trigger"
@@ -121,9 +115,7 @@ export default function LearningView() {
                 )}
             </main>
 
-            {/* Footer */}
             <footer className="lv-footer">
-                {/* Doubt input */}
                 <div className="lv-doubt-wrapper">
                     <span className="material-symbols-outlined lv-doubt-icon">
                         quiz
@@ -137,7 +129,6 @@ export default function LearningView() {
                     />
                 </div>
 
-                {/* Footer actions */}
                 <div className="lv-footer-actions">
                     <button
                         className="lv-skip-btn"

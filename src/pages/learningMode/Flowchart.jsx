@@ -1,4 +1,4 @@
-import "./Flowchart.css";
+import "../../styles/Flowchart.css";
 import Overlay from "./Overlay";
 import { useState, useEffect } from "react";
 

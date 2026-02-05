@@ -1,9 +1,8 @@
-import "./LearningSummary.css";
+import "../../styles/LearningSummary.css";
 
 export default function LearningSummary() {
     return (
         <div className="ls-page">
-            {/* Background blobs */}
             <div className="ls-blob-container">
                 <div className="ls-blob ls-blob-1" />
                 <div className="ls-blob ls-blob-2" />
