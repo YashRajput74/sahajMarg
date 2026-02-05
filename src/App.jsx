@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Flowchart from "./pages/learningMode/Flowchart";
 import LearningMode from "./pages/learningMode/LearningMode";
+import TrigHub from "./pages/learningMode/TrigHub";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/newchat" element={<HomePage />} />
                 <Route path="/learning-mode" element={<LearningMode />} />
                 <Route path="/learning-mode/session" element={<Flowchart />} />
+                <Route path="/quick-learning" element={<TrigHub />} />
             </Routes>
         </Router>
     );
