@@ -6,7 +6,6 @@ export default function LearningLoop() {
     const { topic } = useParams();
 
     const [sessionId, setSessionId] = useState(null);
-    const [studentQuestion, setStudentQuestion] = useState("");
 
     const [teacherInput, setTeacherInput] = useState("");
     const [teacherExplanation, setTeacherExplanation] = useState("");
@@ -34,6 +33,7 @@ export default function LearningLoop() {
 
         createSession();
     }, [topic, sessionId]);
+
     async function askTeacher() {
         if (!sessionId || !teacherInput.trim()) return;
 
@@ -53,19 +53,6 @@ export default function LearningLoop() {
         const data = await res.json();
         setTeacherExplanation(data.explanation);
         setTeacherInput("");
-
-        // 🔥 NEW: ask co-student to generate a question
-        const qRes = await fetch(
-            `${BACKEND_URL}/learning-loop/student/question`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ sessionId }),
-            }
-        );
-
-        const qData = await qRes.json();
-        setStudentQuestion(qData.question);
     }
 
     async function explainToStudent() {
@@ -93,8 +80,6 @@ export default function LearningLoop() {
         setStudentFeedback(evalData.feedback);
         setStudentStatus(evalData.status);
         setStudentInput("");
-        setStudentQuestion("");
-
     }
 
     async function refocus() {
@@ -163,16 +148,11 @@ export default function LearningLoop() {
                     )}
 
                     <div className="ll-chat-card">
-                        <p>
-                            {studentQuestion
-                                ? studentQuestion
-                                : "The co-student is waiting for an explanation."}
-                        </p>
+                        <p>{studentFeedback || "Explain the concept to your co-student."}</p>
                     </div>
 
 
-                    {/* 
-                    <div className="ll-chat-card ll-exam-focus">
+                    {/* <div className="ll-chat-card ll-exam-focus">
                         <p>
                             Is this relevant for the exam, or should we focus on key patterns?
                         </p>

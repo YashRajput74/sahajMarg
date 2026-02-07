@@ -9,6 +9,8 @@ import LearningMode from "./pages/learningMode/LearningMode";
 import SnapShotPage from "./pages/snapshotMode/SnapShotPage";
 import LearningLoop from "./pages/twoAssistantsMode/LearningLoop";
 import SelectTopic from "./pages/twoAssistantsMode/SelectTopic";
+import SelectMisconceptionTopic from "./pages/misconceptionMode/SelectMisconception";
+import MisconceptionLoop from "./pages/misconceptionMode/MisconceptionLoop";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -30,6 +32,14 @@ function App() {
                 <Route path="/quick-learning" element={<SnapShotPage />} />
                 <Route path="/two-assistants" element={<SelectTopic />} />
                 <Route path="/two-assistants/:topic" element={<LearningLoop />} />
+                <Route
+                    path="/misconceptions"
+                    element={<SelectMisconceptionTopic />}
+                />
+                <Route
+                    path="/misconceptions/:topic"
+                    element={<MisconceptionLoop />}
+                />
             </Routes>
         </Router>
     );

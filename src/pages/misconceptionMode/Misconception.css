@@ -1,0 +1,151 @@
+.loop-root {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    background: #f7f9fc;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================= LEFT PANEL ================= */
+
+.left {
+    padding: 40px;
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+}
+
+.step-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+}
+
+.myth-statement {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    color: #111827;
+}
+
+.step {
+    margin-bottom: 24px;
+}
+
+.step-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4f46e5;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.choice-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.choice-buttons button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    background: #f9fafb;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.choice-buttons button:hover {
+    border-color: #6366f1;
+}
+
+.choice-buttons button.active {
+    background: #eef2ff;
+    border-color: #6366f1;
+    font-weight: 600;
+}
+
+textarea {
+    width: 100%;
+    min-height: 90px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+}
+
+.step.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4f46e5;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.submit-btn:disabled {
+    background: #c7d2fe;
+    cursor: not-allowed;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #4338ca;
+}
+
+/* ================= RIGHT PANEL ================= */
+
+.right {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+.ai-bubble {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 14px;
+    background: white;
+    font-size: 16px;
+    line-height: 1.5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= MOODS ================= */
+
+.mood-NEUTRAL {
+    background: #f1f5f9;
+}
+
+.mood-HAPPY {
+    background: #ecfeff;
+}
+
+.mood-IMPRESSED {
+    background: #f0fdf4;
+}
+
+.mood-SAD {
+    background: #fff7ed;
+}
+
+.mood-GRUMPY {
+    background: #fef2f2;
+}
