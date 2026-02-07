@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import Flowchart from "./pages/learningMode/Flowchart";
 import LearningMode from "./pages/learningMode/LearningMode";
 import SnapShotPage from "./pages/snapshotMode/SnapShotPage";
+import LearningLoop from "./pages/twoAssistantsMode/LearningLoop";
+import SelectTopic from "./pages/twoAssistantsMode/SelectTopic";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -19,13 +21,15 @@ const ScrollToTop = () => {
 function App() {
     return (
         <Router>
-        <ScrollToTop />
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/newchat" element={<HomePage />} />
                 <Route path="/learning-mode" element={<LearningMode />} />
                 <Route path="/learning-mode/session" element={<Flowchart />} />
                 <Route path="/quick-learning" element={<SnapShotPage />} />
+                <Route path="/two-assistants" element={<SelectTopic />} />
+                <Route path="/two-assistants/:topic" element={<LearningLoop />} />
             </Routes>
         </Router>
     );

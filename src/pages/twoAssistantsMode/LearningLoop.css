@@ -1,0 +1,226 @@
+/* ROOT */
+.ll-root {
+    font-family: Inter, system-ui, sans-serif;
+    background: #fff7ef;
+    min-height: 100vh;
+    padding: 24px;
+    color: #2b2b2b;
+}
+
+/* HEADER */
+.ll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.ll-title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.ll-role-switch {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.ll-dot {
+    width: 6px;
+    height: 6px;
+    background: #ff8a00;
+    border-radius: 50%;
+}
+
+/* MAIN */
+.ll-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* PANELS */
+.ll-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* TEACHER */
+.ll-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff8a00;
+    margin-bottom: 8px;
+}
+
+.ll-topic {
+    font-size: 26px;
+    margin-bottom: 16px;
+}
+
+.ll-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.ll-list li {
+    padding: 10px 12px;
+    background: #fff3e6;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* CODE */
+.ll-code-block {
+    background: #fff9f3;
+    border-radius: 12px;
+    padding: 14px;
+    font-family: monospace;
+    margin-bottom: 20px;
+}
+
+.ll-code-title {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #ff8a00;
+}
+
+pre {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* BUTTONS */
+.ll-footer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.ll-btn-secondary {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+}
+
+.ll-btn-primary {
+    background: #ff8a00;
+    color: #fff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ll-btn-outline {
+    background: transparent;
+    border: 1px solid #ff8a00;
+    color: #ff8a00;
+    padding: 12px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+/* STUDENT */
+.ll-alert {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ff4d4f;
+    margin-bottom: 12px;
+}
+
+.ll-chat-card {
+    background: #fff3e6;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+}
+
+.ll-exam-focus {
+    background: #fff;
+    border: 1px solid #ffe1c2;
+}
+
+/* CHECKLIST */
+.ll-checklist {
+    background: #fff9f3;
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.ll-checklist-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.ll-checklist ul {
+    padding-left: 18px;
+    margin-bottom: 8px;
+}
+
+/* INPUT */
+.ll-input-area input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+}
+
+.ll-input-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* INPUT AREA (SHARED) */
+.ll-input-area {
+  margin-top: 16px;
+}
+
+.ll-input-area input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  font-size: 14px;
+  background: #fafafa;
+}
+
+.ll-input-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* PRIMARY BUTTON */
+.ll-btn-primary {
+  background: #ff8a00;
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* OUTLINE BUTTON */
+.ll-btn-outline {
+  background: transparent;
+  border: 1px solid #ff8a00;
+  color: #ff8a00;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+}
