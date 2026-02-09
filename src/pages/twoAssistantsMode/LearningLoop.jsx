@@ -151,24 +151,6 @@ export default function LearningLoop() {
                         <p>{studentFeedback || "Explain the concept to your co-student."}</p>
                     </div>
 
-
-                    {/* <div className="ll-chat-card ll-exam-focus">
-                        <p>
-                            Is this relevant for the exam, or should we focus on key patterns?
-                        </p>
-                    </div>
-
-                    <div className="ll-checklist">
-                        <div className="ll-checklist-title">STILL NEED TO COVER (3)</div>
-                        <ul>
-                            <li>Acid-Catalyzed Dehydration</li>
-                            <li>Lucas Reagent Test</li>
-                            <li>Branching vs Boiling Point</li>
-                        </ul>
-                        <small>High-frequency exam topics</small>
-                    </div> */}
-
-                    {/* CO-STUDENT INPUT */}
                     <div className="ll-input-area">
                         <input
                             value={studentInput}

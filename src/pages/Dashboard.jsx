@@ -29,6 +29,7 @@ export default function Dashboard() {
                     <button onClick={() => { navigate("/quick-learning") }} >Quick Revision Mode</button>
                     <button onClick={() => { navigate("/two-assistants") }} >Two assistants Mode</button>
                     <button onClick={() => { navigate("/misconceptions") }} >Misconception Mode</button>
+                    <button onClick={() => { navigate("/revision") }} >Revision Mode</button>
                     <button className="study-btn-primary" onClick={openModal}>Sign In</button>
                 </nav>
             </header>

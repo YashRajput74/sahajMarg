@@ -11,6 +11,8 @@ import LearningLoop from "./pages/twoAssistantsMode/LearningLoop";
 import SelectTopic from "./pages/twoAssistantsMode/SelectTopic";
 import SelectMisconceptionTopic from "./pages/misconceptionMode/SelectMisconception";
 import MisconceptionLoop from "./pages/misconceptionMode/MisconceptionLoop";
+import ConceptCanvas from "./pages/RevisionMode/ConceptCanvas";
+import SelectRevisionTopic from "./pages/RevisionMode/SelectRevisionTopic";
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -39,6 +41,14 @@ function App() {
                 <Route
                     path="/misconceptions/:topic"
                     element={<MisconceptionLoop />}
+                />
+                <Route
+                    path="/revision"
+                    element={<SelectRevisionTopic />}
+                />
+                <Route
+                    path="/revision/canvas/:topic"
+                    element={<ConceptCanvas />}
                 />
             </Routes>
         </Router>
