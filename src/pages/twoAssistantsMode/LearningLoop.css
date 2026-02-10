@@ -277,7 +277,7 @@ pre {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 8px auto;
+    margin: 0px 4px;
 }
 
 .ll-mic-btn:hover {
@@ -308,7 +308,6 @@ pre {
 }
 
 .ll-mic-icon {
-    font-size: 36px;
     position: relative;
     z-index: 3;
 }
@@ -349,7 +348,7 @@ pre {
 
 .ll-mic-btn.listening {
     box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.2),
-                0 0 0 14px rgba(245, 158, 11, 0.1);
+        0 0 0 14px rgba(245, 158, 11, 0.1);
 }
 
 @keyframes ll-ping {
@@ -357,11 +356,136 @@ pre {
         transform: scale(1);
         opacity: 0.6;
     }
+
     80% {
         transform: scale(1.6);
         opacity: 0;
     }
+
     100% {
         opacity: 0;
     }
+}
+
+/* === WARM THEME === */
+.ll-warm {
+    background: #fff8f0;
+    color: #4a3b32;
+}
+
+/* === GLASS EFFECT === */
+.glass {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 237, 213, 0.6);
+    box-shadow: 0 8px 32px rgba(249, 115, 22, 0.06);
+}
+
+/* HEADER */
+.ll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255, 237, 213, 0.8);
+}
+
+.ll-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ll-sun {
+    font-size: 28px;
+    color: #f59e0b;
+}
+
+.ll-flow {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    align-items: center;
+    opacity: 0.8;
+}
+
+.ll-flow-active {
+    font-weight: 700;
+    color: #ea580c;
+}
+
+.ll-arrow {
+    color: #f59e0b;
+}
+
+/* PANELS */
+.ll-panel {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.ll-panel-header {
+    padding: 24px;
+}
+
+.ll-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #fff3cd;
+    color: #b45309;
+    margin-bottom: 8px;
+}
+
+/* EMPTY STATES */
+.ll-empty {
+    margin: auto;
+    text-align: center;
+    opacity: 0.7;
+}
+
+.ll-empty span {
+    font-size: 40px;
+    color: #f59e0b;
+}
+
+/* CHAT */
+.ll-chat-feed {
+    flex: 1;
+    padding: 16px 24px;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+/* INPUTS */
+.ll-input-area {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 237, 213, 0.6);
+    gap: 10px;
+}
+
+.ll-input-area input {
+    flex: 1;
+}
+
+/* MIC BUTTON */
+.ll-mic-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 24px rgba(249, 115, 22, 0.35);
+}
+
+.ll-mic-btn.listening {
+    box-shadow:
+        0 0 0 10px rgba(245, 158, 11, 0.15),
+        0 0 0 20px rgba(245, 158, 11, 0.08);
 }

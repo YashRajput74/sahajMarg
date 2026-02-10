@@ -8,7 +8,7 @@
 
 /* ================= LEFT PANEL ================= */
 
-.left {
+.bleft {
     padding: 40px;
     background: #ffffff;
     border-right: 1px solid #e5e7eb;
@@ -110,7 +110,7 @@ textarea:focus {
 
 /* ================= RIGHT PANEL ================= */
 
-.right {
+.bright {
     padding: 40px;
     display: flex;
     flex-direction: column;

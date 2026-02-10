@@ -198,23 +198,31 @@ export default function LearningLoop() {
     }
 
     return (
-        <div className="ll-root">
-            <header className="ll-header">
-                <h1 className="ll-title">The Learning Loop</h1>
-                <div className="ll-role-switch">
+        <div className="ll-root ll-warm">
+            {/* HEADER */}
+            <header className="ll-header glass">
+                <div className="ll-header-left">
+                    <span className="material-symbols-outlined ll-sun">wb_sunny</span>
+                    <h1 className="ll-title">The Learning Loop</h1>
+                </div>
+
+                <div className="ll-flow">
                     <span>Teacher</span>
-                    <span className="ll-dot" />
-                    <span>User</span>
-                    <span className="ll-dot" />
+                    <span className="ll-arrow">→</span>
+                    <span className="ll-flow-active">User</span>
+                    <span className="ll-arrow">→</span>
                     <span>Student</span>
                 </div>
             </header>
 
+            {/* MAIN */}
             <main className="ll-main">
-                {/* LEFT — TEACHER */}
-                <section className="ll-panel ll-teacher">
-                    <div className="ll-badge">AI TEACHER</div>
-                    <h2 className="ll-topic">{topic}</h2>
+                {/* TEACHER PANEL */}
+                <section className="ll-panel ll-teacher glass">
+                    <div className="ll-panel-header">
+                        <span className="ll-badge">Concept</span>
+                        <h2 className="ll-topic">{topic}</h2>
+                    </div>
 
                     <div className="ll-chat-feed" ref={teacherFeedRef}>
                         {messages
@@ -232,28 +240,32 @@ export default function LearningLoop() {
                                     {m.content}
                                 </div>
                             ))}
+
+                        {messages.length === 0 && (
+                            <div className="ll-empty">
+                                <span className="material-symbols-outlined">psychology</span>
+                                <p>Ready to begin teaching?</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="ll-input-area">
-
                         <input
                             value={teacherInput}
                             onChange={(e) => setTeacherInput(e.target.value)}
-                            placeholder="Ask the AI teacher a doubt..."
+                            placeholder="Ask the AI teacher..."
                         />
+                        <button className="ll-btn-primary" onClick={askTeacher}>
+                            Ask
+                        </button>
                     </div>
-
-                    <button className="ll-btn-primary" onClick={askTeacher}>
-                        Ask Teacher
-                    </button>
-
                 </section>
 
-                {/* RIGHT — CO-STUDENT */}
-                <section className="ll-panel ll-student">
+                {/* STUDENT PANEL */}
+                <section className="ll-panel ll-student glass">
                     {studentStatus !== "ON_TRACK" && (
                         <div className="ll-alert">
-                            CO-STUDENT IS {studentStatus.replace("_", " ")}
+                            Student is {studentStatus.replace("_", " ")}
                         </div>
                     )}
 
@@ -273,34 +285,39 @@ export default function LearningLoop() {
                                     {m.content}
                                 </div>
                             ))}
+
+                        {messages.length === 0 && (
+                            <div className="ll-empty">
+                                <span className="material-symbols-outlined">smart_toy</span>
+                                <p>I’m ready to learn!</p>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="ll-input-area">
+                    <div className="ll-input-area ll-student-input">
                         <input
                             value={studentInput}
                             onChange={(e) => setStudentInput(e.target.value)}
-                            placeholder="Explain to your co-student in simple words..."
+                            placeholder="Explain in simple words..."
                         />
 
-                        <button className="ll-btn-primary" onClick={explainToStudent}>
-                            Explain
-                        </button>
-                        <button
-                            type="button"
-                            className={`ll-mic-btn ${listening ? "listening" : ""}`}
-                            onClick={() => recognitionRef.current?.start()}
-                            aria-label="Tap to speak"
-                        >
-                            <span className="ll-mic-ping" />
-                            <span className="ll-mic-glow" />
-                            <span className="material-symbols-outlined ll-mic-icon">
-                                mic
-                            </span>
-                        </button>
+                        <div style={{display:"flex"}}>
+                            <button
+                                className={`ll-mic-btn ${listening ? "listening" : ""}`}
+                                onClick={() => recognitionRef.current?.start()}
+                            >
+                                <span className="material-symbols-outlined ll-mic-icon">
+                                    mic
+                                </span>
+                            </button>
 
+                            <button className="ll-btn-primary" onClick={explainToStudent}>
+                                Explain
+                            </button>
+                        </div>
                     </div>
                 </section>
             </main>
-        </div >
+        </div>
     );
 }

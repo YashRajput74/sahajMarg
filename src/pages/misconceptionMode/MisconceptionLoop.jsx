@@ -70,7 +70,7 @@ export default function MisconceptionLoop() {
     return (
         <div className="loop-root">
             {/* LEFT */}
-            <div className="left">
+            <div className="bleft">
                 <h3 className="step-title">Myth {current + 1}</h3>
 
                 <p className="myth-statement">
@@ -115,7 +115,7 @@ export default function MisconceptionLoop() {
             </div>
 
             {/* RIGHT */}
-            <div className={`right mood-${aiMood}`}>
+            <div className={`bright mood-${aiMood}`}>
                 <h3>Assistant</h3>
                 <p><strong>Mood:</strong> {aiMood}</p>
 

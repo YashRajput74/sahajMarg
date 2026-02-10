@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import LearningEntryLayout from "../../components/LearningEntryLayout";
 
 export default function SelectMisconceptionTopic() {
     const [topic, setTopic] = useState("");
@@ -11,19 +12,13 @@ export default function SelectMisconceptionTopic() {
     }
 
     return (
-        <div style={{ padding: 40, maxWidth: 500, margin: "auto" }}>
-            <h1>DeepDive</h1>
-            <p>Enter a topic to uncover common misconceptions</p>
-
-            <input
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                placeholder="e.g. Quantum Physics, Thermodynamics"
-                style={{ width: "100%", padding: 12, marginBottom: 12 }}
-                onKeyDown={(e) => e.key === "Enter" && start()}
-            />
-
-            <button onClick={start}>Start</button>
-        </div>
+        <LearningEntryLayout
+            title="Misconception Deep Dive"
+            subtitle="Enter a topic to uncover common misunderstandings."
+            topic={topic}
+            setTopic={setTopic}
+            onStart={start}
+            buttonText="Reveal Misconceptions"
+        />
     );
 }
